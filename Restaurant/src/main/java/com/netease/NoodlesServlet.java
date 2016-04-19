@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-
+import com.netease.Kitchen;
 /**
  * Servlet implementation class NoodlesServlet
  */
@@ -31,12 +31,8 @@ public class NoodlesServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		PrintWriter writer = response.getWriter();
 		String vegetable = request.getParameter("vegetable");
-		if (vegetable == null){
-			vegetable = "Tomato";
-		}
-		writer.println("<html><body>");
-		writer.println("<h1> Noodles with "+vegetable+"</h1>");
-		writer.println("</body></html>");
+		String noodles = Kitchen.makeNoodles(vegetable);
+		writer.println(noodles);
 		m_log.debug("Noodles Now Start");
 	}
 
