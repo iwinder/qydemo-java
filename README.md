@@ -1,2 +1,1 @@
-username:windery 
-content:javaWeb Test
+username:windery  content:javaWeb Test
