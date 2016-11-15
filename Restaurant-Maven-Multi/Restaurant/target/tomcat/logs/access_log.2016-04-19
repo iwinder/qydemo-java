@@ -1,5 +1,0 @@
-0:0:0:0:0:0:0:1 - - [19/Apr/2016:20:25:05 +0800] "GET /Restaurant/NoodlesServlet HTTP/1.1" 200 57 http-bio-8080-exec-1 203
-0:0:0:0:0:0:0:1 - - [19/Apr/2016:20:25:30 +0800] "GET /Restaurant/NoodlesServlet HTTP/1.1" 200 57 http-bio-8080-exec-2 9
-0:0:0:0:0:0:0:1 - - [19/Apr/2016:20:25:31 +0800] "GET /Restaurant/NoodlesServlet HTTP/1.1" 200 57 http-bio-8080-exec-3 8
-0:0:0:0:0:0:0:1 - - [19/Apr/2016:20:29:00 +0800] "GET /Restaurant/NoodlesServlet HTTP/1.1" 200 57 http-bio-8080-exec-1 145
-0:0:0:0:0:0:0:1 - - [19/Apr/2016:20:30:24 +0800] "GET /Restaurant/NoodlesServlet HTTP/1.1" 200 58 http-bio-8080-exec-1 234
