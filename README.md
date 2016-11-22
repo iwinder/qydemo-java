@@ -12,8 +12,10 @@
 
 1.WebServiceE
 
-  基于springMVC+Java-WebSocket
+  于springMVC+Java-WebSocket
 
 2.WebSocketDom
   
-  基于springMVC自身的WebSocket
+  基于springMVC自身的WebSocket,前端集成了Booststrap和ueditor.
+
+  提示：使用时若控制台提示上传配置错误，请自行将ueditor-》jsp-》lib中的jar根据实际情况添加到WWB-INF-》lib中，其中程序中commons-io包不可低于2.4，若不使用ueditor可不用管本提示。
