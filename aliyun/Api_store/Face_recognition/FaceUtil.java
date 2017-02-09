@@ -21,18 +21,11 @@ import java.util.Map;
 /**
  * 阿里云人脸识别Util
  * Created by wind on 2016/12/20.
+ * http://windcoder.com
  */
 public class FaceUtil {
     private static Logger logger = Logger.getLogger(FaceUtil.class);
-    //性别api地址
-    private static String host = "https://dm-22.data.aliyun.com";
-    private static String path = "/rest/160601/face/gender_detection.json";
-    //年龄api地址
-    private static String  host2 = "https://dm-23.data.aliyun.com";
-    private static String  path2 = "/rest/160601/face/age_detection.json";
 
-    private static String method = "POST";
-    private static String APPCODE = "自己的APPCODE";
 
     /**
      * 获取性别或年龄
@@ -51,7 +44,7 @@ public class FaceUtil {
         if(data!=null){
             Map<String, String> headers = new HashMap<String, String>();
             //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
-            headers.put("Authorization", "APPCODE "+APPCODE);
+            headers.put("Authorization", "APPCODE "+ALiApiConfigUtil.APPCODE);
             Map<String, String> querys = new HashMap<String, String>();
             try {
                 String bodys = "{\"inputs\":[{\"image\":{\"dataType\":50,\"dataValue\":\""+data+"\"}}]}";
@@ -66,28 +59,14 @@ public class FaceUtil {
                  */
                 HttpResponse response = null;
                 if(type==1){
-                    response = HttpUtils.doPost(host, path, method, headers, querys, bodys);
+                    response = HttpUtils.doPost(ALiApiConfigUtil.HOST_FACE_GENDER, ALiApiConfigUtil.URL_FACE_GENDER, ALiApiConfigUtil.METHOD , headers, querys, bodys);
                 }else{
-                    response = HttpUtils.doPost(host2, path2, method, headers, querys, bodys);
+                    response = HttpUtils.doPost(ALiApiConfigUtil.HOST_FACE_AGE, ALiApiConfigUtil.URL_FACE_AGE, ALiApiConfigUtil.METHOD, headers, querys, bodys);
                 }
-				
                 //获取response的head
-                String shead = response.toString();
-                int sstar = shead.indexOf("X-Ca-Error-Message");
-                if(sstar>=0){
-                    //响应参数有错误
-                    int send = shead.indexOf("]");
-                    String tmpShead = shead.substring(sstar,send);
-                    String [] tmpSA = tmpShead.split(", ");
-                    String [] tmpSt = null;
-                    JSONObject sts = new JSONObject();
-                    for(String st : tmpSA){
-                        tmpSt = st.split(":");
-                        sts.put(tmpSt[0],tmpSt[1]);
-                    }
-                    r.put("code",0);
-                    r.put("msg",sts.getString("X-Ca-Error-Message"));
-                    return  r;
+                r= ALiErrorCoder.checkAliResError(response);
+                if(r.has("code")){
+                    return r;
                 }
 
                 String ss = EntityUtils.toString(response.getEntity());
@@ -227,16 +206,26 @@ public class FaceUtil {
         JSONObject rs = new JSONObject();
         r = FaceUtil.getSexOrAgeOfFace(data,1);
         JSONObject rs2 = new JSONObject();
-        if(r.getInt("code")>0&&r.getJSONObject("msg").getInt("num")>0){
-            rs2.put("gender",r.getJSONObject("msg"));
-            r = FaceUtil.getSexOrAgeOfFace(data,2);
-            if(r.getInt("code")>0&&r.getJSONObject("msg").getInt("num")>0){
-                rs.put("code",1);
-                rs2.put("age",r.getJSONObject("msg"));
-                rs.put("msg",rs2);
+        if(r.getInt("code")>0){
+            if(r.getJSONObject("msg").getInt("num")>0){
+                rs2.put("gender",r.getJSONObject("msg"));
+                r = FaceUtil.getSexOrAgeOfFace(data,2);
+                if(r.getInt("code")>0){
+                    if(r.getJSONObject("msg").getInt("num")>0){
+                        rs.put("code",1);
+                        rs2.put("age",r.getJSONObject("msg"));
+                        rs.put("msg",rs2);
+                    }else{
+                        rs.put("code",-2);
+                        rs.put("msg","获取 age个数为空");
+                    }
+                }else{
+                    rs.put("code",-2);
+                    rs.put("msg",r.getString("msg"));
+                }
             }else{
-                rs.put("code",-2);
-                rs.put("msg",r.getString("msg"));
+                rs.put("code",-1);
+                rs.put("msg","获取 gender个数为空");
             }
         }else{
             rs.put("code",-1);
