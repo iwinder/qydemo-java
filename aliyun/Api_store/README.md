@@ -18,9 +18,9 @@
 ##阿里云人脸识别Util
   位于Face_recognition文件夹中
   
-  FaceUtil.java为所要调用的工具类
+	FaceUtil.java为所要调用的工具类
 ##墨迹天气查询api
-	位于Weather文件夹中
+  位于Weather文件夹中
 	
 	WeatherUtil.java为天气查询工具类
 
