@@ -1,7 +1,7 @@
 package Prototype;
 
 /**
- * Description:
+ * Description:Java设计模式学习笔记—原型模式
  * User: wind
  * Date: 2017-06-20
  * Time: 0:14 上午

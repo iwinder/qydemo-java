@@ -1,7 +1,7 @@
 package Singleton;
 
 /**
- * Description:
+ * Description:Java设计模式学习笔记—单例模式
  * User: wind
  * Date: 2017-06-19
  * Time: 17:17 下午

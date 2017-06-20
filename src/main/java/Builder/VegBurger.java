@@ -7,10 +7,11 @@ package Builder;
  * Time: 18:49 下午
  */
 public class VegBurger extends Burger {
+    //名称
     public String name() {
         return "Veg Burger";
     }
-
+    //价格
     public float price() {
         return 25.0f;
     }

@@ -14,5 +14,9 @@ package Singleton.entity;
  * Date: 2017-06-19
  * Time: 17:56 下午
  */
-public class SingletonSix {
+public enum SingletonSix {
+    INSTANCE;
+    public  void whateverMethod(){
+
+    }
 }

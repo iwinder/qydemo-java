@@ -7,6 +7,8 @@ package Factory;
  * Time: 15:45 下午
  */
 public class ShapeFactory {
+
+    //使用 getShape 方法获取形状类型的对象
     public Shape getShape(String shapeType){
         if(shapeType == null){
             return null;

@@ -4,7 +4,7 @@ import AbstractFactory.Color.Color;
 import AbstractFactory.Shape.Shape;
 
 /**
- * Description:
+ * Description: Java设计模式学习笔记—抽象工厂模式
  * User: wind
  * Date: 2017-06-19
  * Time: 16:26 下午

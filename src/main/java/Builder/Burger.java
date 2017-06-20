@@ -7,9 +7,11 @@ package Builder;
  * Time: 18:46 下午
  */
 public abstract class Burger implements Item{
+    //包装-返回Wrapper，即纸盒包装
     public Packing packing(){
         return new Wrapper();
     }
 
+    //价格
     public abstract float price();
 }
