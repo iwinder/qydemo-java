@@ -1,5 +1,5 @@
 未特殊注明的情况下，所有WebDom均使用SSM框架实现。
-##WebServiceDom
+## WebServiceDom
 1. WebServiceE 
   
   WebService服务端程序Dom,[>>相关博客文章](http://windcoder.com/webservicerumenchushiyong/)
@@ -8,7 +8,7 @@
   
   WebService客户端简单Dom,[>>相关博客文章](http://windcoder.com/webservicerumenchushiyongerdiaoyongwebservicefuwu/)
 
-##WebSocketDom
+## WebSocketDom
 
 1.WebServiceE
 
