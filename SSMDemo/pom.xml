@@ -25,6 +25,7 @@
     <druid.version>1.1.2</druid.version>
     <!-- JSTL标签类 -->
     <jstl.version>1.2</jstl.version>
+    <shiro.version>1.2.5</shiro.version>
     <json.version>20170516</json.version>
   </properties>
 
@@ -38,9 +39,22 @@
     </dependency>
     <!-- junit 依赖 end  -->
 
+    <!-- 2. 其他依赖 begin -->
+    <!-- Json依赖 -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${json.version}</version>
+    </dependency>
+    <!-- 文件上传依赖 -->
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+    <!-- 其他依赖 end -->
 
-
-    <!-- 2. spring依赖  begin-->
+    <!-- 3. spring依赖  begin-->
     <!-- spring核心依赖：这个jar 文件包含Spring 框架基本的核心工具类。Spring 其它组件要都要使用到这个包里的类，是其它组件的基本核心，当然你也可以在自己的应用系统中使用这些工具类。 -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -100,7 +114,7 @@
     </dependency>
     <!-- spring依赖  end-->
 
-    <!-- 3. mybatis依赖  begin-->
+    <!-- 4. mybatis依赖  begin-->
     <!-- mybatis核心包 -->
     <dependency>
       <groupId>org.mybatis</groupId>
@@ -115,7 +129,7 @@
     </dependency>
     <!-- mybatis依赖  end-->
 
-    <!--4. 数据库相关依赖  begin-->
+    <!--5. 数据库相关依赖  begin-->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -131,7 +145,7 @@
 
 
 
-    <!--5. log日志依赖 begin-->
+    <!--6. log日志依赖 begin-->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -154,7 +168,7 @@
     </dependency>
     <!--log日志依赖 end-->
 
-    <!--6. Servlet web相关依赖 begin-->
+    <!--7. Servlet web相关依赖 begin-->
     <!-- JSTL标签类 -->
     <dependency>
       <groupId>jstl</groupId>
@@ -162,20 +176,41 @@
       <version>${jstl.version}</version>
     </dependency>
     <!-- Servlet web相关依赖 end-->
-    <!-- 7. 其他依赖 begin -->
-    <!-- Json依赖 -->
+
+    <!--8. Shiro相关依赖 -->
+    <!-- Shiro核心依赖 -->
     <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>${json.version}</version>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${shiro.version}</version>
     </dependency>
-    <!-- 文件上传依赖 -->
+     <!--支持基于Web的应用程序。 -->
     <dependency>
-      <groupId>commons-fileupload</groupId>
-      <artifactId>commons-fileupload</artifactId>
-      <version>1.3.2</version>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <version>${shiro.version}</version>
     </dependency>
-    <!-- 其他依赖 end -->
+    <!--启用Spring框架集成。-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-spring</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
+    <!--启用基于Ehcache框架的缓存。-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-ehcache</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
+    <!--为Shiro本机会话验证启用基于Quartz的调度。-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-quartz</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
+    <!-- Shiro相关依赖 End-->
+
+
   </dependencies>
 
   <build>
