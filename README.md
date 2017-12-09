@@ -30,3 +30,14 @@ java设计模式学习时手敲的实例
 装饰器模式
 ### Facade
 外观模式
+### 
+享元模式
+###
+代理模式
+
+## 	行为型模式 Behavioral Patterns
+这些设计模式特别关注对象之间的通信。
+### Responsibility
+责任链模式 - Chain of Responsibility Pattern
+### Command
+指令模式 - Command Pattern
