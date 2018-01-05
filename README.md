@@ -41,3 +41,7 @@ java设计模式学习时手敲的实例
 责任链模式 - Chain of Responsibility Pattern
 ### Command
 指令模式 - Command Pattern
+### Interpreter 
+解释器模式 - Interpreter Pattern 
+### Iterator
+迭代器模式 - Iterator Pattern 
