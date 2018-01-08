@@ -45,3 +45,7 @@ java设计模式学习时手敲的实例
 解释器模式 - Interpreter Pattern 
 ### Iterator
 迭代器模式 - Iterator Pattern 
+### Mediator
+中介者模式 - Mediator Pattern
+### Memento
+备忘录模式 Memento Pattern 
