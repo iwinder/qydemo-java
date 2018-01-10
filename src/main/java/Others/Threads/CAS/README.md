@@ -257,7 +257,9 @@ LOCK_IF_MP根据当前系统是否为多核处理器决定是否为cmpxchg指令
 最开始了解CAS机制来源于看小灰的公众号（chengxuyuanxiaohui），里面一共是两篇文章，这里仅放出一篇地址，有兴趣可以去公众号查看。
 
 [深入浅出CAS](https://www.jianshu.com/p/fb6e91b013cc)
+
 小灰里面对AtomicInteger的分析部分比较简单而且看代码可能略微旧些，于是找到了占小狼的和下面一篇。这主要参考了对AtomicInteger的CAS底层实现分析以及深到汇编的部分。
 
 [JAVA CAS原理深度分析](http://blog.csdn.net/hsuxu/article/details/9467651)
+
 这里也存在一些汇编，由于和占的部分重叠就没再多看，里面有个C++文件地址所在目录，虽然是openjdk7的，但可以参考。主要留存了下里面的备注知识-关于CPU的锁。
