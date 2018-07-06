@@ -3,7 +3,7 @@ package Others.Threads.CAS;
 import Utills.PrintUtill;
 
 /**
- * 代码不是线程哦就，所以结果可能小于200.
+ * 代码不是线程安全，所以结果可能小于200.
  *
  */
 public class CountTest {

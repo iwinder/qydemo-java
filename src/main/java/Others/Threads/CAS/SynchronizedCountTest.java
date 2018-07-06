@@ -4,7 +4,7 @@ import Utills.PrintUtill;
 
 /**
  * 同步锁Synchronized确保了线程安全。但某些情况下不是最优，关键在于性能。
- * Synchronixrd关键字会让没有的到锁资源的线程进入BLOCKED的状态，
+ * Synchronixrd关键字会让没有得到锁资源的线程进入BLOCKED的状态，
  * 而后在争夺到锁资源后恢复为RUNNABLE状态，
  * 这个过程中涉及到操作系统的用户模式和内核模式的转换，代价比较高。
  * 尽管Java1.6为Synchronize做了优化，增加了从偏向锁到轻量级锁再到重量级锁的过度，
