@@ -1,19 +1,19 @@
 package Others.base.SimpleProxy.SimpleProxyDemo;
 
-import Others.base.SimpleProxy.Interface;
+import Others.base.SimpleProxy.Animal;
 import Utills.PrintUtill;
 
-public class SimpleProxy implements Interface {
+public class SimpleProxy implements Animal {
 
-    private Interface proxied;
+    private Animal proxied;
 
-    public SimpleProxy(Interface proxied) {
+    public SimpleProxy(Animal proxied) {
         this.proxied = proxied;
     }
 
-    public void doSomething() {
+    public void doBark() {
         PrintUtill.println("SimpleProxy doSomething");
-        proxied.doSomething();
+        proxied.doBark();
     }
 
     public void somethingElse(String arg) {

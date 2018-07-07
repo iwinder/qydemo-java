@@ -1,7 +1,7 @@
 package Others.base.SimpleProxy.DynamicProxyDemo;
 
-import Others.base.SimpleProxy.Interface;
-import Others.base.SimpleProxy.RealObject;
+import Others.base.SimpleProxy.Animal;
+import Others.base.SimpleProxy.Dog;
 
 import java.lang.reflect.Proxy;
 
@@ -23,19 +23,19 @@ import java.lang.reflect.Proxy;
  *  但可以通过传递其他的参数，来过滤某些方法的调用。
  */
 public class SimpleDynamicProxy {
-    public static void consumer(Interface iface){
-        iface.doSomething();
+    public static void consumer(Animal iface){
+        iface.doBark();
         iface.somethingElse("windCoder.com DynamicProxy");
     }
 
     public static void main(String[] args) {
-        RealObject real = new RealObject();
-        consumer(real);
+        Dog dog = new Dog();
+        consumer(dog);
         // Insert a proxy and call again
-        Interface prox = (Interface) Proxy.newProxyInstance(
-                Interface.class.getClassLoader(),
-                new Class[]{Interface.class},
-                new DynamicProxyHandler(real)
+        Animal prox = (Animal) Proxy.newProxyInstance(
+                Animal.class.getClassLoader(),
+                new Class[]{Animal.class},
+                new DynamicProxyHandler(dog)
         );
         consumer(prox);
 

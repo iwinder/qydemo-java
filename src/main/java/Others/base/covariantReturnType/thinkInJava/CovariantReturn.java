@@ -30,18 +30,25 @@ package Others.base.covariantReturnType.thinkInJava;
  */
 public class CovariantReturn {
     public static void main(String[] args) {
+        // 创建基类Mill的实例m
         Mill m = new Mill();
+        // 获取m的返回类型Grain的实例g
         Grain g = m.process();
+        //设置g的名称并打印
         g.setName("heihei");
         System.out.println(g);
         System.out.println(g.getName());
+        //将m重新分配给其类型（基类Mill）的导出类（WheatMill）,由于m自身是Mill，此时自动向上转型
         m = new WheatMill();
+        //获取m的返回类型Grain的实例g
         g =m.process();
         g.setName("bulu");
-        //! g.setColor("red");
+        //! g.setColor("red");   //---此时g的类型依旧是基类Grain，故不存在其子类（Wheat）中的setColor()方法
         System.out.println(g);
         System.out.println(g.getName());
+        // 因为是协变返回类型，所以可以向下转型
         Wheat w = (Wheat) g;
         w.setColor("red");
+        System.out.println(g);
     }
 }

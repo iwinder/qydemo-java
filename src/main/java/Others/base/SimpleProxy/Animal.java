@@ -1,6 +1,6 @@
 package Others.base.SimpleProxy;
 
 public interface Animal {
-    void doSomething();
+    void doBark();
     void somethingElse(String arg);
 }
