@@ -28,7 +28,7 @@ package Others.base.covariantReturnType.thinkInJava;
  * 可见此处demo中WheatMill对Mill的process()方法的重写违反了重写规则3，但Wheat属于Grain的子类（即Wheat IS-A  Grain），所以在向上的继承树转换时会隐式完成。
  * [Java那点儿事2——协变式返回值]（http://shinestudio.iteye.com/blog/767447）
  */
-public class CovariantReturn {
+public class CovariantReturnDemo {
     public static void main(String[] args) {
         // 创建基类Mill的实例m
         Mill m = new Mill();
