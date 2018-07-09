@@ -7,8 +7,8 @@ import java.lang.reflect.Proxy;
 
 /**
  * 通过调用静态方法Proxy.newProxyInstance()可以创建动态代理，这个方法需要得到：
- *  1. 一个类加载器（你通常可以从已经被加载的对象获取其类加载器，然后传递给它，如此处的Interface.class.getClassLoader()）
- *  2. 一个你希望该代理类实现的接口列表（不是类或抽象类）,如 new Class[]{Interface.class}
+ *  1. 一个类加载器（你通常可以从已经被加载的对象获取其类加载器，然后传递给它，如此处的Animal.class.getClassLoader()）
+ *  2. 一个你希望该代理类实现的接口列表（不是类或抽象类）,如 new Class[]{Animal.class}
  *  3. InvocationHandler接口的一个实现，如DynamicProxyHandler
  *
  *  动态代理可以将所有调用重定向到调用处理器。

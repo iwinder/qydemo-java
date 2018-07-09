@@ -35,7 +35,7 @@ public class CovariantReturnDemo {
         // 获取m的返回类型Grain的实例g
         Grain g = m.process();
         //设置g的名称并打印
-        g.setName("heihei");
+        g.setName("windCoder.com");
         System.out.println(g);
         System.out.println(g.getName());
         //将m重新分配给其类型（基类Mill）的导出类（WheatMill）,由于m自身是Mill，此时自动向上转型
