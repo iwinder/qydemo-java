@@ -1,15 +1,19 @@
 package Others.base.cloneDemo;
 
+import java.io.*;
+
 /**
  * 实现对象拷贝的类，必须实现Cloneable接口，并覆写clone()方法
  */
-public class Person implements Cloneable{
+public class Person implements Serializable, Cloneable{
     //姓名
     private String name;
     // 年龄
     private int age;
     // 编号
     private Integer code;
+
+    private Address address;
 
     public Person(){
 
@@ -45,12 +49,21 @@ public class Person implements Cloneable{
         this.code = code;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
                 ", code=" + code +
+                ", address=" + address +
                 '}';
     }
 
@@ -62,8 +75,39 @@ public class Person implements Cloneable{
     @Override
     protected Object clone()   {
         try {
-            return super.clone();
+            // super.clone();
+            // return super.clone();
+
+            // 改为深复制：
+            Person newPerson = (Person)super.clone();
+            // 拷贝一份新的address
+            newPerson.address = (Address) address.clone();
+            return newPerson;
         } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 利用串行化来做深复制
+     * by: windCoder.com
+     * @return
+     */
+    public Object deepClone()  {
+
+        try {
+            //写入对象
+            ByteArrayOutputStream bo= new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(bo);
+            os.writeObject(this);
+            //读取对象
+            ByteArrayInputStream bi=new ByteArrayInputStream(bo.toByteArray());
+            ObjectInputStream oi=new ObjectInputStream(bi);
+            return(oi.readObject());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
