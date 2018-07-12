@@ -31,7 +31,7 @@
             checkProxyAccess(Reflection.getCallerClass(), loader, intfs);
         }
 
-        // 获得与传入的指定类装载器（loader）和接口列表（intfs）相关的代理类类型对象
+        // 关键代码1：获得与传入的指定类装载器（loader）和接口列表（intfs）相关的代理类类型对象
         /*
          * Look up or generate the designated proxy class.
          */
@@ -46,7 +46,7 @@
             if (sm != null) {
                 checkNewProxyPermission(Reflection.getCallerClass(), cl);
             }
-            // 通过反射获取构造函数
+            // 关键代码2：通过反射获取该代理类的构造函数
             final Constructor<?> cons = cl.getConstructor(constructorParams);
             final InvocationHandler ih = h;
             if (!Modifier.isPublic(cl.getModifiers())) {
@@ -57,6 +57,7 @@
                     }
                 });
             }
+            // 关键代码3：返回这个新的代理类的一个实例
             return cons.newInstance(new Object[]{h});
         } catch (IllegalAccessException|InstantiationException e) {
             throw new InternalError(e.toString(), e);
@@ -90,7 +91,26 @@
         }
     }
 ```
-### 
+### Class<?> cl = getProxyClass0(loader, intfs);
+关键代码1，用于获得这个代理类,通过下面具体实现可见，这方法会根据类加载器与接口类型到缓存中寻找一个代理类的Class对象，如果没有就通过ProxyClassFactory创建一个新的。
+由此可见，在传入loader参数的时候，需要跟传入的interface相关，所以比较常见的做法就是用接口或其实现类getClass().getClassLoader()方法（或如上篇的Animal.class.getClassLoader()）获得一个类加载器
+```
+    /**
+     * Generate a proxy class.  Must call the checkProxyAccess method
+     * to perform permission checks before calling this.
+     */
+    private static Class<?> getProxyClass0(ClassLoader loader,
+                                           Class<?>... interfaces) {
+        if (interfaces.length > 65535) {
+            throw new IllegalArgumentException("interface limit exceeded");
+        }
+        // 从缓存中获取，如果没有就通过ProxyClassFactory创建
+        // If the proxy class defined by the given loader implementing
+        // the given interfaces exists, this will simply return the cached copy;
+        // otherwise, it will create the proxy class via the ProxyClassFactory
+        return proxyClassCache.get(loader, interfaces);
+    }
+```
 
 ## 参考资料
 
