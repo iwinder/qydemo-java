@@ -2,7 +2,11 @@ package Others.base.SimpleProxy.DynamicProxyDemo;
 
 import Others.base.SimpleProxy.Animal;
 import Others.base.SimpleProxy.Dog;
+import Utills.PrintUtill;
+import sun.misc.ProxyGenerator;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Proxy;
 
 /**
@@ -38,6 +42,28 @@ public class SimpleDynamicProxy {
                 new DynamicProxyHandler(dog)
         );
         consumer(prox);
+        PrintUtill.println("---------------------------");
+        showProxyClass();
+    }
 
+
+    public static void showProxyClass() {
+        String path = "./$Proxy0.class";
+        byte[] classFile = ProxyGenerator.generateProxyClass("$Proxy0",
+                Dog.class.getInterfaces());
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(path);
+            out.write(classFile);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

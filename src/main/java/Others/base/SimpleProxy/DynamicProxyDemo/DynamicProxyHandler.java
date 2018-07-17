@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 public class DynamicProxyHandler implements InvocationHandler {
+    // 被代理的实现类，如Dog等
     private Object proxied;
 
     public DynamicProxyHandler(Object proxied) {
