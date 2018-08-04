@@ -3,7 +3,7 @@ package Others.base.Generics.generator;
 import java.util.Iterator;
 
 /**
- * 实现了Iterable的
+ * 实现了Iterable的Fibonacci--通过适配器实现
  */
 public class IterableFibonacci extends Fibonacci implements Iterable<Integer> {
     private int n;
