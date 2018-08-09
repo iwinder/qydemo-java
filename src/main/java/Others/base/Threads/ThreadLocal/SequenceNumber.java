@@ -1,4 +1,4 @@
-package Others.base.ThreadLocal;
+package Others.base.Threads.ThreadLocal;
 
 public class SequenceNumber {
     //①通过匿名内部类覆盖ThreadLocal的initialValue()方法，指定初始值

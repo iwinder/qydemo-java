@@ -1,4 +1,4 @@
-package Others.base.ThreadLocal;
+package Others.base.Threads.ThreadLocal;
 
 import java.util.Collections;
 import java.util.HashMap;
