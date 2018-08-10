@@ -67,5 +67,7 @@ public class DateDemo {
         PrintUtill.printlnRule();
         PrintUtill.println( "周期是： ");
         PrintUtill.println(startDate.withTimeAtStartOfDay().plusDays(startAdd) + "到 " + startDate.withTimeAtStartOfDay().plusDays(endAdd) + "相差天数：" );
+        int[] si = {1,2,3};
+
     }
 }
