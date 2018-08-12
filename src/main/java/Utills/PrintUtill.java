@@ -3,7 +3,7 @@ package Utills;
 public class PrintUtill {
 
     public static void println(Object str){
-        System.out.println(str.toString());
+        System.out.println(str);
     }
 
     public static void printlnRule(){
@@ -11,6 +11,6 @@ public class PrintUtill {
     }
 
     public static void print(Object str) {
-        System.out.print(str.toString());
+        System.out.print(str);
     }
 }
