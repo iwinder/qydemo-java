@@ -85,3 +85,18 @@ Object的hashCode()方法生成散列码，默认是使用对象的地址计算�
 **通常冲突由外部链接处理**：数组并不直接保存值，而是保存值的list。然后对list中的值使用equals()方法进行线性查询，这部分查询自然比较慢，但如果散列函数好的话，数组的每个位置只有少量的值。因此不是查询整个list,而是快速的调到数组的某个位置，只对很少的元素进行比较，这就是HsahMap如此快的原因。
 
 由于散列表中的“槽位”（slot）通常称为桶位（bucket），因此我们将表示实际散列表的数组命名为bucket。为使散列分布均匀，桶的数量通常使用质数。
+
+## 选择接口的不同实现
+Hashtable、Vector和Stack:过去遗留下来的类，目的只是为了支持老的程序，新程序最好不要使用。
+
+### List
+ArrayList底层由数组支持，LinkedList由双向链表实现，其中每个对象包含数据的同时还包含指向链表中前一个与后一个元素的引用。
+
+如果经常在表中插入或删除元素，LinkedList比较合适（LinkedList还有建立在AbstractSequencetialList基础上的其他功能），否则应该使用速度更快的ArrayList。
+
+CopyOnWriteArrayList是List的一个特殊实现，专门用于并发编程。
+
+### Set
+- HashSet最常用，查询速度最快；
+- LinkedHashSet保持元素插入的次序；
+- TreeSet基于TreeMap,生成一个总是处于排序状态的Set.
