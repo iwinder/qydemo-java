@@ -15,6 +15,8 @@ public class Person implements Serializable, Cloneable{
 
     private Address address;
 
+    private String a;
+
     public Person(){
 
     }
@@ -64,6 +66,7 @@ public class Person implements Serializable, Cloneable{
                 ", age=" + age +
                 ", code=" + code +
                 ", address=" + address +
+                ", a=" + a +
                 '}';
     }
 
@@ -111,5 +114,13 @@ public class Person implements Serializable, Cloneable{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String getA() {
+        return a;
+    }
+
+    public void setA(String a) {
+        this.a = a;
     }
 }
