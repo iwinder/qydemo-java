@@ -15,18 +15,22 @@ public class CounterDemo2 {
     private static final Map<String, Person> Persons = new ConcurrentHashMap<String, Person>();
 
     public static Person getLdapTemplate(Person person){
+
         String key = String.valueOf(person.getCode());
-        Boolean s = null;
-        count2++;
-        person.setA(String.valueOf(count2));
-        if(Persons.containsKey(key)) {
-            s = isNotOldPerson(Persons.get(key), person);
-            if(s) {
-                Persons.put(key, person);
+//        synchronized (person){
+            Boolean s = null;
+//            count2++;
+//            person.setA(String.valueOf(count2));
+            if(Persons.containsKey(key)) {
+                s = isNotOldPerson(Persons.get(key), person);
+                if(s) {
+                    Persons.put(key, person);
+                }
+            }else {
+                Persons.putIfAbsent(key, person);
             }
-        }else {
-            Persons.putIfAbsent(key, person);
-        }
+//        }
+
         PrintUtill.println("Persons.get(key):"+Persons.get(key).toString()+" s:"+s);
         return Persons.get(key);
     }
@@ -42,11 +46,12 @@ public class CounterDemo2 {
     }
     private static int count =0;
     private static int count2 =0;
-
+    private static int count3 =0;
     public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
-        int callTime = 200;
+        int callTime = 100;
+        int callTime2 = 50;
         Person person = new Person("lilioq"+99,199,99);
         getLdapTemplate(person);
         person = new Person("alioq"+29,129,29);
@@ -59,10 +64,17 @@ public class CounterDemo2 {
         for(int i=0;i<callTime;i++){
             count = i;
             executor.execute(new Runnable() {
+
                 Person person = new Person("lili"+count,count,count);
+
                 public void run() {
-                    getLdapTemplate(person);
+//                    PrintUtill.println("Persons.get(key):"+person.toString());
+                    for(int j =0;j<callTime2;j++){
+                        getLdapTemplate(person);
+                    }
+
                     countDownLatch.countDown();
+                    count3++;
                 }
             });
         }
@@ -74,7 +86,9 @@ public class CounterDemo2 {
         executor.shutdown();
         //等待所有线程统计完成后输出调用次数
         System.out.println("调用次数："+Persons.size());
-
+        System.out.println("调用次数1："+count);
+        System.out.println("调用次数2："+count2);
+        System.out.println("调用次数3："+count3);
         PrintUtill.printlnRule();
         PrintUtill.println(Persons.toString());
         Map<String, Person> map = new TreeMap<String, Person>(
