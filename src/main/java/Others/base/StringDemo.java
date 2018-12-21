@@ -21,5 +21,8 @@ public class StringDemo {
         PrintUtill.println("sss add :"+ ss);
         Long ssa =  ss.longValue();
         PrintUtill.println("ssa add :"+ ssa);
+        String s1 = "1a743402-0049-450f-bfcb-7b530c243af9";
+        String s2 = "1a743402-0049-450f-bfcb-7b530c243af9";
+        PrintUtill.println(s1.equals(s2));
     }
 }
