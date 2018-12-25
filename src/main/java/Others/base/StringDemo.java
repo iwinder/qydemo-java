@@ -2,6 +2,7 @@ package Others.base;
 
 import Utills.PrintUtill;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -24,5 +25,15 @@ public class StringDemo {
         String s1 = "1a743402-0049-450f-bfcb-7b530c243af9";
         String s2 = "1a743402-0049-450f-bfcb-7b530c243af9";
         PrintUtill.println(s1.equals(s2));
+        PrintUtill.printlnRule();
+        PrintUtill.printlnRule();
+        byte[] array = {97,98,99,-122};
+        String a = new String(array);
+        PrintUtill.println(a);
+        byte sa = (byte)97;
+        PrintUtill.println(sa);
+        array[2] = sa;
+        String a1 = new String(array);
+        PrintUtill.println(a1);
     }
 }

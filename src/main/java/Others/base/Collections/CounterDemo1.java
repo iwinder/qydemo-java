@@ -1,5 +1,6 @@
 package Others.base.Collections;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -93,5 +94,8 @@ public class CounterDemo1 {
         //等待所有线程统计完成后输出调用次数
         System.out.println("调用次数："+counterDemo.getCount(url));
         System.out.println("调用次数2："+count);
+
+        Map<String,String> test = new HashMap<String, String>();
+        test.put("s","s");
     }
 }
