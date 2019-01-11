@@ -35,5 +35,13 @@ public class StringDemo {
         array[2] = sa;
         String a1 = new String(array);
         PrintUtill.println(a1);
+        fa();
+    }
+    static synchronized public void  fa(){
+        PrintUtill.println("ddd");
+    }
+
+    public static synchronized  void  fa2(){
+        PrintUtill.println("ddds");
     }
 }
