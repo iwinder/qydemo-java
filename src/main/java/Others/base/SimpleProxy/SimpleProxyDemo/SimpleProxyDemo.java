@@ -2,6 +2,7 @@ package Others.base.SimpleProxy.SimpleProxyDemo;
 
 import Others.base.SimpleProxy.Animal;
 import Others.base.SimpleProxy.Dog;
+import Utills.PrintUtill;
 
 /**
  * consumer 接收的Animal，所以它无法知道正则获得的到底是Dog还是SimpleProxy，因为这两者都实现了Animal。
@@ -16,6 +17,7 @@ public class SimpleProxyDemo {
 
     public static void main(String[] args) {
         consumer(new Dog());
+        PrintUtill.printlnRule();
         consumer(new SimpleProxy(new Dog()));
     }
 }

@@ -7,7 +7,7 @@ public class PrintUtill {
     }
 
     public static void printlnRule(){
-        System.out.println("\n--------windcoder.com----------");
+        System.out.println("\n--------windcoder.com----------\n");
     }
 
     public static void print(Object str) {

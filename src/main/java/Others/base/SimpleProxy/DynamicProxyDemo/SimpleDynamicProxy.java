@@ -35,6 +35,7 @@ public class SimpleDynamicProxy {
     public static void main(String[] args) {
         Dog dog = new Dog();
         consumer(dog);
+        PrintUtill.printlnRule();
         // Insert a proxy and call again
         Animal prox = (Animal) Proxy.newProxyInstance(
                 Animal.class.getClassLoader(),
