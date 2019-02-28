@@ -40,7 +40,8 @@ public class User {
         return "User{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
-                ", height=" + height +
+                ", height=" + height+'\'' +
+                ", address=" + super.toString() +
                 '}';
     }
 }

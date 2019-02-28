@@ -10,14 +10,17 @@ public class MainDemo {
         User a = new User("a",10,10);
         User b = new User("b",11, 11);
         PrintUtill.println("交换前：");
-        PrintUtill.println(a);
-        PrintUtill.println(b);
+        PrintUtill.println("a: "+a);
+        PrintUtill.println("b: "+b);
         PrintUtill.printlnRule();
         swap(a,b);
         PrintUtill.println("交换最后：");
-        PrintUtill.println(a);
-        PrintUtill.println(b);
+        PrintUtill.println("a: "+a);
+        PrintUtill.println("b: "+b);
         PrintUtill.printlnRule();
+        change(a);
+        PrintUtill.println("修改最后：");
+        PrintUtill.println("a: "+a);
     }
 
     public static void swap(Object sa, Object sb){
@@ -25,8 +28,16 @@ public class MainDemo {
         sa = sb;
         sb = sc;
         PrintUtill.println("交换中：");
-        PrintUtill.println(sa);
-        PrintUtill.println(sb);
+        PrintUtill.println("sa: " + sa);
+        PrintUtill.println("sb: " + sb);
         PrintUtill.printlnRule();
+    }
+
+    public static void change(User sa){
+        sa.setName("a2");
+        sa.setAge(11);
+        sa.setHeight(12);
+        PrintUtill.println("修改中：");
+        PrintUtill.println("sa: " + sa);
     }
 }
