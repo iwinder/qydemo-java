@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,10 +21,15 @@ public class DateDemo {
         // 日期-按月增加
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
         Date now = new Date();
+        try {
+            now = df.parse("2019-01-30  17:10:15");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         System.out.println(df.format(now));
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(now);
-        gc.add(Calendar.MONTH,24);
+        gc.add(Calendar.MONTH,1);
         System.out.println(df.format(gc.getTime()));
         PrintUtill.printlnRule();
         // 按日增减  int days = Math.abs(
