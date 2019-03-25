@@ -8,6 +8,7 @@ import org.joda.time.Days;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -75,7 +76,9 @@ public class DateDemo {
         PrintUtill.println(startDate.withTimeAtStartOfDay().plusDays(startAdd) + "到 " + startDate.withTimeAtStartOfDay().plusDays(endAdd) + "相差天数：" );
         int[] si = {1,2,3};
 
-
+        LocalDateTime now2 = LocalDateTime.now();
+//        Date ss =now2;
+        PrintUtill.println(now2);
 
     }
 }

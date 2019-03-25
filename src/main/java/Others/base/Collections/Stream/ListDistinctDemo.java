@@ -32,15 +32,16 @@ public class ListDistinctDemo {
             j = (int)(Math.random()*(i*10+1));
             userlist.add(new User("aa"+String.valueOf(j), j,j));
         }
-//        List s = distinctOneListObj(userlist);
+        List s = distinctOneListObj(userlist);
+        PrintUtill.printlnRule();
+        distinctOneListObj2(userlist);
+//        sortOne(s);
+//        List a = distinctOneListObj(userlist);
+        PrintUtill.printlnRule();
+//        sortOne2(a);
+//                List s = distinctOneListObj(userlist);
 //        PrintUtill.printlnRule();
 //        sortOne(s);
-        List a = distinctOneListObj(userlist);
-        PrintUtill.printlnRule();
-        sortOne2(a);
-                List s = distinctOneListObj(userlist);
-        PrintUtill.printlnRule();
-        sortOne(s);
     }
     public static List<String> distinctOneList2(List<String> list){
         PrintUtill.println("before distinct2: "+list.size());
@@ -73,6 +74,18 @@ public class ListDistinctDemo {
         );
         PrintUtill.println("distinct total times: "+(System.nanoTime()-st));
         PrintUtill.println("after distinct: "+s.size());
+        return list;
+    }
+
+    public static List<User> distinctOneListObj2(List<User> list) {
+        PrintUtill.println("before distinct2: "+list.size());
+        long st = System.nanoTime();
+        List<User> s = list.parallelStream().collect(
+                Collectors.collectingAndThen(Collectors.toCollection(
+                        () -> new ConcurrentSkipListSet<>(Comparator.comparing(value->value.getName()))), ArrayList::new)
+        );
+        PrintUtill.println("distinct total times2: "+(System.nanoTime()-st));
+        PrintUtill.println("after distinct2: "+s.size());
         return list;
     }
     public static void sortOne(List<User> list){
