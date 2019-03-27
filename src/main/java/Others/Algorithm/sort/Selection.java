@@ -3,6 +3,7 @@ package Others.Algorithm.sort;
 import Utills.PrintUtill;
 
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 
 /**
@@ -37,18 +38,7 @@ public class Selection {
         PrintUtill.println("输入数据，空格隔开：");
         Scanner sc = new Scanner(System.in);
         String read = sc.nextLine();
-        String falg = null;
-//        while(sc.hasNextLine()){
-//            falg = sc.nextLine();
-//            if(falg.equals("\n"))  {
-//                break;
-//            }
-//            read = falg;
-//        }
-//        if(!sc.hasNext()){
-//            sc.close();
-            PrintUtill.println("输入完成......");
-//        }
+        PrintUtill.println("输入完成......");
         read = read.trim();
         String[] d =  read.split(" ");
         Integer[] a = new Integer[d.length];
