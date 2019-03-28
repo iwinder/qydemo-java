@@ -12,6 +12,8 @@ import java.util.HashMap;
  * 101 5   2       2
  * 110 6   2       3
  * 111 7   3       4
+ * 1011 11
+ * 101100 12
  */
 public class BinaryDemo {
     public static void main(String[] args) {
@@ -27,6 +29,7 @@ public class BinaryDemo {
         PrintUtill.printlnRule();
         PrintUtill.println("1&0 :"+(1&0));
         PrintUtill.println("7&0 :"+(7&0));
+        PrintUtill.println("11<<1 :"+(11<<2));
     }
 
     public static Integer[] s(int n){
