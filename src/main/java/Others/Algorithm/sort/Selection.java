@@ -39,20 +39,22 @@ import java.util.Scanner;
 public class Selection {
 
     public static void main(String[] args) {
-        PrintUtill.println("输入数据，空格隔开：");
-        Scanner sc = new Scanner(System.in);
-        String read = sc.nextLine();
-        PrintUtill.println("输入完成......");
-        read = read.trim();
-        String[] d =  read.split(" ");
-        Integer[] a = new Integer[d.length];
-        for (int i = 0;i<d.length;i++){
-            a[i] = Integer.parseInt(d[i]);
-        }
+//        PrintUtill.println("输入数据，空格隔开：");
+//        Scanner sc = new Scanner(System.in);
+//        String read = sc.nextLine();
+//        PrintUtill.println("输入完成......");
+//        read = read.trim();
+//        String[] d =  read.split(" ");
+//        Integer[] a = new Integer[d.length];
+//        for (int i = 0;i<d.length;i++){
+//            a[i] = Integer.parseInt(d[i]);
+//        }
+
+        Integer[] a = {5, 2, 4, 6, 1, 3};
         sort(a);
         PrintUtill.println("排序结果");
         SortUtils.show(a);
-        sc.close();
+//        sc.close();
 
 
     }
@@ -69,7 +71,7 @@ public class Selection {
                     min =j;
                 }
             }
-            // 在未排序元素中继续寻找最小元素，并保存其下标
+            // 当最小值下标与开始不同时再交换位置。
             if (min != i) {
                 SortUtils.swap(a,i,min);
             }
