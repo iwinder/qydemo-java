@@ -18,7 +18,7 @@ public class LiftOff implements Runnable {
 
     public void run() {
         while (countDown-->0){
-            PrintUtill.print(status());
+            PrintUtill.println(status());
             Thread.yield(); // ---该调用是对线程调度器的一种建议，它声明“我已经执行完生命周期中最重要的部分了。刺客正式切换给其他任务执行一段时间的大好时机。”这完全是选择性的
         }
 

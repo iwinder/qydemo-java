@@ -15,7 +15,7 @@ public class AtomicCountTest {
 
     public static void main(String[] args) {
         //开启两个线程
-        for(int i=0;i<2;i++){
+        for(int i=0;i<20;i++){
             new Thread(
                     new Runnable() {
                         public void run() {
