@@ -30,6 +30,9 @@ public class BinaryDemo {
         PrintUtill.println("1&0 :"+(1&0));
         PrintUtill.println("7&0 :"+(7&0));
         PrintUtill.println("11<<1 :"+(11<<2));
+        PrintUtill.println("n>>1 :"+(11>>1));
+
+        PrintUtill.println("BitCount5: "+BitCount5(7));
     }
 
     public static Integer[] s(int n){
@@ -67,5 +70,18 @@ public class BinaryDemo {
         }
         PrintUtill.println("get s2 total times: "+(System.nanoTime()-st));
         return map;
+    }
+
+
+    /**
+     * https://www.cnblogs.com/graphics/archive/2010/06/21/1752421.html
+     * https://blog.csdn.net/qq_15905107/article/details/81089565
+     * @param n
+     * @return
+     */
+    static  int BitCount5(int n){
+        int tmp = n - ((n >>1) &033333333333) - ((n >>2) &011111111111);
+        PrintUtill.println("tmp: "+tmp);
+        return ((tmp + (tmp >>3))&030707070707)%63;
     }
 }

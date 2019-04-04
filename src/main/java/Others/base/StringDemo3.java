@@ -13,6 +13,15 @@ public class StringDemo3 {
         String s = "aaa";
         add(s);
         PrintUtill.println(s);
+
+        String s1 = new String("123");
+        String s2 = "123";
+        String s3 = new String("123");
+        String s4 = "123";
+        PrintUtill.println("s1: "+ (s1==s2));
+        PrintUtill.println("s2: "+ (s2==s3));
+        PrintUtill.println("s3: "+ (s1==s3));
+        PrintUtill.println("s3: "+ (s2==s4));
     }
 
     public static void add(String s){
