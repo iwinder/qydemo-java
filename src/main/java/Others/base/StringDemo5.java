@@ -2,24 +2,16 @@ package Others.base;
 
 import Utills.PrintUtill;
 
-/***
- * [Java调用函数传递参数到底是值传递还是引用传递](https://www.cnblogs.com/wutianqi/p/8723582.html)
- * [java之语法之方法调用之地址传值之空对象（null）](https://lixh1986.iteye.com/blog/2354853)
- * [Java参数引用传递之例外：null](https://blog.csdn.net/stevesun13/article/details/51922169)
- *
- * https://blog.csdn.net/weixin_34268843/article/details/86864970
- */
-
-public class StringDemo3 {
+public class StringDemo5 {
     public static void main(String[] args) {
-        String s = "aaa";
-        add(s);
-        PrintUtill.println(s);
+        String s0 = new String("12")+new String("3");
 
+        s0.intern();
         String s1 = new String("123");
-//        PrintUtill.println("s1.hashCode:"+s1.hashCode()+", addr:"+System.identityHashCode(s1)+", s1.intern().addr:"+System.identityHashCode(s1.intern()));
+        s1.intern();
         String s2 = "123";
         String s3 = new String("123");
+
         String s4 = "123";
         String s5 = s3.intern();
 
@@ -29,13 +21,8 @@ public class StringDemo3 {
         PrintUtill.println("s4: "+ (s2==s4)+", s4.hashCode:"+s4.hashCode()+", addr:"+System.identityHashCode(s4));
         PrintUtill.println("s5: "+ (s2==s5)+", s4.hashCode:"+s5.hashCode()+", addr:"+System.identityHashCode(s5));
         PrintUtill.println("s3 -2: "+ (s2==s3)+", s3.hashCode:"+s3.hashCode()+", addr:"+System.identityHashCode(s3));
-        PrintUtill.println("s3 -3: "+ (s3==s5)+", s4.hashCode:"+s5.hashCode()+", addr:"+System.identityHashCode(s5));
-    }
 
-    public static void add(String s){
-        PrintUtill.printlnRule();
-        s = "bbb";
-        PrintUtill.println(s);
-        PrintUtill.printlnRule();
+
+        PrintUtill.println("s0: "+ (s0==s2)+", s1.hashCode:"+s0.hashCode()+", addr:"+System.identityHashCode(s0));
     }
 }
