@@ -7,7 +7,5 @@ public class StringDemo4 {
         String s2 = "1a";
         System.out.println(s1 == s2);
         System.out.println(s1.intern() == s2);
-        String s3 = "1"+"a";
-        System.out.println(s3 == s2);
     }
 }
