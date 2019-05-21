@@ -34,7 +34,9 @@ public class ListDistinctDemo {
         }
         List s = distinctOneListObj(userlist);
         PrintUtill.printlnRule();
-        distinctOneListObj2(userlist);
+        List<User> s2 = userlist.stream().distinct().collect(Collectors.toList());
+        PrintUtill.println("after distinct s2: "+s2.size());
+//        distinctOneListObj2(userlist);
 //        sortOne(s);
 //        List a = distinctOneListObj(userlist);
         PrintUtill.printlnRule();

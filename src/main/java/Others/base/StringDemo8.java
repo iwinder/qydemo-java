@@ -7,5 +7,16 @@ public class StringDemo8 {
 
         String str2 = new StringBuilder("ja").append("va").toString();
         System.out.println(str2.intern() == str2);
+
+        System.out.println(getA());
+    }
+
+    public static String getA(){
+        try{
+            return "try";
+        } finally {
+            System.out.println("finalyy println");
+//            return "finally";
+        }
     }
 }
