@@ -2,9 +2,15 @@ package Others.Algorithm.dataStructure.array;
 
 import Utills.PrintUtill;
 
+/**
+ * 无扩容，导致插入移动后元素丢失。
+ */
 public class Array {
+    // 整型数据data保存数据
     private int[] data;
+    // 数组长度
     private int n;
+    // 实际元素个数
     private int count;
 
     public Array( int capacity) {
@@ -22,9 +28,9 @@ public class Array {
     }
 
     /**
-     * 向索引位置添加元素
+     * 向索引位置插入新元素
      * <br>
-     * 该位置之后顺序向后移动一位
+     * 该index位置之后顺序向后移动一位
      * @param index
      * @param value
      * @return
