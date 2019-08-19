@@ -5,6 +5,17 @@ import Utills.PrintUtill;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * LRU缓存淘汰算法单链表实现</b>
+ * TODO: 维护一个有序单链表，越靠近链表尾部的结点是越早之前访问的。
+ * 当有一个新的数据被访问时，从链表头开始顺序遍历链表。
+ * 若此数据之前已被存在链表中，遍历得到并从原位置删除，再插入到链表头部。
+ * 若此数据之前未被存在链表中：
+ * 若缓存未满，将该数据插入链表头部；
+ * 若缓存已满，删除链表尾部节点，将新数据插入链表头部，
+ *
+ * @param <T>
+ */
 public class LRUBaseLinkedList<T> {
     private final int DEFAUL_CAPACIPY = 10;
     private SNode<T> head;
@@ -23,6 +34,10 @@ public class LRUBaseLinkedList<T> {
         this.capacipy = capacipy;
     }
 
+    /**
+     *
+     * @param data
+     */
     public void add(T data){
         SNode preNode = findPreNode(data);
         if (preNode != null){
@@ -42,13 +57,6 @@ public class LRUBaseLinkedList<T> {
     public void deleteElemOptim(SNode node){
         node.setNext(node.getNext().getNext());
         length--;
-//        SNode node = head;
-//        while (node.next != null){
-//            if (node.getNext().element.equals(data)){
-//                node.getNext().setNext(node.getNext().getNext());
-//                break;
-//            }
-//        }
     }
 
     public void deleteElemAtEnd(){
