@@ -168,6 +168,7 @@ public class SinglyLinkedList {
 
     /**
      * 带头链表反转
+     * http://wiki.jikexueyuan.com/project/for-offer/question-sixteen.html
      * @param head
      * @return
      */
