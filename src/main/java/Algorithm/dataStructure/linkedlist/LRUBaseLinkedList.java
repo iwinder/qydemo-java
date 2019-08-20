@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /**
  * LRU缓存淘汰算法单链表实现</b>
- * TODO: 维护一个有序单链表，越靠近链表尾部的结点是越早之前访问的。
+ * TODO: 维护一个有序单链表（此处实现为带头单链表），越靠近链表尾部的结点是越早之前访问的。
  * 当有一个新的数据被访问时，从链表头开始顺序遍历链表。
  * 若此数据之前已被存在链表中，遍历得到并从原位置删除，再插入到链表头部。
  * 若此数据之前未被存在链表中：
@@ -17,15 +17,28 @@ import java.util.Scanner;
  * @param <T>
  */
 public class LRUBaseLinkedList<T> {
-    private final int DEFAUL_CAPACIPY = 10;
+    /**
+     * 默认容量
+     */
+    private final int DEFAUL_CAPACITY = 10;
+
+    /**
+     * 头结点
+     */
     private SNode<T> head;
+    /**
+     * 链表长度
+     */
     private Integer length;
+    /**
+     * 链表容量
+     */
     private Integer capacipy;
 
     public LRUBaseLinkedList() {
         this.head = new SNode<>();
         this.length = 0;
-        this.capacipy = DEFAUL_CAPACIPY;
+        this.capacipy = DEFAUL_CAPACITY;
     }
 
     public LRUBaseLinkedList(Integer capacipy) {
@@ -35,7 +48,7 @@ public class LRUBaseLinkedList<T> {
     }
 
     /**
-     *
+     *  缓存数据
      * @param data
      */
     public void add(T data){
@@ -54,11 +67,18 @@ public class LRUBaseLinkedList<T> {
         intsertElemAtBegin(data);
     }
 
+    /**
+     * 删除某个结点
+     * @param node
+     */
     public void deleteElemOptim(SNode node){
         node.setNext(node.getNext().getNext());
         length--;
     }
 
+    /**
+     * 删除链表尾部的结点
+     */
     public void deleteElemAtEnd(){
         SNode node = head;
 
@@ -71,6 +91,11 @@ public class LRUBaseLinkedList<T> {
         length--;
 
     }
+
+    /**
+     * 在头部插入结点
+     * @param data
+     */
     public void intsertElemAtBegin(T data){
         SNode node = new SNode(data, head.getNext());
         head.setNext(node);

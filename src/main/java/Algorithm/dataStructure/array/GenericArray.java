@@ -2,17 +2,17 @@ package Algorithm.dataStructure.array;
 
 public class GenericArray<T> {
 
-    private final int DEFAUL_CAPACIPY = 10;
+    private final int DEFAUL_CAPACITY = 10;
     private T[] data;
     private int size;
 
-    public GenericArray(int capacipy) {
-        this.data = (T[]) new Object[capacipy];
+    public GenericArray(int capacity) {
+        this.data = (T[]) new Object[capacity];
         this.size = 0;
     }
 
     public GenericArray() {
-        this.data = (T[]) new Object[DEFAUL_CAPACIPY];
+        this.data = (T[]) new Object[DEFAUL_CAPACITY];
         this.size = 0;
     }
 
@@ -63,8 +63,8 @@ public class GenericArray<T> {
         return -1;
     }
 
-    private void resize(int capacipy){
-        T[] newData = (T[]) new Object[capacipy];
+    private void resize(int capacity){
+        T[] newData = (T[]) new Object[capacity];
         for (int i=0;i<data.length;i++){
             newData[i] = data[i];
         }

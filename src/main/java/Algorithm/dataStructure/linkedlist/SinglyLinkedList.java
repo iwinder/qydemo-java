@@ -25,6 +25,10 @@ public class SinglyLinkedList {
         }
     }
 
+    /**
+     * 带头链表反转
+     * @param value
+     */
     public void insertTail(int value){
         Node newNode = new Node(value, null);
         if (head==null){
@@ -39,11 +43,21 @@ public class SinglyLinkedList {
         }
     }
 
+    /**
+     * 在结点之后插入
+     * @param p
+     * @param value
+     */
     public void insertAfter(Node p, int value){
         Node newNode = new Node(value, null);
         insertAfter(p, newNode);
     }
 
+    /**
+     * 在结点之后插入
+     * @param p
+     * @param newNode
+     */
     public void insertAfter(Node p, Node newNode){
         if (p==null) return;
 
@@ -51,12 +65,21 @@ public class SinglyLinkedList {
         p.next = newNode;
     }
 
-
+    /**
+     * 结点之前插入
+     * @param p
+     * @param value
+     */
     public void insertBefore(Node p, int value){
         Node newNode = new Node(value, null);
         insertBefore(p, newNode);
     }
 
+    /**
+     * 结点之前插入
+     * @param p
+     * @param newNode
+     */
     public void insertBefore(Node p, Node newNode){
         if (p==null) return;
         if (p==head){
@@ -72,6 +95,10 @@ public class SinglyLinkedList {
         q.next = newNode;
     }
 
+    /**
+     * 根据结点删除
+     * @param oldNode
+     */
     public void deleteByNode(Node oldNode){
         if (oldNode == null || head == null) return;
         if (oldNode == head) {
@@ -86,6 +113,10 @@ public class SinglyLinkedList {
         p.next = oldNode.next;
     }
 
+    /**
+     * 根据值删除结点
+     * @param value
+     */
     public void deleteByValue(int value){
         if (head == null) return;
 
@@ -103,6 +134,11 @@ public class SinglyLinkedList {
         }
     }
 
+    /**
+     * 带头链表反转
+     * @param p
+     * @return
+     */
     public Node inverseLinkList_head(Node p){
         Node root = new Node(0,null);
         root.next = p;
@@ -130,6 +166,11 @@ public class SinglyLinkedList {
 
     }
 
+    /**
+     * 带头链表反转
+     * @param head
+     * @return
+     */
     public static Node reverseList(Node head) {
         // 创建一个临时结点，当作尾插法的逻辑头结点
         Node root = new Node(0, null);
@@ -154,6 +195,7 @@ public class SinglyLinkedList {
     }
 
     /**
+     * 不设置头结点的链表反转
      *  1 2 3 4 5
      * @param p
      * @return
