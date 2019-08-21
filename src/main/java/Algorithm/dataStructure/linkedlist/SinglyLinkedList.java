@@ -1,5 +1,7 @@
 package Algorithm.dataStructure.linkedlist;
 
+import Utills.PrintUtill;
+
 public class SinglyLinkedList {
     private Node head = null;
 
@@ -227,6 +229,31 @@ public class SinglyLinkedList {
         return r;
     }
 
+    public boolean palindrome(){
+        if (head == null) return false;
+        PrintUtill.println("开始执行找到中间节点");
+        Node fast = head;
+        Node slow = head;
+        /**
+         * 快的一次走两步,慢的一次走一步那么最后快的结束了慢的走了一半
+         */
+        while (fast !=null && fast.getNext() != null){
+            fast = fast.getNext().getNext();
+            slow = slow.getNext();
+        }
+        Node leftLink = null;
+        Node rightLink = null;
+        /**
+         * fast.getNext() == null ：节点数目为奇数
+         * fast  == null ：节点数目为偶数
+         */
+        if (fast.getNext() == null){
+
+        }else {
+
+        }
+    }
+
 
 
     public static class Node{
@@ -240,6 +267,10 @@ public class SinglyLinkedList {
 
         public int getData() {
             return data;
+        }
+
+        public Node getNext() {
+            return next;
         }
     }
 
