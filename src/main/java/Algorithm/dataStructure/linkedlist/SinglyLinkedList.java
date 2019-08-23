@@ -4,6 +4,7 @@ import Utills.PrintUtill;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class SinglyLinkedList {
     private Node head = null;
@@ -31,7 +32,7 @@ public class SinglyLinkedList {
     }
 
     /**
-     * 带头链表添加元素
+     * 添加新元素结点
      * @param value
      */
     public void insertTail(int value){
@@ -139,6 +140,8 @@ public class SinglyLinkedList {
         }
     }
 
+
+    // 链表反转
     /**
      * 带头链表反转
      * @param p
@@ -195,6 +198,35 @@ public class SinglyLinkedList {
     }
 
     /**
+     * 定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。
+     * @param list
+     * @return
+     */
+    public Node reverse(Node list){
+        if (list == null || list.getNext() == null) return list;
+        // 用于记录当前处理的结点的
+        Node curre = list;
+        // 用于记录当前结点的前驱结点
+        // 前驱结点开始为null，因为反转后的最后一个结点的下一个结点，即null
+        // 也是反转链表的头结点
+        Node pre = null;
+        // 当前结点的下一个结点
+        Node next = null;
+        // 对链表进行头插法操作
+        while (curre!=null){
+            // 记录要处理的下一个结点
+            next = curre.next;
+            // 当前结点的下一个结点指向前驱结点，这样当前结点就插入到了反转链表的头部
+            curre.next = pre;
+            // 记录当前结点为前驱结点，完成一次头插
+            pre = curre;
+            // 当前结点指向下一个要处理的结点
+            curre = next;
+        }
+        return pre;
+    }
+
+    /**
      * 不设置逻辑头结点的链表反转
      *  1 2 3 4 5 8
      * @param list
@@ -216,6 +248,8 @@ public class SinglyLinkedList {
         curre.next = pre;
         return curre;
     }
+
+    // 判断是否为回文
 
     /**
      * 不含逻辑头节点的回文链表判断
@@ -266,6 +300,12 @@ public class SinglyLinkedList {
         return TFResult(leftLink, rightLink);
     }
 
+    /**
+     * 比较是否为回文
+     * @param left
+     * @param right
+     * @return
+     */
     public boolean TFResult(Node left, Node right){
 
         while (left != null && right != null){
@@ -280,7 +320,7 @@ public class SinglyLinkedList {
     }
 
 
-    /**221
+    /**
      * 返回左半部分的中点之前的那个节点，返回以end结点为头节点的链表。
      * @param end
      * @return
@@ -304,6 +344,7 @@ public class SinglyLinkedList {
     }
 
     /**
+     * 基于数组比较是否为回文
      * 1 2
      * @param node
      * @return
@@ -319,22 +360,64 @@ public class SinglyLinkedList {
          *  nodeList.add(0, slow.data); 在指定位置插入元素，原位置及之后的依次向右移动一位。
          */
         List<Integer> nodeList = new ArrayList<Integer>();
-        nodeList.add(0, slow.data); // 1 2 3
+        nodeList.add(0, slow.data);
         while (fast.next != null && fast.next.next != null ) {
 
             fast = fast.next.next;
             slow = slow.next;
-            nodeList.add(0, slow.data); // 1 2 3
+            nodeList.add(0, slow.data);
         }
 
-        Node curr = slow;
-        if (fast.next == null){
-            // fast.next为空，数据为奇数。
-            curr = slow.next;
+
+        if (fast.next != null){
+            // fast.next不为空，数据为偶数。
+            slow = slow.next;
         }
+        Node curr = slow;
         int i = 0;
         while (null != curr){
             if (curr.data != nodeList.get(i)){
+                return false;
+            }
+            curr = curr.next;
+            i++;
+        }
+        return true;
+    }
+
+    /**
+     * 基于栈比较是否为回文
+     * @param node
+     * @return
+     */
+    public boolean isPalindromeByStack(Node node){
+        if (node == null) return false;
+        Node fast = node;
+        Node slow = node;
+        if (node.next == null) return true;
+
+        /**
+         * 找到中间结点，同时保存用数组逆插左侧元素。
+         *  nodeList.add(0, slow.data); 在指定位置插入元素，原位置及之后的依次向右移动一位。
+         */
+        Stack<Integer> nodeList = new Stack<Integer>();
+        nodeList.push(slow.data); // 1 2 3
+        while (fast.next != null && fast.next.next != null ) {
+
+            fast = fast.next.next;
+            slow = slow.next;
+            nodeList.push(slow.data); // 1 2 3
+        }
+
+
+        if (fast.next != null){
+            // fast.next不为空，数据为偶数。
+            slow = slow.next;
+        }
+        Node curr = slow;
+        int i = 0;
+        while (null != curr){
+            if (curr.data != nodeList.pop()){
                 return false;
             }
             curr = curr.next;
@@ -365,12 +448,12 @@ public class SinglyLinkedList {
         SinglyLinkedList link = new SinglyLinkedList();
         System.out.println("hello");
 //        int data[] = {1};
-        int data[] = {1,2};
+//        int data[] = {1,2};
 //        int data[] = {1,2,3,1};
 //        int data[] = {1,2,5};
 //        int data[] = {1,2,2,1};
 //         int data[] = {1,2,5,2,1};
-//        int data[] = {1,2,5,3,6};
+        int data[] = {1,2,5,3,6};
 
         for(int i =0; i < data.length; i++){
             //link.insertToHead(data[i]);
