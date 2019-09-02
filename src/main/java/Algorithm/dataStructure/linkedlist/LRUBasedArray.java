@@ -1,8 +1,10 @@
 package Algorithm.dataStructure.linkedlist;
 
+import Utills.PrintUtill;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringJoiner;
+import java.util.Random;
 
 /**
  * LRU缓存淘汰算法数组实现</b>
@@ -19,6 +21,13 @@ public class LRUBasedArray<T> {
      */
     private Map<T, Integer> holder;
 
+    public LRUBasedArray() {
+        this.capacity = this.DEFAUL_CAPACITY;
+        this.value = (T[]) new Object[capacity];
+        this.count = 0;
+        this.holder = new HashMap<T, Integer>(capacity);
+    }
+
     public LRUBasedArray(Integer capacity) {
         this.capacity = capacity;
         this.value = (T[]) new Object[capacity];
@@ -26,6 +35,10 @@ public class LRUBasedArray<T> {
         this.holder = new HashMap<T, Integer>(capacity);
     }
 
+    /**
+     * 缓存数据
+     * @param data
+     */
     public void add(T data){
         if (data == null){
             throw new IllegalArgumentException("该缓存容器不支持null!");
@@ -46,6 +59,10 @@ public class LRUBasedArray<T> {
         }
     }
 
+    /**
+     * 数据之前已在数组中，将数组中的对应数据更新到数组开始。
+     * @param index
+     */
     private void update(Integer index){
         T key = value[index];
         rightOffer(index);
@@ -53,6 +70,11 @@ public class LRUBasedArray<T> {
         holder.put(key,0);
     }
 
+    /**
+     * 向数组插入新数据
+     * @param data
+     * @param end
+     */
     private void cache(T data, Integer end){
         rightOffer(end);
         value[0] = data;
@@ -60,6 +82,10 @@ public class LRUBasedArray<T> {
         count++;
     }
 
+    /**
+     * 删数组最后一位，并将新数据保存到数组开始
+     * @param data
+     */
     private void removeAndCache(T data){
         T key = value[--count];
         holder.remove(key);
@@ -78,6 +104,10 @@ public class LRUBasedArray<T> {
         }
     }
 
+    /**
+     * 判断数组是否已满
+     * @return
+     */
     private boolean isFull(){
         return count == capacity;
     }
@@ -90,6 +120,18 @@ public class LRUBasedArray<T> {
             sb.append(" ");
         }
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        LRUBasedArray<Integer> array = new LRUBasedArray();
+        Random random = new Random(20);
+        int num = 0;
+        for (int i=0;i<20;i++){
+            num = random.nextInt(20);
+            array.add(num);
+            PrintUtill.println("插入"+ num + ":");
+            PrintUtill.println(array.toString());
+        }
     }
 
 }

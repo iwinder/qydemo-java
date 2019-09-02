@@ -3,7 +3,6 @@ package Algorithm.dataStructure.linkedlist;
 import Utills.PrintUtill;
 
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * LRU缓存淘汰算法单链表实现</b>
