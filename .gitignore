@@ -24,9 +24,9 @@ hs_err_pid*
 
 
 **/.idea
-**/.DS_Store
-**/.gradle
-**/gradle
+.DS_Store
+.gradle
+/gradle
 **/build/
 
 # eclipse project files
