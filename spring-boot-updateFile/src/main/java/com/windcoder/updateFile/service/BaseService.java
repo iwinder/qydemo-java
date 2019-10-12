@@ -35,6 +35,10 @@ public class BaseService <T, ID extends Serializable, R extends SupportRepositor
         return repository.saveAndFlush(entity);
     }
 
+	public <S extends T> Iterable<S> saveAll(Iterable<S> entities){
+		return repository.saveAll(entities);
+	}
+
     public Optional<T> findById(ID id) {
         return repository.findById(id);
     }

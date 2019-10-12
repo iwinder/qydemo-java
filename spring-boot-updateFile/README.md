@@ -18,3 +18,6 @@
 [java高性能线程读取大文件并分段分流翻译入库](https://blog.csdn.net/zy6380006/article/details/80319710)
 
 [Java读取1G以上的txt文件，并对内容进行解析,利用BufferedReader设置缓存大小](https://blog.csdn.net/jellyjiao2008/article/details/84554144)
+
+
+[Java 逐行读取文本文件的几种方式以及效率对比](https://www.jianshu.com/p/7a81f603fe1d)

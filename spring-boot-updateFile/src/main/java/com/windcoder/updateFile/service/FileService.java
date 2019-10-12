@@ -1,6 +1,7 @@
 package com.windcoder.updateFile.service;
 
 import com.windcoder.updateFile.config.FileUploadProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 @Service
+@Slf4j
 public class FileService {
 	private long totalNow = 0;
 
