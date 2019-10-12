@@ -1,0 +1,26 @@
+# thymeleaf
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML
+    cache: false
+    servlet:
+      content-type: text/html
+# MySQL
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false
+    connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    username: root
+    password: root
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernat:
+      ddl-auto: update
+      connection:
+        CharSet: utf8mb4
