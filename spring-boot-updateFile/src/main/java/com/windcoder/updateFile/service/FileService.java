@@ -3,6 +3,7 @@ package com.windcoder.updateFile.service;
 import com.windcoder.updateFile.config.FileUploadProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,6 +16,8 @@ import java.util.Random;
 @Slf4j
 public class FileService {
 	private long totalNow = 0;
+	@Autowired
+	TUserService userService;
 
 	/**
 	 * 生成测试数据，写入txt文件
@@ -22,7 +25,8 @@ public class FileService {
 	 * @param isAppend
 	 * @param total
 	 */
-	public void outputFile(String savePath, boolean isAppend, int total){
+	public long outputFile(String savePath, boolean isAppend, int total){
+		long timer = System.currentTimeMillis();
 		savePath = StringUtils.isEmpty(savePath) ? FileUploadProperties.DEFAULTSAVEPATH : savePath;
 		if (!savePath.startsWith("/")){
 			savePath = "/" + savePath;
@@ -37,6 +41,7 @@ public class FileService {
 		File txtFile = new File(parentDir.getAbsolutePath(), targetFileName);
 		FileWriter fw = null;
 		PrintWriter pw = null;
+		totalNow = userService.countAllByCodeIsNotNull();
 		try {
 			if (!txtFile.exists()) {
 				txtFile.createNewFile();
@@ -62,6 +67,8 @@ public class FileService {
 			if (pw!=null) {
 				pw.close();
 			}
+			timer = System.currentTimeMillis() - timer;
+			return timer;
 		}
 	}
 

@@ -1,10 +1,14 @@
 package com.windcoder.updateFile.service;
 
 import com.windcoder.updateFile.config.FileUploadProperties;
+import com.windcoder.updateFile.config.WdFtpProperties;
 import com.windcoder.updateFile.entity.TUser;
 import com.windcoder.updateFile.repository.TUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTPClient;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -15,9 +19,14 @@ import java.util.List;
 @Slf4j
 public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 
+	private static final  String DEFAULT_PATH = FileUploadProperties.CONTENTPATH + FileUploadProperties.DEFAULTSAVEPATH+ "/北京20191012.txt";
+	@Autowired
+	private FtpService ftpService;
+	@Autowired
+	private WdFtpProperties properties;
 
-	public void redFile( String path){
-		path = StringUtils.isEmpty(path) ?  FileUploadProperties.CONTENTPATH + FileUploadProperties.DEFAULTSAVEPATH+ "/北京20191012.txt" : path;
+	public long redFile( String path){
+		path = StringUtils.isEmpty(path) ? DEFAULT_PATH : path;
 		BufferedReader reader = null;
 		//读取数据拼接字符串
 		String laststr = "";
@@ -25,17 +34,23 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 		//读取所用时间
 		long timer = System.currentTimeMillis();
 		TUser user = null;
+		FileInputStream fileInputStream = null;
+		InputStreamReader isr = null;
 		try {
-			FileInputStream fileInputStream = new FileInputStream(path);
-			InputStreamReader isr = new InputStreamReader(fileInputStream, "UTF-8");
-			reader = new BufferedReader(isr);
+			fileInputStream = new FileInputStream(path);
+			isr = new InputStreamReader(fileInputStream, "UTF-8");
+//			reader = new BufferedReader(isr);
+			reader = new BufferedReader(isr, 5*1024*1024);
 			String tem = "";
 			int i = 1;
 			while ((tem = reader.readLine()) != null) {
 				user = new TUser();
 				fillUser(user, tem);
+				if (countByCode(user.getCode())>0){
+					continue;
+				}
 				userList.add(user);
-				//由于虚拟机内存原因，list一次我选择放入一万条数据后就清空
+				//由于虚拟机内存原因，list一次选择放入一万条数据后就清空
 				if (userList.size() == 10000) {
 					//插入数据到数据库
 					saveAll(userList);
@@ -46,7 +61,7 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 			}
 			saveAll(userList);
 			System.out.println(userList.size());
-			reader.close();
+//			reader.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
@@ -54,15 +69,35 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (reader!=null){
-				try {
+			try {
+				if (reader != null){
 					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
+				if (fileInputStream != null) {
+					fileInputStream.close();
+				}
+				if (isr != null) {
+					isr.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			timer = System.currentTimeMillis() - timer;
+			log.info("log 处理时间：" + timer);
+			return timer;
 		}
 
+	}
+
+
+	public long countAllByCodeIsNotNull(){
+
+//		return repository.countAllByCodeIsNotNull();
+		return repository.count();
+	}
+
+	public int countByCode(String code){
+		return repository.countByCode(code);
 	}
 
 	private void fillUser(TUser user, String tem){
@@ -77,5 +112,64 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 
 
 	}
+
+
+	public long downloadFile(){
+		long timer = System.currentTimeMillis();
+		FTPClient client = null;
+		try {
+			client =  ftpService.connect(properties.getHostname(), properties.getPort(), properties.getUsername(), properties.getPassword());
+			String dayStr = getDayStr();
+			String fileName = "北京"+dayStr+".zip";
+			String path = properties.getHome()+"/北京/"+fileName;
+			ftpService.downloadFile(client, path,properties.getCachePath()+"/users",fileName, false, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (client!=null){
+				try {
+					ftpService.disconnect(client);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			timer = System.currentTimeMillis() - timer;
+			log.info("log 下载时间：" + timer);
+			return timer;
+		}
+	}
+
+//	public long redFileByBufferedReader(String path){
+//		path = StringUtils.isEmpty(path) ? DEFAULT_PATH : path;
+//		File file = new File(path);
+//		BufferedInputStream fis = null;
+//		try {
+//			 fis = new BufferedInputStream(new FileInputStream(file));
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
+
+	private String getDayStr(){
+		DateTime dte = DateTime.now();
+		String monthStr;
+		if (dte.getMonthOfYear() > 9) {
+			monthStr = String.valueOf(dte.getMonthOfYear());
+		} else {
+			monthStr = "0" + String.valueOf(dte.getMonthOfYear());
+		}
+		String dayStr;
+		if (dte.getDayOfMonth() > 9) {
+			dayStr = String.valueOf(dte.getDayOfMonth());
+		} else {
+			dayStr = "0" + String.valueOf(dte.getDayOfMonth());
+		}
+		return String.valueOf(dte.getYear()) + monthStr + dayStr;
+	}
+
 
 }

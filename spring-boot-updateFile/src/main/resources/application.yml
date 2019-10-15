@@ -11,16 +11,30 @@ spring:
       content-type: text/html
 # MySQL
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false
+    url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
     username: root
     password: root
   jpa:
     database: mysql
     show-sql: true
-    hibernat:
+    hibernate:
       ddl-auto: update
       connection:
         CharSet: utf8mb4
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#logging:
+#    level:
+#      root: DEBUG
+
+windcoder:
+  ftp:
+    hostname: 47.111.97.6
+    port: 221
+    username: ztest
+    password: ENhWbArLNsmn2wz4
+    encoding: UTF-8
+    cachePath: /data/content/ftp_temp
+    home:

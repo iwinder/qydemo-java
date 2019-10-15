@@ -1,6 +1,6 @@
 [java读取大文件并添加入库，按行读取](https://blog.csdn.net/weixin_42171955/article/details/94433056)
 
-
+[FTP断点续传](https://github.com/h819/spring-boot/blob/master/h819-commons/src/main/java/org/h819/commons/net/jftp/connection/FtpConnection.java)
 
 
 [java如何追加写入txt文件](https://zhidao.baidu.com/question/753882151724406604.html)
@@ -21,3 +21,8 @@
 
 
 [Java 逐行读取文本文件的几种方式以及效率对比](https://www.jianshu.com/p/7a81f603fe1d)
+
+
+[Hibernate如何避免使用GenerationType.AUTO生成主键?](https://www.jdon.com/51729)
+
+[Springboot2.0中Hibernate默认创建的mysql表为myisam引擎问题](https://blog.csdn.net/tianyaleixiaowu/article/details/79468277)
