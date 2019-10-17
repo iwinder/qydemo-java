@@ -19,6 +19,7 @@
 
 [Java读取1G以上的txt文件，并对内容进行解析,利用BufferedReader设置缓存大小](https://blog.csdn.net/jellyjiao2008/article/details/84554144)
 
+[多线程 + java nio 实现按行读取并处理超大文件](https://blog.csdn.net/qq_25473933/article/details/79603253)
 
 [Java 逐行读取文本文件的几种方式以及效率对比](https://www.jianshu.com/p/7a81f603fe1d)
 
@@ -26,3 +27,7 @@
 [Hibernate如何避免使用GenerationType.AUTO生成主键?](https://www.jdon.com/51729)
 
 [Springboot2.0中Hibernate默认创建的mysql表为myisam引擎问题](https://blog.csdn.net/tianyaleixiaowu/article/details/79468277)
+
+
+## Nio
+[java.nio.file.Files 一行一行读取文件](https://blog.csdn.net/ldqchat/article/details/82691272)

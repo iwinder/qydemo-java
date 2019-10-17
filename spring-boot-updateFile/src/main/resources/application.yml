@@ -31,10 +31,12 @@ spring:
 
 windcoder:
   ftp:
-    hostname: 47.111.97.6
-    port: 221
-    username: ztest
-    password: ENhWbArLNsmn2wz4
-    encoding: UTF-8
+    hostname: 192.168.11.69
+    port: 21
+    username: ftptest
+    password: 123456
+    # windows的FTP服务器GBK并中文转码，Linux的FTP服务器UTF-8可直接用中文
+    home: \u6ce8\u534f
     cachePath: /data/content/ftp_temp
-    home:
+    # encoding 包含 GBK GB2312 和 UTF-8,默认为UTF-8，用于转换目标目录的路径及文件名
+    encoding: GBK

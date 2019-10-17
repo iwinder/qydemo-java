@@ -1,4 +1,4 @@
-package com.windcoder.updateFile.service;
+package com.windcoder.updateFile.utils;
 
 import com.windcoder.updateFile.config.WdFtpProperties;
 import com.windcoder.updateFile.exception.FtpException;
@@ -31,19 +31,19 @@ public class FtpService {
 	@Autowired
 	private WdFtpProperties properties;
 
-	public static final int FTP_FILE_NOT_FOUND = 550;
-	public static final int FTP_PATH_CREATED = 257;
-	public static final long ONE_GB = 1024 * 1024 * 1024;
 
 	public static final int DEFAULT_TCP_BUFFER_SIZE = 1024 * 1024 * 5;
-	private static final String COULD_NOT_FIND_FILE_MESSAGE = "Could not find file: %s";
-	private static final String FILE_DOWNLOAD_FAILURE_MESSAGE = "Unable to download file %s";
-	private static final String FILE_STREAM_OPEN_FAIL_MESSAGE = "Unable to write to local directory %s";
-	private static final String FILE_LISTING_ERROR_MESSAGE = "Unable to list files in directory %s";
-	private static final String NO_SUCH_DIRECTORY_MESSAGE = "The directory %s doesn't exist on the remote server.";
-	private static final String UNABLE_TO_CD_MESSAGE = "Remote server was unable to change directory.";
-	private String ftpModificationTimePattern = "yyyyMMddHHmmss";
 
+
+	/**
+	 * 连接并登录
+	 * @param hostname
+	 * @param port
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws IOException
+	 */
 	public FTPClient connect(String hostname, Integer port, String username, String password) throws IOException {
 		FTPClient ftpClient = new FTPClient();
 		ftpClient.connect(hostname, port);
@@ -54,6 +54,11 @@ public class FtpService {
 		return ftpClient;
 	}
 
+	/**
+	 * 退出并断开连接
+	 * @param ftpClient
+	 * @throws IOException
+	 */
 	public void disconnect(FTPClient ftpClient) throws IOException {
 		ftpClient.logout();
 		log.error("disLogin=>\t"+ftpClient.getReplyString());
@@ -61,28 +66,42 @@ public class FtpService {
 		log.error("disConnect=>\t"+ftpClient.getReplyString());
 	}
 
-	public void downloadFile(FTPClient ftpClient, String remoteFilePath, String localDirectoryPath, String localFileName,
-							 Boolean compareTime, Boolean logProcess) throws Exception {
+	/**
+	 * 下载文件
+	 * @param ftpClient
+	 * @param remoteFilePath 远程文件目录
+	 * @param localDirectoryPath 本地目录
+	 * @param localFileName 文件名，用于重命名
+	 * @param logProcess
+	 * @throws Exception
+	 */
+	public void downloadFile(FTPClient ftpClient, String remoteFilePath, String localDirectoryPath, String remoteFileName, String localFileName,
+							  Boolean logProcess) throws Exception {
 
-
+		// 跳转到远程文件所在目录
+		String tmop =  updatePathEncoding(remoteFilePath);
+		ftpClient.changeWorkingDirectory(tmop);
+		log.error("changeWorking =>\t"+ftpClient.getReplyString());
+		// 列出当前目录所有文件
+		FTPFile[] files2 =  ftpClient.listFiles();
+		log.error("文件数:{}",files2.length);
+		for (FTPFile f: files2) {
+			log.error("文件名:{}",f.getName());
+		}
+		// 转码远程文件名
+		String tmpFileName = updatePathEncoding(remoteFileName);
 		// 开启被动模式
 		ftpClient.enterLocalPassiveMode();
 		// 设置以二进制方式传输
 		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
 		ftpClient.setBufferSize(DEFAULT_TCP_BUFFER_SIZE);
-		if (properties.getEncoding().equals(CommonConsts.CHARSET_GBK)) {
-			remoteFilePath = new String(remoteFilePath.getBytes("GBK"), "ISO-8859-1");
-		} else if (properties.getEncoding().equals(CommonConsts.CHARSET_GB2312)) {
-			remoteFilePath = new String(remoteFilePath.getBytes("GB2312"), "ISO-8859-1");
-		} else {
-			remoteFilePath = new String(remoteFilePath.getBytes("UTF-8"), "ISO-8859-1");
-		}
+//		remoteFilePath =  updatePathEncoding(remoteFilePath);
 
-		FTPFile[] files =  ftpClient.listFiles(remoteFilePath);
+		FTPFile[] files =  ftpClient.listFiles(tmpFileName);
 
 		//检查远程文件是否存在
 		if (!(files.length == 1)) {
-			throw new FtpException("Unable to download file : " + remoteFilePath + " does not exist.");
+			throw new FtpException("Unable to download file : " + remoteFileName + " does not exist.");
 		}
 		//如果本地文件夹不存在，可以递归创建
 		String localFilePath;
@@ -111,11 +130,7 @@ public class FtpService {
 			log.info("远程 ftp 文件不存在，退出 ...");
 			return;
 		}
-		if (localSize == remoteSize) {
-//			if (compareTime) {
-//				if ()
-//			}
-		}
+
 
 		if (localSize > remoteSize) {
 			log.info("本地文件比服务器文件大，有误差: {}B <--> {}B，退出下载...", remoteSize, localSize);
@@ -131,7 +146,7 @@ public class FtpService {
 
 		FileOutputStream out = new FileOutputStream(localFile, true);
 		ftpClient.setRestartOffset(localFile.length());
-		InputStream in = ftpClient.retrieveFileStream(remoteFilePath);
+		InputStream in = ftpClient.retrieveFileStream(tmpFileName);
 
 		if (logProcess){
 			final long step = remoteSize / 100;
@@ -187,6 +202,17 @@ public class FtpService {
 		int start = path.lastIndexOf("\\");
 		start = start > 0 ? start :  path.lastIndexOf("/");
 		return path.substring(start+1);
+	}
+
+	private String updatePathEncoding(String path) throws UnsupportedEncodingException {
+		if (properties.getEncoding().equals(CommonConsts.CHARSET_GBK)) {
+			path = new String(path.getBytes("GBK"), "ISO-8859-1");
+		} else if (properties.getEncoding().equals(CommonConsts.CHARSET_GB2312)) {
+			path = new String(path.getBytes("GB2312"), "ISO-8859-1");
+		} else {
+			path = new String(path.getBytes("UTF-8"), "ISO-8859-1");
+		}
+		return path;
 	}
 //
 //	public boolean isSync(String remoteFtpFilePath, String localFilePath) {

@@ -4,6 +4,7 @@ import com.windcoder.updateFile.config.FileUploadProperties;
 import com.windcoder.updateFile.config.WdFtpProperties;
 import com.windcoder.updateFile.entity.TUser;
 import com.windcoder.updateFile.repository.TUserRepository;
+import com.windcoder.updateFile.utils.FtpService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
@@ -39,7 +40,7 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 		try {
 			fileInputStream = new FileInputStream(path);
 			isr = new InputStreamReader(fileInputStream, "UTF-8");
-//			reader = new BufferedReader(isr);
+			// 创建一个使用指定大小输入缓冲区的缓冲字符输入流。
 			reader = new BufferedReader(isr, 5*1024*1024);
 			String tem = "";
 			int i = 1;
@@ -90,6 +91,11 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 	}
 
 
+	public void redFileByNio( String path){
+		path = StringUtils.isEmpty(path) ? DEFAULT_PATH : path;
+	}
+
+
 	public long countAllByCodeIsNotNull(){
 
 //		return repository.countAllByCodeIsNotNull();
@@ -109,8 +115,6 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 			user.setPracticing(strs[3].equals("执业会员")? 5 : 4);
 			user.setStatus(strs[4].equals("0") ? TUser.AccountStatus.ACTIVE : TUser.AccountStatus.LOCKED);
 		}
-
-
 	}
 
 
@@ -120,9 +124,9 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 		try {
 			client =  ftpService.connect(properties.getHostname(), properties.getPort(), properties.getUsername(), properties.getPassword());
 			String dayStr = getDayStr();
-			String fileName = "北京"+dayStr+".zip";
-			String path = properties.getHome()+"/北京/"+fileName;
-			ftpService.downloadFile(client, path,properties.getCachePath()+"/users",fileName, false, true);
+			String fileName = "注协"+dayStr+".zip";
+			String path = properties.getHome()+"/"+fileName;
+			ftpService.downloadFile(client, properties.getHome(),properties.getCachePath()+"/userFiles",fileName, null,  true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -163,13 +167,19 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 			monthStr = "0" + String.valueOf(dte.getMonthOfYear());
 		}
 		String dayStr;
-		if (dte.getDayOfMonth() > 9) {
-			dayStr = String.valueOf(dte.getDayOfMonth());
+		int day = dte.getDayOfMonth()-1;
+		if (day > 9) {
+			dayStr = String.valueOf(day);
 		} else {
-			dayStr = "0" + String.valueOf(dte.getDayOfMonth());
+			dayStr = "0" + String.valueOf(day);
 		}
 		return String.valueOf(dte.getYear()) + monthStr + dayStr;
 	}
+
+
+//	public void getUserPath(){
+//		properties.getCachePath()+"/userFiles/" + ""
+//	}
 
 
 }
