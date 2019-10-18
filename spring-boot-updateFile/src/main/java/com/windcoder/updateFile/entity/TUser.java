@@ -54,4 +54,17 @@ public class TUser  implements Serializable {
 	 */
 	@Enumerated(EnumType.STRING)
 	private AccountStatus status;
+
+
+	@Override
+	public String toString() {
+		return "TUser{" +
+				"id=" + id +
+				", code='" + code + '\'' +
+				", displayName='" + displayName + '\'' +
+				", phoneNumber='" + phoneNumber + '\'' +
+				", practicing=" + practicing +
+				", status=" + status +
+				'}';
+	}
 }
