@@ -26,6 +26,11 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 	@Autowired
 	private WdFtpProperties properties;
 
+	/**
+	 * 读取并持久化用户
+	 * @param path
+	 * @return
+	 */
 	public long redFile( String path){
 		path = StringUtils.isEmpty(path) ? DEFAULT_PATH : path;
 		BufferedReader reader = null;
@@ -91,21 +96,31 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 	}
 
 
-	public void redFileByNio( String path){
-		path = StringUtils.isEmpty(path) ? DEFAULT_PATH : path;
-	}
 
-
+	/**
+	 * 检测数据库已有用户数
+	 * @return
+	 */
 	public long countAllByCodeIsNotNull(){
 
 //		return repository.countAllByCodeIsNotNull();
 		return repository.count();
 	}
 
+	/**
+	 * 检测code是否存在
+	 * @param code
+	 * @return
+	 */
 	public int countByCode(String code){
 		return repository.countByCode(code);
 	}
 
+	/**
+	 * 将String转为TUser对象，填充TUser用户信息
+	 * @param user
+	 * @param tem
+	 */
 	private void fillUser(TUser user, String tem){
 		if (StringUtils.isNotEmpty(tem)) {
 			String[] strs = tem.split("~~");
@@ -117,7 +132,10 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 		}
 	}
 
-
+	/**
+	 * 下载文件
+	 * @return
+	 */
 	public long downloadFile(){
 		long timer = System.currentTimeMillis();
 		FTPClient client = null;
@@ -127,6 +145,32 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 			String fileName = "注协"+dayStr+".zip";
 			String path = properties.getHome()+"/"+fileName;
 			ftpService.downloadFile(client, properties.getHome(),properties.getCachePath()+"/userFiles",fileName, null,  true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (client!=null){
+				try {
+					ftpService.disconnect(client);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			timer = System.currentTimeMillis() - timer;
+			log.info("log 下载时间：" + timer);
+			return timer;
+		}
+	}
+
+	public long updateFile(){
+		long timer = System.currentTimeMillis();
+		FTPClient client = null;
+		try {
+			client =  ftpService.connect(properties.getHostname(), properties.getPort(), properties.getUsername(), properties.getPassword());
+			String fileName = "CpaOpenPullUserController.java";
+			ftpService.uploadFile(client, properties.getCachePath()+"/userFiles/CpaOpenPullUserController.java", properties.getHome(),fileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

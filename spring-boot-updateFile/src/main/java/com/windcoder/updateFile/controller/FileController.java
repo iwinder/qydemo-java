@@ -38,4 +38,10 @@ public class FileController {
 		long timer = userService.downloadFile();
 		return "下载处理时间：" + timer;
 	}
+
+	@GetMapping("updateFile")
+	public String updateFile(){
+		long timer = userService.updateFile();
+		return "下载处理时间：" + timer;
+	}
 }

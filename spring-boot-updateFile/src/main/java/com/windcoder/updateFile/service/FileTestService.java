@@ -119,6 +119,11 @@ public class FileTestService {
 		return 0;
 	}
 
+	/**
+	 * Nio版
+	 * @param path
+	 * @return
+	 */
 	public long redFile3( String path) {
 		path = StringUtils.isEmpty(path) ? DEFAULT_PATH : path;
 		//读取所用时间

@@ -67,20 +67,51 @@ public class FtpService {
 	}
 
 	/**
+	 * 将文件上传到FTP服务器上
+	 * @param ftpClient
+	 * @param filePath       待传输的文件，包含文件路径及文件扩展名
+	 * @param uploadPath     待上传的目录
+	 * @param fileName       上传后的文件名
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean uploadFile(FTPClient ftpClient, String filePath, String uploadPath,String fileName) throws Exception {
+		FileInputStream fis = new FileInputStream(filePath);
+		//调整FTP路径至文件要上载的路径下
+		if (null != uploadPath && !"".equals(uploadPath)) {
+			uploadPath = updatePathEncoding(uploadPath);
+			ftpClient.changeWorkingDirectory(uploadPath);
+			log.error("changeWorking =>\t"+ftpClient.getReplyString());
+		}
+		//开启被动模式
+		ftpClient.enterLocalPassiveMode();
+		//调整ftp传输模式
+		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+		//解决中午乱码问题
+		fileName = updatePathEncoding(fileName);
+		//调用ftp的方法上载
+		boolean ret = ftpClient.storeFile(fileName, fis);
+		fis.close();
+		return ret;
+	}
+
+
+	/**
 	 * 下载文件
 	 * @param ftpClient
-	 * @param remoteFilePath 远程文件目录
+	 * @param remoteFilePath 远程文件目录，不包含文件名
 	 * @param localDirectoryPath 本地目录
-	 * @param localFileName 文件名，用于重命名
-	 * @param logProcess
+	 * @param remoteFileName 待下载的文件名，包含文件扩展名
+	 * @param localFileName 下载后的文件名，用于重命名
+	 * @param logProcess 是否显示下载进度，目前为log打印方式
 	 * @throws Exception
 	 */
 	public void downloadFile(FTPClient ftpClient, String remoteFilePath, String localDirectoryPath, String remoteFileName, String localFileName,
 							  Boolean logProcess) throws Exception {
 
 		// 跳转到远程文件所在目录
-		String tmop =  updatePathEncoding(remoteFilePath);
-		ftpClient.changeWorkingDirectory(tmop);
+		String temp =  updatePathEncoding(remoteFilePath);
+		ftpClient.changeWorkingDirectory(temp);
 		log.error("changeWorking =>\t"+ftpClient.getReplyString());
 		// 列出当前目录所有文件
 		FTPFile[] files2 =  ftpClient.listFiles();
@@ -94,6 +125,7 @@ public class FtpService {
 		ftpClient.enterLocalPassiveMode();
 		// 设置以二进制方式传输
 		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+		// 设置缓冲区大小
 		ftpClient.setBufferSize(DEFAULT_TCP_BUFFER_SIZE);
 //		remoteFilePath =  updatePathEncoding(remoteFilePath);
 

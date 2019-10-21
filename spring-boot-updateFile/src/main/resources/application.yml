@@ -36,7 +36,9 @@ windcoder:
     username: ftptest
     password: 123456
     # windows的FTP服务器GBK并中文转码，Linux的FTP服务器UTF-8可直接用中文
-    home: \u6ce8\u534f
+    # home: \u6ce8\u534f
+    home: 注协
     cachePath: /data/content/ftp_temp
     # encoding 包含 GBK GB2312 和 UTF-8,默认为UTF-8，用于转换目标目录的路径及文件名
     encoding: GBK
+    # encoding: UTF-8
