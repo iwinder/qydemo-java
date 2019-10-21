@@ -2,6 +2,7 @@ package com.windcoder.updateFile.service;
 
 import com.windcoder.updateFile.config.FileUploadProperties;
 import com.windcoder.updateFile.entity.TUser;
+import com.windcoder.updateFile.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -53,16 +54,16 @@ public class FileTestService {
 //			long lineCount = 0;
 			while ((tem = reader.readLine()) != null) {
 				user = new TUser();
-				fillUser(user, tem);
+				UserUtil.fillUser(user, tem);
 				log.info(user.toString());
-				userList.add(user);
+//				userList.add(user);
 				//由于虚拟机内存原因，list一次选择放入一万条数据后就清空
-				if (userList.size() == 10000) {
-					//插入数据到数据库
-
-					userList.clear();
-				}
-				System.out.println(i);
+//				if (userList.size() == 10000) {
+//					//插入数据到数据库
+//
+//					userList.clear();
+//				}
+//				System.out.println(i);
 				i++;
 			}
 
@@ -120,7 +121,7 @@ public class FileTestService {
 	}
 
 	/**
-	 * Nio版
+	 * Nio版-可进化为多线程nio版
 	 * @param path
 	 * @return
 	 */
@@ -138,15 +139,23 @@ public class FileTestService {
 			ByteBuffer rbuf = ByteBuffer.allocate(1024);
 //			RandomAccessFile raf = new RandomAccessFile(path,"r");
 			fileInputStream = new FileInputStream(path);
+			// 获取通道，该通道允许写操作
 			fileChannel = fileInputStream.getChannel();
-			endIndex = fileChannel.size(); // 读取文件结束位置
-			fileChannel.position(startIndex); // 文件开始位置
-			byte[] temp = new byte[0]; // 缓存上次读取剩下的部分
+			// 读取文件结束位置
+			endIndex = fileChannel.size();
+			// 文件开始位置
+			fileChannel.position(startIndex);
+			// 缓存上次读取剩下的部分
+			byte[] temp = new byte[0];
 			Boolean isWindows = false;
-			boolean isEnd = false; // 用于判断数据是否读取完
-			boolean isWholeLine = false; // 用于判断第一行读取到的是否为完整的一行
-			long lineCount = 0; // 行数统计
-			long endLineIndex = startIndex; // 当前处理字节所在位置
+			// 用于判断数据是否读取完
+			boolean isEnd = false;
+			// 用于判断第一行读取到的是否为完整的一行
+			boolean isWholeLine = false;
+			// 行数统计
+			long lineCount = 0;
+			// 当前处理字节所在位置
+			long endLineIndex = startIndex;
 			long lineCount2 = 0;
 			TUser user = null;
 			int CF = "\n".getBytes()[0];
@@ -166,6 +175,7 @@ public class FileTestService {
 							startNum = i + 1;
 						}else {
 							byte[] line = new byte[temp.length + i - startNum +1];
+							//  从指定的源数组（从指定位置开始）复制数组到目标数组的指定位置。
 							System.arraycopy(temp, 0, line, 0, temp.length);
 							System.arraycopy(rbyte,startNum, line, temp.length, i- startNum +1);
 							startNum = i + 1;
@@ -177,19 +187,19 @@ public class FileTestService {
 									if (isWholeLine) {
 										lineCount2++;
 										user = new TUser();
-										fillUser(user, new String(line,ENCODE).toString());
+										UserUtil.fillUser(user, new String(line,ENCODE));
 										log.info(user.toString());
 									}
 								} else {
 									lineCount2++;
 									user = new TUser();
-									fillUser(user, new String(line,ENCODE).toString());
+									UserUtil.fillUser(user, new String(line,ENCODE));
 									log.info(user.toString());
 								}
 							}else {
 								lineCount2++;
 								user = new TUser();
-								fillUser(user, new String(line,ENCODE).toString());
+								UserUtil.fillUser(user, new String(line,ENCODE));
 								log.info(user.toString());
 							}
 							// 结束读取判断
@@ -212,7 +222,7 @@ public class FileTestService {
 			if (temp.length>0) {
 				lineCount2++;
 				user = new TUser();
-				fillUser(user, new String(temp,ENCODE).toString());
+				UserUtil.fillUser(user, new String(temp,ENCODE).toString());
 				log.info(user.toString());
 			}
 
@@ -234,33 +244,26 @@ public class FileTestService {
 	}
 
 
-	private void fillUser(TUser user, String tem){
-//		log.info("tem:{}",tem);
-		if (StringUtils.isNotEmpty(tem)) {
-			String[] strs = tem.split("~~");
-			user.setCode(strs[0]);
-			user.setDisplayName(strs[1]);
-			user.setPhoneNumber(strs[2]);
-			user.setPracticing(strs[3].equals("执业会员")? 5 : 4);
-			user.setStatus(strs[4].equals("0") ? TUser.AccountStatus.ACTIVE : TUser.AccountStatus.LOCKED);
-		}
-	}
+
+
+
+
 
 
 	/**
+	 * 该方式存在问题
 	 * windows：\r\n
 	 * U(L)inux：\r
 	 *
 	 * @param charObj
 	 * @return
 	 */
-	private boolean isLine(int charObj, Boolean isWindows){
+	private boolean isLine(int charObj){
 		int LF = "\r".getBytes()[0]; // 换行符
 		int CF = "\n".getBytes()[0];
 		if (charObj == CF) {
-			isWindows = true;
 			return true;
-		} else if (charObj == LF && !isWindows) {
+		} else if (charObj == LF) {
 			return true;
 		}
 		return false;
