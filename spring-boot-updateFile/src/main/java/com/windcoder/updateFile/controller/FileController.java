@@ -42,6 +42,6 @@ public class FileController {
 	@GetMapping("updateFile")
 	public String updateFile(){
 		long timer = userService.updateFile();
-		return "下载处理时间：" + timer;
+		return "上传处理时间：" + timer;
 	}
 }

@@ -1,3 +1,18 @@
+
+关于文件上传下载的示例。包含：
+
+- FTP上传下载
+- BufferedReader按行读取
+- nio按行读取
+
+
+
+
+
+
+
+## 随手记
+
 [java读取大文件并添加入库，按行读取](https://blog.csdn.net/weixin_42171955/article/details/94433056)
 
 [FTP断点续传](https://github.com/h819/spring-boot/blob/master/h819-commons/src/main/java/org/h819/commons/net/jftp/connection/FtpConnection.java)

@@ -149,6 +149,7 @@ public class FileTestService {
 			long endLineIndex = startIndex; // 当前处理字节所在位置
 			long lineCount2 = 0;
 			TUser user = null;
+			int CF = "\n".getBytes()[0];
 			log.error("redFile3读取开始~~~~~~~~~~~~~~~~~");
 			while (fileChannel.read(rbuf) != -1) {
 				int position = rbuf.position();
@@ -159,7 +160,7 @@ public class FileTestService {
 				// 判断是否有换行符
 				for (int i = 0; i<rbyte.length; i++) {
 					endLineIndex++;
-					if (isLine(rbyte[i], isWindows)) {
+					if (rbyte[i]== CF) {
 						if (fileChannel.position() == startIndex) {
 							isWholeLine = true;
 							startNum = i + 1;

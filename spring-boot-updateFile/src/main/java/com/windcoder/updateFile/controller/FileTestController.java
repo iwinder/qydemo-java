@@ -15,7 +15,7 @@ public class FileTestController {
 	private FileTestService fileService;
 
 	/**
-	 *
+	 * 测试传统io读取文件
 	 * @return
 	 */
 	@RequestMapping("/user1")
@@ -23,6 +23,11 @@ public class FileTestController {
 		long timer = fileService.redFile(FileUploadProperties.CONTENTPATH+FileUploadProperties.DEFAULTSAVEPATH+"/北京20191012.txt");
 		return "处理时间：" + timer;
 	}
+
+	/**
+	 * 测试nio读取文件
+	 * @return
+	 */
 	@RequestMapping("/user2")
 	public String printUser3() {
 		long timer = fileService.redFile3(FileUploadProperties.CONTENTPATH+FileUploadProperties.DEFAULTSAVEPATH+"/北京20191012.txt");
