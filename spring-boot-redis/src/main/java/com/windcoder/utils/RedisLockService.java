@@ -1,11 +1,15 @@
 package com.windcoder.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
+@Service
+@Slf4j
 public class RedisLockService {
 	@Autowired
 	private RedisTemplate redisTemplate;
@@ -16,9 +20,14 @@ public class RedisLockService {
 	}
 
 	public void unLock(String key,String value){
-		String currentValue = (String) redisTemplate.opsForValue().get(key);
-		if(StringUtils.isNotBlank(currentValue) && currentValue.equals(value) ){
-			redisTemplate.opsForValue().getOperations().delete(key);//删除key
+		try {
+			String currentValue = (String) redisTemplate.opsForValue().get(key);
+			if(StringUtils.isNotBlank(currentValue) && currentValue.equals(value) ){
+				redisTemplate.opsForValue().getOperations().delete(key);//删除key
+			}
+		} catch (Exception e) {
+			log.error("解锁异常：{}", e);
 		}
+
 	}
 }

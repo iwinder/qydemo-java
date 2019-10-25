@@ -11,6 +11,7 @@
 [springboot中redis分布式锁的实现](https://blog.csdn.net/zhangxing52077/article/details/81143860)
 [SpringBoot实现Redis分布式锁](https://www.jianshu.com/p/750ac97eb29e)
 [Springboot分布式锁实践（redis）](https://www.cnblogs.com/carrychan/p/9431137.html)
+[spring boot redis分布式锁](https://my.oschina.net/dengfuwei/blog/1600681)
 
 [Redis实现分布式锁（spring定时任务集群应用Redis分布式锁）](https://blog.csdn.net/QiaoRui_/article/details/83141060)
 [SpringBoot进阶教程(五十五)整合Redis之分布式锁](https://www.cnblogs.com/toutou/p/redis_lock.html)
