@@ -4,6 +4,7 @@ import com.sun.xml.internal.ws.api.pipe.Tube;
 import com.windcoder.updateFile.config.FileUploadProperties;
 import com.windcoder.updateFile.service.FileService;
 import com.windcoder.updateFile.service.TUserService;
+import com.windcoder.updateFile.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class FileController {
 	}
 	@GetMapping("fillUser")
 	public String fillUser() {
-		long timer = userService.redFile(FileUploadProperties.CONTENTPATH+FileUploadProperties.DEFAULTSAVEPATH+"/北京20191012.txt");
+		long timer = userService.redFile(FileUploadProperties.CONTENTPATH+FileUploadProperties.DEFAULTSAVEPATH+"/会员"+DateUtil.getDayStr() +".txt");
 		return "处理时间：" + timer;
 	}
 

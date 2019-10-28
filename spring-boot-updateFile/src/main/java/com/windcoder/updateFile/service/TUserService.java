@@ -4,7 +4,9 @@ import com.windcoder.updateFile.config.FileUploadProperties;
 import com.windcoder.updateFile.config.WdFtpProperties;
 import com.windcoder.updateFile.entity.TUser;
 import com.windcoder.updateFile.repository.TUserRepository;
+import com.windcoder.updateFile.utils.DateUtil;
 import com.windcoder.updateFile.utils.FtpService;
+import com.windcoder.updateFile.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
@@ -33,20 +35,17 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 	 */
 	public long redFile( String path){
 		path = StringUtils.isEmpty(path) ? DEFAULT_PATH : path;
-		BufferedReader reader = null;
+
 		//读取数据拼接字符串
 		String laststr = "";
 		List<TUser> userList = new ArrayList<>();
 		//读取所用时间
 		long timer = System.currentTimeMillis();
 		TUser user = null;
-		FileInputStream fileInputStream = null;
-		InputStreamReader isr = null;
-		try {
-			fileInputStream = new FileInputStream(path);
-			isr = new InputStreamReader(fileInputStream, "UTF-8");
-			// 创建一个使用指定大小输入缓冲区的缓冲字符输入流。
-			reader = new BufferedReader(isr, 5*1024*1024);
+
+		try (FileInputStream fileInputStream = new FileInputStream(path);
+			 InputStreamReader isr = new InputStreamReader(fileInputStream, "GBK");
+			 BufferedReader reader = new BufferedReader(isr, 5*1024*1024);){
 			String tem = "";
 			int i = 1;
 			while ((tem = reader.readLine()) != null) {
@@ -75,19 +74,6 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				if (reader != null){
-					reader.close();
-				}
-				if (fileInputStream != null) {
-					fileInputStream.close();
-				}
-				if (isr != null) {
-					isr.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 			timer = System.currentTimeMillis() - timer;
 			log.info("log 处理时间：" + timer);
 			return timer;
@@ -121,9 +107,10 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 	 * @param user
 	 * @param tem
 	 */
-	private void fillUser(TUser user, String tem){
+	private void fillUser(TUser user, String tem) throws UnsupportedEncodingException {
 		if (StringUtils.isNotEmpty(tem)) {
-			String[] strs = tem.split("~~");
+			String tmp = new String(tem.getBytes("GBK"), "UTF-8");
+			String[] strs = tmp.split("~~");
 			user.setCode(strs[0]);
 			user.setDisplayName(strs[1]);
 			user.setPhoneNumber(strs[2]);
@@ -141,7 +128,7 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 		FTPClient client = null;
 		try {
 			client =  ftpService.connect(properties.getHostname(), properties.getPort(), properties.getUsername(), properties.getPassword());
-			String dayStr = getDayStr();
+			String dayStr = DateUtil.getDayStr();
 			String fileName = "注协"+dayStr+".zip";
 			String path = properties.getHome()+"/"+fileName;
 			ftpService.downloadFile(client, properties.getHome(),properties.getCachePath()+"/userFiles",fileName, null,  true);
@@ -202,23 +189,7 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 //
 //	}
 
-	private String getDayStr(){
-		DateTime dte = DateTime.now();
-		String monthStr;
-		if (dte.getMonthOfYear() > 9) {
-			monthStr = String.valueOf(dte.getMonthOfYear());
-		} else {
-			monthStr = "0" + String.valueOf(dte.getMonthOfYear());
-		}
-		String dayStr;
-		int day = dte.getDayOfMonth()-1;
-		if (day > 9) {
-			dayStr = String.valueOf(day);
-		} else {
-			dayStr = "0" + String.valueOf(day);
-		}
-		return String.valueOf(dte.getYear()) + monthStr + dayStr;
-	}
+
 
 
 //	public void getUserPath(){
