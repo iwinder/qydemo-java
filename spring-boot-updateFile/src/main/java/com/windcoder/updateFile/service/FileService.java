@@ -63,7 +63,7 @@ public class FileService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			
+
 			timer = System.currentTimeMillis() - timer;
 			return timer;
 		}
