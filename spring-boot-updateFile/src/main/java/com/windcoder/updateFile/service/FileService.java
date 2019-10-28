@@ -33,7 +33,7 @@ public class FileService {
 	 * @param isAppend
 	 * @param total
 	 */
-	public long outputFile(String savePath, boolean isAppend, int total){
+	public long outputFile(String savePath, boolean isAppend, int total) throws IOException {
 		long timer = System.currentTimeMillis();
 		savePath = StringUtils.isEmpty(savePath) ? FileUploadProperties.DEFAULTSAVEPATH : savePath;
 		if (!savePath.startsWith("/")){
@@ -47,15 +47,14 @@ public class FileService {
 			parentDir.mkdirs();
 		}
 		File txtFile = new File(parentDir.getAbsolutePath(), targetFileName);
-		FileWriter fw = null;
-		PrintWriter pw = null;
+
 		totalNow = userService.countAllByCodeIsNotNull();
-		try {
-			if (!txtFile.exists()) {
-				txtFile.createNewFile();
-			}
-			fw = new FileWriter(txtFile, isAppend);
-			pw = new PrintWriter(fw);
+		if (!txtFile.exists()) {
+			txtFile.createNewFile();
+		}
+		try (FileWriter fw = new FileWriter(txtFile, isAppend);
+			 PrintWriter pw = new PrintWriter(fw)){
+
 			for (int i=0;i<total;i++){
 				pw.println((++totalNow) + "~~" + ("张三"+i) + "~~" + getRandom(11) + "~~" + getRandomIsVip() + "~~" + getRandomIsUse());
 			}
@@ -64,17 +63,7 @@ public class FileService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (fw!=null) {
-				try {
-					fw.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-			if (pw!=null) {
-				pw.close();
-			}
+			
 			timer = System.currentTimeMillis() - timer;
 			return timer;
 		}
