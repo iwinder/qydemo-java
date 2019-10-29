@@ -18,7 +18,7 @@ spring:
     url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
     username: root
-    password: root
+    password: ENC(2qBUi28qOyqjPt3qew863Q==)
   jpa:
     database: mysql
     show-sql: true
@@ -27,7 +27,7 @@ spring:
       connection:
         CharSet: utf8mb4
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    #redis
+#redis
   redis:
     host: ENC(VrVGk8dP85JWxicP8UYVsiRQuZIB6h1j)
     password: ENC(r3PQ/cWSpANfTq6l1UobIav/+OLwy1uV)
