@@ -64,7 +64,7 @@ public class RedisLockService {
 		});
 	}
 
-	public String getOne(String key){
-		return (String)redisTemplate.opsForValue().get(key);
+	public Object getOne(String key){
+		return redisTemplate.opsForValue().get(key);
 	}
 }

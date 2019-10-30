@@ -1,18 +1,67 @@
 plugins {
     id 'java'
     id 'war'
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 group 'com.windcoder'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-repositories {
-    mavenCentral()
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
+ext {
+    axis2Version = "1.7.9"
+}
+sourceSets {
+    main {
+        java{
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/java'
+            srcDir 'src/main/resources'
+        }
+    }
+}
+repositories {
+    maven{url 'https://mvnrepository.com/'}
+    maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    mavenCentral()
+}
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.apache.commons:commons-lang3"
+    implementation "commons-net:commons-net:3.6"
+    implementation "commons-io:commons-io:2.6"
+    implementation "joda-time:joda-time"
+    implementation ("org.apache.axis2:axis2-adb:${axis2Version}") {
+//        exclude module: "javax.servlet"
+        exclude module: "servlet-api"
+    }
+    implementation ("org.apache.axis2:axis2-kernel:${axis2Version}") {
+        exclude module: "servlet-api"
+    }
+    implementation ("org.apache.axis2:axis2-transport-http:${axis2Version}"){
+        exclude module: "servlet-api"
+    }
+    implementation ("org.apache.axis2:axis2-spring:${axis2Version}") {
+        exclude module: "servlet-api"
+    }
+    implementation ("org.apache.axis2:axis2-transport-local:${axis2Version}") {
+        exclude module: "servlet-api"
+    }
+    implementation ('org.apache.xmlbeans:xmlbeans:2.4.0')
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

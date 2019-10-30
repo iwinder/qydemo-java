@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @Slf4j
@@ -20,7 +21,7 @@ public class RgoodsController {
 	private RgoodsService goodsService;
 	@Autowired
 	private RedisLockService redisLockService;
-	int creNUm = 0;
+	AtomicInteger creNUm = new AtomicInteger(0);
 	@PostMapping("")
 	public Rgoods save(Rgoods rgoods){
 		return goodsService.save(rgoods);
@@ -32,17 +33,18 @@ public class RgoodsController {
 	}
 
 	@GetMapping("{id}/r")
-	public String getOneR( @PathVariable("id") Long id){
+	public Object getOneR( @PathVariable("id") Long id){
 		return  redisLockService.getOne(String.valueOf(id));
 	}
 
 	@GetMapping("{id}/sell")
-	public String Seckilling( @PathVariable("id") Long id){
+	public String Seckilling( @PathVariable("id") Long id, Long userId){
+		log.error("抢购开始：{}", userId);
 		//加锁
 		long time = System.currentTimeMillis() + TIMEOUT;
-		if(!redisLockService.tryLock(String.valueOf(id),String.valueOf(time), 5, TimeUnit.SECONDS)){
-			log.error("排队人数太多，请稍后再试.");
-			return "排队人数太多，请稍后再试.";
+		if(!redisLockService.tryLockByNative(String.valueOf(id),String.valueOf(time), 5, TimeUnit.SECONDS)){
+			log.error("排队人数太多，请:{} 稍后再试",userId);
+			return "排队人数太多，请:" + userId + "稍后再试.";
 		}
 
 
@@ -65,13 +67,13 @@ public class RgoodsController {
 			}
 			// 减库存操作数据库 e.g. updateStockByTargetId
 			goodsService.save(goods);
-			creNUm++;
+			creNUm.getAndIncrement();
 			// buyStockByTargetId 和 updateStockByTargetId 可以同步完成(或者事物)，保证原子性。
 		}
 
 		//解锁
 		redisLockService.unLockByNative(String.valueOf(id),String.valueOf(time));
-		log.info("恭喜您，秒杀成功:{}",creNUm);
+		log.info("恭喜您:{}，秒杀成功:{}",userId, creNUm.get());
 		return "恭喜您，秒杀成功。";
 
 	}

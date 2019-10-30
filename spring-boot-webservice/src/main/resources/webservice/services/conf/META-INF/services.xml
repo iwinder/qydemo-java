@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serviceGroup>
+    <service name="hello" scope="application">
+        <description>
+            helloworld
+        </description>
+        <!--  这里指定为你写的接口实现类的全路径-->
+        <parameter name="ServiceClass">com.eindcoder.webservice.service.HelloService</parameter>
+    <operation name="sayHello">
+        <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+    </operation>
+    </service>
+</serviceGroup>
