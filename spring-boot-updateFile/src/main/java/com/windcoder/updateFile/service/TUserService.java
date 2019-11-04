@@ -190,6 +190,11 @@ public class TUserService extends BaseService<TUser, Long, TUserRepository> {
 //	}
 
 
+	public TUser dele(Long id){
+		TUser user = findById(id).get();
+		return user;
+	}
+
 
 
 //	public void getUserPath(){

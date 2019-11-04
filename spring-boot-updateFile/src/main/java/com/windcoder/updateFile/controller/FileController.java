@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
-@RequestMapping
+@RequestMapping("api/file")
 public class FileController {
 	@Autowired
 	private FileService fileService;
@@ -24,7 +26,12 @@ public class FileController {
 							 @RequestParam(value = "isAppend", defaultValue = "true") boolean isAppend,
 							 @RequestParam(value = "total", defaultValue = "500000") int total){
 
-		long timer = fileService.outputFile(savePath, isAppend, total);
+		long timer = 0;
+		try {
+			timer = fileService.outputFile(savePath, isAppend, total);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "导入时间：" + timer;
 
 	}
@@ -45,4 +52,6 @@ public class FileController {
 		long timer = userService.updateFile();
 		return "上传处理时间：" + timer;
 	}
+
+
 }

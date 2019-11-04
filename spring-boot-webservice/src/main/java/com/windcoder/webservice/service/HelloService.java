@@ -1,7 +1,6 @@
-package com.eindcoder.webservice.service;
+package com.windcoder.webservice.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 //@Service
 @Slf4j
