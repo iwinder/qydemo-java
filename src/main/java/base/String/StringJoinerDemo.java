@@ -12,6 +12,8 @@ public class StringJoinerDemo {
         String desiredString = sj.toString();
         PrintUtill.println(desiredString);
         sj = new StringJoiner(",");
+		sj.add("apple").add("banana").add("orange");
+		PrintUtill.println(sj.toString());
         String.join("-", "apple","banana","orange");
 
         PrintUtill.println("Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());
