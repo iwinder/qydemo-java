@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton.entity;
+package DesignPatterns.Creational.Singleton.runoob.entity;
 
 /**
  * Description:3、饿汉式

@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton.entity;
+package DesignPatterns.Creational.Singleton.runoob.entity;
 
 /**
  * Description:4、双检锁/双重校验锁（DCL，即 double-checked locking）

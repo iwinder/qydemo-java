@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton;
+package DesignPatterns.Creational.Singleton.runoob;
 
 /**
  * Description:1、创建一个 Singleton 类。

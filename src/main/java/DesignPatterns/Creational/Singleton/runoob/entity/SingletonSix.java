@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton.entity;
+package DesignPatterns.Creational.Singleton.runoob.entity;
 
 /**
  * Description:6、枚举

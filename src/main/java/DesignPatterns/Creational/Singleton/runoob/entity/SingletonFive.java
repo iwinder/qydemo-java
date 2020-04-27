@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton.entity;
+package DesignPatterns.Creational.Singleton.runoob.entity;
 
 /**
  * Description:5、登记式/静态内部类

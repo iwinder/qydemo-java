@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton.test;
+package DesignPatterns.Creational.Singleton.runoob.test;
 
 import Utills.PrintUtill;
 

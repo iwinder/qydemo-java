@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton;
+package DesignPatterns.Creational.Singleton.runoob;
 
 /**
  * Description:Java设计模式学习笔记—单例模式

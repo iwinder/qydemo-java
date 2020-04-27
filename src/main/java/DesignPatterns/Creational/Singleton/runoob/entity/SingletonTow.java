@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Singleton.entity;
+package DesignPatterns.Creational.Singleton.runoob.entity;
 
 /**
  * Description:2、懒汉式，线程安全
