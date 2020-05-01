@@ -1,5 +1,6 @@
 package DesignPatterns.Creational.Singleton.geekbang;
 
+import org.omg.PortableInterceptor.INACTIVE;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.redisson.api.RLock;
@@ -74,4 +75,10 @@ public class IdGenerator7 implements Serializable {
         }
         return Redisson.create(config);
     }
+
+
+    private Object readResolve() {
+        return instance;
+    }
+
 }

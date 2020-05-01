@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Factory;
+package DesignPatterns.Creational.Factory.runoob;
 
 /**
  * Description:1、创建一个接口。

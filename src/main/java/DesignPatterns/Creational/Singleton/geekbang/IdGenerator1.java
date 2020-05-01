@@ -14,6 +14,10 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class IdGenerator1 {
     private AtomicLong id = new AtomicLong(0);
+    // 公有静态成员是final域（public-field,公有域的方法），此时无需getInstance()方法。
+    // public static final IdGenerator1 instantce = new IdGenerator1();
+
+    //共有静态成员静态工厂方法，需要调用getInstance()方法
     private static final IdGenerator1 instantce = new IdGenerator1();
 
     private IdGenerator1(){}

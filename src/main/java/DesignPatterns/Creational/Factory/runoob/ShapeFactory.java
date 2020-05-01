@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Factory;
+package DesignPatterns.Creational.Factory.runoob;
 
 /**
  * Description: 3、创建一个工厂，生成基于给定信息的实体类的对象

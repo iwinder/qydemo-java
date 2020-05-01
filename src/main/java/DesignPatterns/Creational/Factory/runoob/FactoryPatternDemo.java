@@ -1,4 +1,4 @@
-package DesignPatterns.Creational.Factory;
+package DesignPatterns.Creational.Factory.runoob;
 
 /**
  * Description:使用该工厂，通过传递类型信息来获取实体类的对象。

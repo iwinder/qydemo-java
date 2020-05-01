@@ -12,4 +12,8 @@ public enum IdGenerator5 {
     public long getId() {
         return id.incrementAndGet();
     }
+
+    public static void main(String[] args) {
+        IdGenerator5.INSTANCE.getId();
+    }
 }
