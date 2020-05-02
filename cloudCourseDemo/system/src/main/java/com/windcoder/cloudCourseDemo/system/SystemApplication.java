@@ -1,9 +1,11 @@
 package com.windcoder.cloudCourseDemo.system;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 /**
@@ -11,6 +13,8 @@ import org.springframework.core.env.Environment;
  */
 @SpringBootApplication
 @EnableEurekaClient
+@Configuration
+@MapperScan(basePackages = {"com.windcoder.cloudCourseDemo.system.mapper"})
 @Slf4j
 public class SystemApplication {
 
