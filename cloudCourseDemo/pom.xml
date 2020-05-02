@@ -6,6 +6,7 @@
 
 	<modules>
 		<module>eureka</module>
+		<module>system</module>
 	</modules>
 
 	<!-- 说明项目的父模块是一个springBoot项目 -->
