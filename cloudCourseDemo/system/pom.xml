@@ -37,6 +37,12 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!-- 热部署DevTools -->
+         <dependency>
+           <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-devtools</artifactId>
+       </dependency>
     </dependencies>
 
 </project>
