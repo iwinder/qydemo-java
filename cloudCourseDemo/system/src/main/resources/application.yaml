@@ -7,7 +7,7 @@ spring:
       name: system
     # 增加数据库连接
     datasource:
-      driver-class-name=com: mysql.jdbc.Driver
+      driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://localhost:3306/icloudcourse?characterEncoding=UTF8&autoReconnect=true
       username: courseimooc
       password: 000000
