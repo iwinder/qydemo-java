@@ -3,7 +3,7 @@
 <mapper namespace="com.windcoder.cloudCourseDemo.system.mapper.TestMapper" >
 
     <select id="list" resultType="com.windcoder.cloudCourseDemo.system.domain.Test">
-            select `id`, `name` from `test`
+            select `id`, `name` from  test
      </select>
 
 </mapper>
