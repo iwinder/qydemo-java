@@ -12,6 +12,7 @@
 
 
 HELP.md
+MVNW
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
