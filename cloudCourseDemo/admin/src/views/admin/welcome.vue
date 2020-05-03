@@ -9,7 +9,7 @@
 export default {
     name: 'welcome',
     mounted: function() {
-        this.$parent.activeSidebar("sidebar-welcome");
+        // this.$parent.activeSidebar("sidebar-welcome");
     },
     methods: {
         

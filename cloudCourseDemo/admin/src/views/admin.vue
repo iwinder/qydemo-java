@@ -356,7 +356,7 @@
 
 				<ul class="nav nav-list">
 					<li class="" id="sidebar-welcome">
-						<router-link to="/admin/welcome">
+						<router-link to="/welcome">
 						 
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> 欢迎 </span>
@@ -409,7 +409,7 @@
 
 						<ul class="submenu">
 							<li class="active" id="sidebar-business-chapter">
-								<router-link to="/admin/business/chapter">
+								<router-link to="/business/chapter">
 									<i class="menu-icon fa fa-caret-right"></i>
 									大章管理
 								</router-link>
@@ -493,9 +493,26 @@
 export default {
     name: 'admin',
     mounted: function() {
-      $('body').removeClass('login-layout light-login');
-      $('body').attr('class', 'no-skin');
-    },
+		let _this = this;
+		 $('body').removeClass('login-layout light-login');
+		$('body').attr('class', 'no-skin');
+		// 若从login页面点击登录进入到welcome页面，并不会触发激活样式
+		// watch仅在admin下面的子组件相互跳转时有效。
+		_this.activeSidebar("sidebar-" + _this.$route.name.replace("/", "-"));
+	},
+	watch: {
+		// vue内置的watch,用来监听vue实例上的数据变动。$route也是个变量
+		$route: {
+			handler: function(val, oldVal) {
+				// 监听页面跳转 val 新路由，oldVal 旧路由
+				console.log("--->页面跳转", val, oldVal);
+				let _this = this;
+				_this.$nextTick(function() { // 页面加载完成后执行
+					_this.activeSidebar("sidebar-" + _this.$route.name.replace("/", "-"));
+				});
+			}
+		}
+	},
     methods: {
     	/**
        	* 菜单激活样式，id是当前点击的菜单的id
