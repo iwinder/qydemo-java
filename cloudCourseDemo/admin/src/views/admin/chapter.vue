@@ -979,9 +979,16 @@ export default {
     name: 'chapter',
     mounted: function() {
         // this.$parent.activeSidebar("sidebar-business-chapter");
+        let _this = this;
+        _this.list();
     },
     methods: {
-        
+        list: function() {
+            let _this = this;
+            _this.$ajax.get("http://127.0.0.1:9002/business/admin/chapter/list").then((response)=>{
+                console.log("查询大章的结果：", response);
+            });
+        }
     }
 }
 </script>
