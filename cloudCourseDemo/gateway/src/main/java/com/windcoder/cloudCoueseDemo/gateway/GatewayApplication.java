@@ -37,7 +37,7 @@ public class GatewayApplication {
 	public CorsWebFilter corsWebFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(Boolean.TRUE);
-		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
 		config.setMaxAge(3600L);
