@@ -19,7 +19,7 @@
             </thead>
 
             <tbody>
-                <tr v-for="chapter in chapters" :key="chapter" >
+                <tr v-for="chapter in chapters" :key="chapter.id" >
                     <td>{{chapter.id}}</td>
                     <td>{{chapter.name}}</td>
                     <td>{{chapter.courseId}}</td>
@@ -98,7 +98,7 @@ export default {
     methods: {
         list: function() {
             let _this = this;
-            _this.$ajax.get("http://127.0.0.1:9002/business/admin/chapter/list").then((response)=>{
+            _this.$ajax.get("http://127.0.0.1:9000/business/admin/chapter/list").then((response)=>{
                 console.log("查询大章的结果：", response);
                 _this.chapters = response.data;
             });
