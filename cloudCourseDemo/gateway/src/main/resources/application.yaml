@@ -9,7 +9,7 @@ spring:
         routes[0]:
           id: system
           # uri: http://127.0.0.1:9001
-          uri: lb:system
+          uri: lb://system
           predicates[0]:
             name: Path
             args[0]: /system/**
@@ -18,7 +18,7 @@ spring:
           # 若配置的是ip端口号，发布到生产上可能访问不到，即使配置了maven环境，也需要提前知道上线后的端口号，提前配好。
           #所以应尽量避免端口号形式，而应该使用lb:bussiness 形式。
           # uri: http://127.0.0.1:9002
-          uri: lb:bussiness
+          uri: lb://business
           predicates[0]:
             name: Path
             args[0]: /business/**
