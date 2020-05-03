@@ -1,4 +1,4 @@
-package com.windcoder.cloudCourseDemo.system.domain;
+package com.windcoder.cloudCourseDemo.server.domain;
 
 import lombok.Data;
 

@@ -1,8 +1,7 @@
-package com.windcoder.cloudCourseDemo.system.service;
+package com.windcoder.cloudCourseDemo.server.service;
 
-import com.windcoder.cloudCourseDemo.system.domain.Test;
-import com.windcoder.cloudCourseDemo.system.mapper.TestMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.windcoder.cloudCourseDemo.server.domain.Test;
+import com.windcoder.cloudCourseDemo.server.mapper.TestMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
