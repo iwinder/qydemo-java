@@ -1,4 +1,4 @@
-package com.windcoder.cloudCourseDemo.business;
+package com.windcoder.cloudCourseDemo.business.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
