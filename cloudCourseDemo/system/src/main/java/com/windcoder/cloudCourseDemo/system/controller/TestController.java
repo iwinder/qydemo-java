@@ -1,4 +1,4 @@
-package com.windcoder.cloudCourseDemo.server.controller;
+package com.windcoder.cloudCourseDemo.system.controller;
 
 import com.windcoder.cloudCourseDemo.server.domain.Test;
 import com.windcoder.cloudCourseDemo.server.service.TestService;
@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
 public class TestController {
 
-    @Autowired
+    @Resource
     private TestService testService;
 
     @GetMapping("/test")

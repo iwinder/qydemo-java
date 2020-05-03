@@ -89,6 +89,12 @@
 				<version>1.18.12</version>
 				<scope>provided</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>com.windcoder</groupId>
+				<artifactId>server</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
