@@ -1,5 +1,6 @@
 package com.windcoder.cloudCourseDemo.server.service;
 
+import com.github.pagehelper.PageHelper;
 import com.windcoder.cloudCourseDemo.server.domain.Chapter;
 import com.windcoder.cloudCourseDemo.server.domain.ChapterExample;
 import com.windcoder.cloudCourseDemo.server.dto.ChapterDto;
@@ -17,6 +18,7 @@ public class ChapterService {
     private ChapterMapper chapterMapper;
 
     public List<ChapterDto> list() {
+        PageHelper.startPage(1,1);
         ChapterExample testExample = new ChapterExample();
 //        testExample.setOrderByClause("id ASC");
 //        testExample.createCriteria().andIdEqualTo("1");
