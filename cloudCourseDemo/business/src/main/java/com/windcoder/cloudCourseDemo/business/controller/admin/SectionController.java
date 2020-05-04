@@ -20,7 +20,7 @@ public class SectionController {
     @Resource
     private SectionService sectionService;
 
-    public static final String BUSINESS_NAME = "大章";
+    public static final String BUSINESS_NAME = "小节";
 
     /**
      * 列表查询

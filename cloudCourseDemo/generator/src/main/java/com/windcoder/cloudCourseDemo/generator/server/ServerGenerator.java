@@ -11,16 +11,23 @@ import java.util.Map;
  *  用于后端代码的生成，包含controller、service、dto
  */
 public class ServerGenerator {
+    static final String MODULE = "business";
+
     static String toServicePath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\service\\";
-    static String toControllerPath = "business\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\business\\controller\\admin\\";
+    static String toControllerPath = MODULE + "\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\" + MODULE + "\\controller\\admin\\";
 
 
     public static void main(String[] args) throws IOException, TemplateException {
         String Domain = "Section";
         String domain = "section";
+        String tableNameCn = "小节";
+        String module = MODULE;
+
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);
         map.put("domain", domain);
+        map.put("tableNameCn", tableNameCn);
+        map.put("module", module);
 
         // 生成Service
         FreeMarkerUtil.initConfig("service.ftl");

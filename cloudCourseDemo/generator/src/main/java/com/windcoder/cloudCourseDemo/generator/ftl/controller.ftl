@@ -1,4 +1,4 @@
-package com.windcoder.cloudCourseDemo.business.controller.admin;
+package com.windcoder.cloudCourseDemo.${module}.controller.admin;
 
 import com.windcoder.cloudCourseDemo.server.domain.${Domain};
 import com.windcoder.cloudCourseDemo.server.dto.${Domain}Dto;
@@ -20,7 +20,7 @@ public class ${Domain}Controller {
     @Resource
     private ${Domain}Service ${domain}Service;
 
-    public static final String BUSINESS_NAME = "大章";
+    public static final String BUSINESS_NAME = "${tableNameCn}";
 
     /**
      * 列表查询
