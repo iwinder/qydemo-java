@@ -165,7 +165,7 @@ export default {
                 return;
             }
             Loding.show();
-            _this.$ajax.post(_this.$api_url + "business/admin/chapter/save",  _this.chapter).then((response)=>{
+            _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/save",  _this.chapter).then((response)=>{
                 Loding.hide(_this.$isDebug);
                 console.log("保存大章的结果：", response);
                 let resp = response.data;
@@ -187,7 +187,7 @@ export default {
             let _this = this;
             Confirm.show('确认删除？',"删除后不可恢复，确认删除？", function(){
                 Loding.show();
-                _this.$ajax.delete(_this.$api_url + "business/admin/chapter/delete/"+chapterId).then((response)=>{
+                _this.$ajax.delete(process.env.VUE_APP_SERVER + "/business/admin/chapter/delete/"+chapterId).then((response)=>{
                 Loding.hide(_this.$isDebug);
                 console.log("删除大章列表结果：", response);
                 let resp = response.data;
@@ -204,7 +204,7 @@ export default {
          */
         list(page) {
             let _this = this;
-            _this.$ajax.post(_this.$api_url + "business/admin/chapter/list", {
+            _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/list", {
                 page: page,
                 size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
             }).then((response)=>{
