@@ -20,6 +20,8 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
+    public static final String BUSINESS_NAME = "大章";
+
     @PostMapping("/list")
     public ResponseDto testA(@RequestBody  PageDto pageDto) {
         chapterService.list(pageDto);
