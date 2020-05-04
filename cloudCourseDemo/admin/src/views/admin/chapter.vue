@@ -108,20 +108,20 @@
                     <div class="form-group">
                         <label   class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-10">
-                        <input type="email" class="form-control" placeholder="名称">
+                        <input type="email" v-model="chapter.name" class="form-control" placeholder="名称">
                         </div>
                     </div>
                     <div class="form-group">
                         <label   class="col-sm-2 control-label">课程ID</label>
                         <div class="col-sm-10">
-                        <input type="password" class="form-control"   placeholder="课程ID">
+                        <input    v-model="chapter.courseId" class="form-control"   placeholder="课程ID">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" v-on:click="save()" class="btn btn-primary">保存</button>
             </div>
             </div>
         </div>
@@ -139,7 +139,8 @@ export default {
     components: {Pagination},
     data: function() {
         return {
-            chapters:[]
+            chapter: {},
+            chapters: []
         }
     },
     mounted: function() {
@@ -152,9 +153,16 @@ export default {
             // let _this = tihs;
             $(".modal").modal("show");
         },
+        save() {
+            let _this = this;
+            _this.$ajax.post(_this.$api_url + "business/admin/chapter/save",  _this.chapter).then((response)=>{
+                console.log("保存大章的结果：", response);
+                
+            });
+        },
         list: function(page) {
             let _this = this;
-            _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list", {
+            _this.$ajax.post(_this.$api_url + "business/admin/chapter/list", {
                 page: page,
                 size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
             }).then((response)=>{

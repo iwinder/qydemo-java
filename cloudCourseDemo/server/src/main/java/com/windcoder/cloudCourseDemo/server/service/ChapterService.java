@@ -7,6 +7,7 @@ import com.windcoder.cloudCourseDemo.server.domain.ChapterExample;
 import com.windcoder.cloudCourseDemo.server.dto.ChapterDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.mapper.ChapterMapper;
+import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,14 @@ public class ChapterService {
             chapterDtoList.add(chapterDto);
         }
         pageDto.setList(chapterDtoList);
+    }
+
+
+    public void save(ChapterDto chapterDto){
+        chapterDto.setId(UuidUtil.getShortUuid());
+        Chapter chapter = new Chapter();
+        BeanUtils.copyProperties(chapterDto, chapter);
+        chapterMapper.insert(chapter);
     }
 
 }
