@@ -7,6 +7,7 @@ import com.windcoder.cloudCourseDemo.server.domain.ChapterExample;
 import com.windcoder.cloudCourseDemo.server.dto.ChapterDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.mapper.ChapterMapper;
+import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -29,20 +30,23 @@ public class ChapterService {
         List<Chapter> chapters = chapterMapper.selectByExample(testExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapters);
         pageDto.setTotal(pageInfo.getTotal());
-        List<ChapterDto> chapterDtoList = new ArrayList<ChapterDto>();
-        for (Chapter chapter: chapters) {
-            ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter, chapterDto);
-            chapterDtoList.add(chapterDto);
-        }
+//        List<ChapterDto> chapterDtoList = new ArrayList<ChapterDto>();
+//        for (Chapter chapter: chapters) {
+//            ChapterDto chapterDto = new ChapterDto();
+//            BeanUtils.copyProperties(chapter, chapterDto);
+//            chapterDtoList.add(chapterDto);
+//        }
+
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapters, ChapterDto.class);
         pageDto.setList(chapterDtoList);
     }
 
 
     public void save(ChapterDto chapterDto){
         chapterDto.setId(UuidUtil.getShortUuid());
-        Chapter chapter = new Chapter();
-        BeanUtils.copyProperties(chapterDto, chapter);
+//        Chapter chapter = new Chapter();
+//        BeanUtils.copyProperties(chapterDto, chapter);
+        Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         chapterMapper.insert(chapter);
     }
 
