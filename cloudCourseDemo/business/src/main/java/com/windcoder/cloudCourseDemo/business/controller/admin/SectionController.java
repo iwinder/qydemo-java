@@ -42,6 +42,9 @@ public class SectionController {
     @PostMapping("/save")
     public ResponseDto save(@RequestBody  SectionDto sectionDto) {
         // 保存校验
+        ValidatorUtil.require(sectionDto.getTitle(), "标题");
+        ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
+        ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
 
         sectionService.save(sectionDto);
         ResponseDto responseDto = new ResponseDto(sectionDto);

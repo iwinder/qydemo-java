@@ -25,6 +25,10 @@ public class Field {
     private String javaType;
     // 注释：课程|ID
     private String comment;
+    // 是否可为空
+    private Boolean nullAble;
+    // 字符串长度
+    private Integer length;
 
     @Override
     public String toString() {
@@ -36,6 +40,8 @@ public class Field {
         sb.append(", type='").append(type).append('\'');
         sb.append(", javaType='").append(javaType).append('\'');
         sb.append(", comment='").append(comment).append('\'');
+        sb.append(", nullAble=").append(nullAble);
+        sb.append(", length=").append(length);
         sb.append('}');
         return sb.toString();
     }
