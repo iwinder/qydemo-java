@@ -27,7 +27,7 @@
                     <th>名称</th>
                      <th>课程ID</th>
                     <!-- <th class="hidden-480">Clicks</th> -->
-                     <th></th>
+                     <th>操作</th>
                 </tr>
             </thead>
 
@@ -38,20 +38,13 @@
                     <td>{{chapter.courseId}}</td>
                     <td>
                         <div class="hidden-sm hidden-xs btn-group">
-                            <button class="btn btn-xs btn-success">
-                                <i class="ace-icon fa fa-check bigger-120"></i>
-                            </button>
-
-                            <button class="btn btn-xs btn-info">
+                             <!-- 编辑 -->
+                            <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
                                 <i class="ace-icon fa fa-pencil bigger-120"></i>
                             </button>
-
-                            <button class="btn btn-xs btn-danger">
+                            <!-- 删除 -->
+                            <button v-on:click="del(chapter.id)" class="btn btn-xs btn-danger">
                                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                            </button>
-
-                            <button class="btn btn-xs btn-warning">
-                                <i class="ace-icon fa fa-flag bigger-120"></i>
                             </button>
                         </div>
 
@@ -62,14 +55,7 @@
                                 </button>
 
                                 <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                    <li>
-                                        <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-                                            <span class="blue">
-                                                <i class="ace-icon fa fa-search-plus bigger-120"></i>
-                                            </span>
-                                        </a>
-                                    </li>
-
+                                    
                                     <li>
                                         <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
                                             <span class="green">
@@ -150,7 +136,8 @@ export default {
     },
     methods: {
         add() {
-            // let _this = tihs;
+            let _this = tihs;
+            _this.chapter = {};
             $("#form-modal").modal("show");
         },
         save() {
@@ -161,12 +148,30 @@ export default {
                 if(resp.success) {
                     $("#form-modal").modal("hide");
                     _this.list(1);
-                    _this.chapter = {};
                 }
                 
             });
         },
-        list: function(page) {
+        edit(chapter) {
+            let _this = this;
+            // _this.chapter = chapter;
+            // 复制给新对象，防止修改影响到源对象
+            _this.chapter = $.extend({},chapter);
+            $("#form-modal").modal("show");
+        },
+        del(chapterId) {
+            let _this = this;
+            _this.$ajax.delete(_this.$api_url + "business/admin/chapter/delete/"+chapterId).then((response)=>{
+                console.log("删除大章的结果：", response);
+                let resp = response.data;
+                if(resp.success) {
+                    $("#form-modal").modal("hide");
+                    _this.list(1);
+                }
+                
+            });
+        },
+        list(page) {
             let _this = this;
             _this.$ajax.post(_this.$api_url + "business/admin/chapter/list", {
                 page: page,
