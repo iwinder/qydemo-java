@@ -38,7 +38,7 @@
                 <td>{{section.chapterId}}</td>
                 <td>{{section.video}}</td>
                 <td>{{section.time}}</td>
-                <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
+                 <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
                 <td>{{section.sort}}</td>
 
 
@@ -139,7 +139,7 @@
                                 <div class="col-sm-10">
                                     <select v-model="section.charge" class="form-control">
                                         <option v-for="o in SECTION_CHARGE" :key="o.key" v-bind:value="o.key">{{o.value}}</option>
-                                    </select>
+                                    </select>                   
                                 </div>
                             </div>
  
@@ -164,7 +164,7 @@
     import Pagination from '../../components/pagination';
 
     export default {
-        name: 'section',
+        name: 'business-section',
         components: {Pagination},
         data: function() {
             return {
