@@ -136,7 +136,7 @@ export default {
     },
     methods: {
         add() {
-            let _this = tihs;
+            let _this = this;
             _this.chapter = {};
             $("#form-modal").modal("show");
         },
@@ -149,6 +149,7 @@ export default {
                     $("#form-modal").modal("hide");
                     _this.list(1);
                 }
+                toast.success("保存成功");
                 
             });
         },
@@ -158,6 +159,7 @@ export default {
             // 复制给新对象，防止修改影响到源对象
             _this.chapter = $.extend({},chapter);
             $("#form-modal").modal("show");
+             toast.success("修改成功");
         },
         del(chapterId) {
             let _this = this;
@@ -175,14 +177,11 @@ export default {
                     _this.$ajax.delete(_this.$api_url + "business/admin/chapter/delete/"+chapterId).then((response)=>{
                     console.log("删除大章列表结果：", response);
                     let resp = response.data;
-                    if (resp.success) {
-                        _this.list(1);
-                        Swal.fire(
-                        '删除成功!',
-                        '删除成功！',
-                        'success'
-                        )
-                    }
+                        if (resp.success) {
+                            _this.list(1);
+                            toast.success("删除成功");
+                            
+                        }
                     })
 
                 }
