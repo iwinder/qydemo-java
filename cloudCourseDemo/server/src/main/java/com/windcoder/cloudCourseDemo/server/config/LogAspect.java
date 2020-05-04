@@ -99,7 +99,7 @@ public class LogAspect {
         }
 
         // 排除字段：敏感信息或太长的字段不显示。
-        String[] excludeProperties = {};
+        String[] excludeProperties = {"password"};
         PropertyPreFilters filters = new PropertyPreFilters();
         PropertyPreFilters.MySimplePropertyPreFilter excludefilter = filters.addFilter();
         excludefilter.addExcludes(excludeProperties);
