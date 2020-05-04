@@ -10,12 +10,10 @@ import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.mapper.ChapterMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
