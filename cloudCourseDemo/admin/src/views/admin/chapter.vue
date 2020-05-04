@@ -1,3 +1,5 @@
+
+
 <template>
     <div>
         <p>
@@ -16,18 +18,10 @@
         <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
                 <tr>
-                    <!-- <th class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace" />
-                            <span class="lbl"></span>
-                        </label>
-                    </th> -->
-                    <!-- <th class="detail-col">Details</th> -->
                     <th>ID</th>
                     <th>名称</th>
-                     <th>课程ID</th>
-                    <!-- <th class="hidden-480">Clicks</th> -->
-                     <th>操作</th>
+                    <th>课程ID</th>
+                    <th>操作</th>
                 </tr>
             </thead>
 
@@ -54,8 +48,7 @@
                                     <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
                                 </button>
 
-                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                    
+                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">    
                                     <li>
                                         <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
                                             <span class="green">
@@ -78,8 +71,6 @@
                 </tr> <!--tr结束 -->
             </tbody>
         </table>
-
-
 
         <!-- Modal -->
         <div id="form-modal" class="modal fade"   tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

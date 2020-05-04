@@ -1,26 +1,22 @@
-package com.windcoder.cloudCourseDemo.generator.server;
+package com.windcoder.cloudCourseDemo.generator.vue;
 
 import com.windcoder.cloudCourseDemo.generator.utils.DbUtil;
 import com.windcoder.cloudCourseDemo.generator.utils.Field;
 import com.windcoder.cloudCourseDemo.generator.utils.FreeMarkerUtil;
-import freemarker.template.TemplateException;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
  *  用于后端代码的生成，包含controller、service、dto
  */
-public class ServerGenerator {
+public class VueGenerator {
     static final String MODULE = "business";
 
-    static String toServicePath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\service\\";
-    static String toDtoPath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\service\\";
-    static String toControllerPath = MODULE + "\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\" + MODULE + "\\controller\\admin\\";
+    static String toVuePath =  "admin\\src\\views\\admin\\";
     static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
 
     public static void main(String[] args) throws Exception  {
@@ -58,17 +54,11 @@ public class ServerGenerator {
         map.put("fieldList", fieldList);
         map.put("typeSet", typeSet);
 
-        // 生成dto
-        FreeMarkerUtil.initConfig("dto.ftl");
-        FreeMarkerUtil.generator(toDtoPath + Domain + "Dto.java", map);
+        // 生成vue
+        FreeMarkerUtil.initConfig("vue.ftl");
+        FreeMarkerUtil.generator(toVuePath + domain + ".vue", map);
 
-        // 生成Service
-        FreeMarkerUtil.initConfig("service.ftl");
-        FreeMarkerUtil.generator(toServicePath+ Domain +"Service.java", map);
 
-        // 生成Controller
-        FreeMarkerUtil.initConfig("controller.ftl");
-        FreeMarkerUtil.generator(toControllerPath+ Domain +"Controller.java", map);
     }
 
 

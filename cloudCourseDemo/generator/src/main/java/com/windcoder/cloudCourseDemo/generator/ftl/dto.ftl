@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 public class ${Domain}Dto {
 
-<#list fieldList as field>
+    <#list fieldList as field>
     /**
      * ${field.comment}
      */
