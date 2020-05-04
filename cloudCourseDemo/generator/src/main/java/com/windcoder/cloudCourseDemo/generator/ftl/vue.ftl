@@ -94,7 +94,7 @@
 
                                     <#if field.enums>
                                     <select v-model="${domain}.${field.nameHump}" class="form-control">
-                                        <option v-for="o in ${field.enumsConst}" v-bind:value="o.key">{{o.value}}</option>
+                                        <option v-for="o in ${field.enumsConst}"  :key="o.key" v-bind:value="o.key">{{o.value}}</option>
                                     </select>
                                     <#else>
                                      <input   v-model="${domain}.${field.nameHump}" class="form-control" placeholder="${field.nameCn}">

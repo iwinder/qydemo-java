@@ -148,7 +148,7 @@
                                 <div class="col-sm-10">
 
                                     <select v-model="course.level" class="form-control">
-                                        <option v-for="o in COURSE_LEVEL" v-bind:value="o.key">{{o.value}}</option>
+                                        <option v-for="o in COURSE_LEVEL"  :key="o.key" v-bind:value="o.key">{{o.value}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                                 <div class="col-sm-10">
 
                                     <select v-model="course.charge" class="form-control">
-                                        <option v-for="o in COURSE_CHARGE" v-bind:value="o.key">{{o.value}}</option>
+                                        <option v-for="o in COURSE_CHARGE"  :key="o.key" v-bind:value="o.key">{{o.value}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                                 <div class="col-sm-10">
 
                                     <select v-model="course.status" class="form-control">
-                                        <option v-for="o in COURSE_STATUS" v-bind:value="o.key">{{o.value}}</option>
+                                        <option v-for="o in COURSE_STATUS"  :key="o.key" v-bind:value="o.key">{{o.value}}</option>
                                     </select>
                                 </div>
                             </div>
