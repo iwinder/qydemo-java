@@ -13,8 +13,8 @@ Toast = {
             }
           });
       },
-      error: function() {
-        Toast.fire({
+      error: function(message) {
+        Swal.fire({
             icon: 'error',
             title: message,
             position: 'top-end',
@@ -27,8 +27,8 @@ Toast = {
             }
           });
       },
-      warning: function() {
-        Toast.fire({
+      warning: function(message) {
+        Swal.fire({
             icon: 'warning',
             title: message,
             position: 'top-end',
