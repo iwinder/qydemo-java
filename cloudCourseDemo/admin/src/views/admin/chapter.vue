@@ -142,7 +142,9 @@ export default {
         },
         save() {
             let _this = this;
+            Loding.show();
             _this.$ajax.post(_this.$api_url + "business/admin/chapter/save",  _this.chapter).then((response)=>{
+                 Loding.hide(_this.$isDebug);
                 console.log("保存大章的结果：", response);
                 let resp = response.data;
                 if(resp.success) {
