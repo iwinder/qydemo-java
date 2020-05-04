@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class SectionService {
@@ -27,8 +28,9 @@ public class SectionService {
      */
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-        SectionExample testExample = new SectionExample();
-        List<Section> sections = sectionMapper.selectByExample(testExample);
+        SectionExample sectionExample = new SectionExample();
+         sectionExample.setOrderByClause("sort asc");
+        List<Section> sections = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sections);
         pageDto.setTotal(pageInfo.getTotal());
         List<SectionDto> sectionDtoList = CopyUtil.copyList(sections, SectionDto.class);
@@ -62,6 +64,9 @@ public class SectionService {
      * @param section
      */
     private void inster(Section section){
+        Date now = new Date();
+        section.setCreatedAt(now);
+        section.setUpdatedAt(now);
         section.setId(UuidUtil.getShortUuid());
         sectionMapper.insert(section);
     }
@@ -71,6 +76,7 @@ public class SectionService {
      * @param section
      */
     private void update(Section section){
+        section.setUpdatedAt(new Date());
         sectionMapper.updateByPrimaryKey(section);
     }
 
