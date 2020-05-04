@@ -29,6 +29,10 @@ public class Field {
     private Boolean nullAble;
     // 字符串长度
     private Integer length;
+    // 是否为枚举
+    private Boolean enums;
+    // 枚举常量
+    private String enumsConst;
 
     @Override
     public String toString() {
@@ -42,6 +46,8 @@ public class Field {
         sb.append(", comment='").append(comment).append('\'');
         sb.append(", nullAble=").append(nullAble);
         sb.append(", length=").append(length);
+        sb.append(", enums=").append(enums);
+        sb.append(", enumsConst='").append(enumsConst).append('\'');
         sb.append('}');
         return sb.toString();
     }
