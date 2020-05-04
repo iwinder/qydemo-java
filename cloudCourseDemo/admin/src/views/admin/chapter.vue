@@ -96,7 +96,7 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div id="form-modal" class="modal fade"   tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -151,12 +151,18 @@ export default {
     methods: {
         add() {
             // let _this = tihs;
-            $(".modal").modal("show");
+            $("#form-modal").modal("show");
         },
         save() {
             let _this = this;
             _this.$ajax.post(_this.$api_url + "business/admin/chapter/save",  _this.chapter).then((response)=>{
                 console.log("保存大章的结果：", response);
+                let resp = response.data;
+                if(resp.success) {
+                    $("#form-modal").modal("hide");
+                    _this.list(1);
+                    _this.chapter = {};
+                }
                 
             });
         },
@@ -167,9 +173,10 @@ export default {
                 size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
             }).then((response)=>{
                 console.log("查询大章的结果：", response);
-                _this.chapters = response.data.list;
+                let resp = response.data;
+                _this.chapters = resp.content.list;
                 // 重新渲染分页组件，使其页码样式与查询页数相同
-                _this.$refs.pagination.render(page, response.data.total);
+                _this.$refs.pagination.render(page, resp.content.total);
             });
         }
     }

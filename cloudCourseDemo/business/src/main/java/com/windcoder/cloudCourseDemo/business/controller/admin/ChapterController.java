@@ -3,6 +3,7 @@ package com.windcoder.cloudCourseDemo.business.controller.admin;
 import com.windcoder.cloudCourseDemo.server.domain.Chapter;
 import com.windcoder.cloudCourseDemo.server.dto.ChapterDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
+import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
 import com.windcoder.cloudCourseDemo.server.service.ChapterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +20,17 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @PostMapping("/list")
-    public PageDto testA(@RequestBody  PageDto pageDto) {
+    public ResponseDto testA(@RequestBody  PageDto pageDto) {
         chapterService.list(pageDto);
-        return pageDto;
+        ResponseDto responseDto = new ResponseDto(pageDto);
+        return responseDto;
     }
 
     @PostMapping("/save")
-    public ChapterDto save(@RequestBody  ChapterDto chapterDto) {
+    public ResponseDto save(@RequestBody  ChapterDto chapterDto) {
         log.info("Save ChapterDto：{}", chapterDto);
         chapterService.save(chapterDto);
-        return chapterDto;
+        ResponseDto responseDto = new ResponseDto(chapterDto);
+        return responseDto;
     }
 }
