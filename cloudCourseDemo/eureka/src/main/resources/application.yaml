@@ -1,9 +1,9 @@
+server:
+  port: 8761
+
 spring:
     application:
       name: eureka
-
-server:
-  port: 8761
 eureka:
   client:
     # 本身是注册中心，不需要获取注册信息，所以fetch-registry=false

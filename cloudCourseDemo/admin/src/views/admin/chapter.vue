@@ -1,5 +1,13 @@
 <template>
-    
+    <div>
+        <p>
+            <button v-on:click="list()" class="btn btn-white btn-default btn-round">
+               <i class="ace-icon fa fa-refresh"></i>
+                刷新
+            </button>
+        </p>
+        <!-- ref设置pagination组件别名为 pagination -->
+        <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="6"></pagination>
         <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
                 <tr>
@@ -79,12 +87,16 @@
                 </tr> <!--tr结束 -->
             </tbody>
         </table>
-
+    </div>
 </template>
 
 <script>
+
+import Pagination from '../../components/pagination';
+
 export default {
     name: 'chapter',
+    components: {Pagination},
     data: function() {
         return {
             chapters:[]
@@ -93,17 +105,19 @@ export default {
     mounted: function() {
         // this.$parent.activeSidebar("sidebar-business-chapter");
         let _this = this;
-        _this.list();
+        _this.list(1);
     },
     methods: {
-        list: function() {
+        list: function(page) {
             let _this = this;
             _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list", {
-                page: 1,
-                size: 1
+                page: page,
+                size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
             }).then((response)=>{
                 console.log("查询大章的结果：", response);
                 _this.chapters = response.data.list;
+                // 重新渲染分页组件，使其页码样式与查询页数相同
+                _this.$refs.pagination.render(page, response.data.total);
             });
         }
     }
