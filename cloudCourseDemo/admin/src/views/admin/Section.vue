@@ -38,7 +38,7 @@
                 <td>{{section.chapterId}}</td>
                 <td>{{section.video}}</td>
                 <td>{{section.time}}</td>
-                <td>{{section.charge}}</td>
+                <td>{{CHARGE | optionKV(section.charge)}}</td>
                 <td>{{section.sort}}</td>
 
 
@@ -137,7 +137,9 @@
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">收费</label>
                                 <div class="col-sm-10">
-                                    <input   v-model="section.charge" class="form-control" placeholder="收费">
+                                    <select v-model="section.charge" class="form-control">
+                                        <option v-for="o in CHARGE" :key="o.key" v-bind:value="o.key">{{o.value}}</option>
+                                    </select>
                                 </div>
                             </div>
  
@@ -167,7 +169,8 @@
         data: function() {
             return {
             section: {},
-            sections: []
+            sections: [],
+            CHARGE: [{key:"C", value:"收费"},{key:"F", value:"免费"}],
         }
         },
         mounted: function() {
