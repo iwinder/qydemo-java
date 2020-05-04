@@ -156,8 +156,11 @@ export default {
                 if(resp.success) {
                     $("#form-modal").modal("hide");
                     _this.list(1);
+                    Toast.success("保存成功");
+                }else {
+                    Toast.error(resp.message);
                 }
-                Toast.success("保存成功");
+                
                 
             });
         },
