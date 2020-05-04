@@ -12,13 +12,22 @@ import java.util.Map;
  */
 public class ServerGenerator {
     static String toServicePath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\service\\";
+    static String toControllerPath = "business\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\business\\controller\\admin\\";
+
+
     public static void main(String[] args) throws IOException, TemplateException {
         String Domain = "Section";
         String domain = "section";
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);
         map.put("domain", domain);
+
+        // 生成Service
         FreeMarkerUtil.initConfig("service.ftl");
         FreeMarkerUtil.generator(toServicePath+ Domain +"Service.java", map);
+
+        // 生成Controller
+        FreeMarkerUtil.initConfig("controller.ftl");
+        FreeMarkerUtil.generator(toControllerPath+ Domain +"Controller.java", map);
     }
 }
