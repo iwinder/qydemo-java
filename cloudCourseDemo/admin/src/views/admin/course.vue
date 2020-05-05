@@ -13,7 +13,44 @@
         </p>
         <!-- ref设置pagination组件别名为 pagination -->
         <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="6"></pagination>
-        <table id="simple-table" class="table  table-bordered table-hover">
+        <div class="row">
+            <div v-for="course in courses" :key="course.id" class="col-md-4">
+                <div class="thumbnail search-thumbnail">
+                    <img v-show="!course.image" class="media-object"  src="/static/images/demo-course.jpg" />
+                    <img v-show="course.image" class="media-object" v-bind:src="course.image" />
+                    <div class="caption">
+                        <div class="clearfix">
+                            <span class="pull-right label label-primary info-label">{{COURSE_LEVEL | optionKV(course.level)}}</span>
+                            <span class="pull-right label label-primary info-label">{{COURSE_CHARGE | optionKV(course.charge)}}</span>
+                            <span class="pull-right label label-primary info-label">{{COURSE_STATUS | optionKV(course.status)}}</span>
+                        </div>
+
+                        <h3 class="search-title">
+                            <a href="#" class="blue">{{course.name}}</a>
+                        </h3>
+                        <P> <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;</P>
+                        <p>{{course.summary}}</p>
+                        <p>
+                            <span class="badge badge-info">{{course.id}}</span>
+                            <span class="badge badge-info">排序：{{course.sort}}</span>
+                            <span class="badge badge-info">时长：{{course.time}}</span>
+                        </p>
+                        <p>
+                            <!-- 编辑 -->
+                            <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
+                                <!-- <i class="ace-icon fa fa-pencil bigger-120"></i> -->
+                                编辑
+                            </button>
+                            <!-- 删除 -->
+                            <button v-on:click="del(course.id)" class="btn btn-white btn-xs btn-warning btn-round">
+                                删除
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
             <tr>
                 <th>id</th>
@@ -48,11 +85,11 @@
                 <td>{{course.sort}}</td>
             <td>
                 <div class="hidden-sm hidden-xs btn-group">
-                    <!-- 编辑 -->
+                   
                     <button v-on:click="edit(course)" class="btn btn-xs btn-info">
                         <i class="ace-icon fa fa-pencil bigger-120"></i>
                     </button>
-                    <!-- 删除 -->
+                    
                     <button v-on:click="del(course.id)" class="btn btn-xs btn-danger">
                         <i class="ace-icon fa fa-trash-o bigger-120"></i>
                     </button>
@@ -85,9 +122,9 @@
                     </div>
                 </div>
             </td>
-            </tr> <!--tr结束 -->
+            </tr>  
             </tbody>
-        </table>
+        </table> -->
 
 
 
@@ -306,3 +343,8 @@
     }
 </script>
 
+<style scoped>
+  .caption h3 {
+    font-size: 20px;
+  }
+</style>
