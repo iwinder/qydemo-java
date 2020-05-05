@@ -125,14 +125,14 @@
         components: {Pagination},
         data: function() {
             return {
-            ${domain}: {},
-            ${domain}s: [],
-            <#list fieldList as field>
-                <#if field.enums>
-            ${field.enumsConst}:${field.enumsConst},
-                </#if>
-            </#list>
-        }
+                ${domain}: {},
+                ${domain}s: [],
+                <#list fieldList as field>
+                    <#if field.enums>
+                ${field.enumsConst}:${field.enumsConst},
+                    </#if>
+                </#list>
+            }
         },
         mounted: function() {
             // this.$parent.activeSidebar("sidebar-${module}-${domain}");

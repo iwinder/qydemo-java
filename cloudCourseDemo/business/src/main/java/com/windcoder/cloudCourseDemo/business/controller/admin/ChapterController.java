@@ -29,7 +29,7 @@ public class ChapterController {
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto testA(@RequestBody ChapterPageDto chapterPageDto) {
+    public ResponseDto list(@RequestBody ChapterPageDto chapterPageDto) {
         ValidatorUtil.require(chapterPageDto.getCourseId(), "课程ID");
         chapterService.list(chapterPageDto);
         ResponseDto responseDto = new ResponseDto(chapterPageDto);

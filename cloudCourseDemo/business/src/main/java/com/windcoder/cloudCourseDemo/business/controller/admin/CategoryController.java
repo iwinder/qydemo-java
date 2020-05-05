@@ -22,13 +22,21 @@ public class CategoryController {
 
     public static final String BUSINESS_NAME = "分类";
 
+
+    @PostMapping("/all")
+    public ResponseDto all() {
+        List<CategoryDto> categoryDtoList = categoryService.all();
+        ResponseDto responseDto = new ResponseDto(categoryDtoList);
+        return responseDto;
+    }
+
     /**
      * 列表查询
      * @param pageDto
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto testA(@RequestBody  PageDto pageDto) {
+    public ResponseDto list(@RequestBody  PageDto pageDto) {
         categoryService.list(pageDto);
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;

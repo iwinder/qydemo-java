@@ -29,7 +29,7 @@ public class SectionController {
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto testA(@RequestBody SectionPageDto sectionPageDto) {
+    public ResponseDto list(@RequestBody SectionPageDto sectionPageDto) {
         ValidatorUtil.require(sectionPageDto.getCourseId(), "课程ID");
         ValidatorUtil.require(sectionPageDto.getChapterId(), "大章ID");
         sectionService.list(sectionPageDto);

@@ -28,7 +28,7 @@ public class CourseController {
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto testA(@RequestBody  PageDto pageDto) {
+    public ResponseDto list(@RequestBody  PageDto pageDto) {
         courseService.list(pageDto);
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;

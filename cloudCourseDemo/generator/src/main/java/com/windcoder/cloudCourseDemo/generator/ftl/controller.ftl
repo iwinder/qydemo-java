@@ -28,7 +28,7 @@ public class ${Domain}Controller {
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto testA(@RequestBody  PageDto pageDto) {
+    public ResponseDto list(@RequestBody  PageDto pageDto) {
         ${domain}Service.list(pageDto);
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;
