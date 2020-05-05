@@ -8,8 +8,11 @@ import com.windcoder.cloudCourseDemo.server.domain.CourseExample;
 import com.windcoder.cloudCourseDemo.server.dto.CourseDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.mapper.CourseMapper;
+import com.windcoder.cloudCourseDemo.server.mapper.MyCourseMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,9 +21,12 @@ import java.util.List;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class CourseService {
     @Resource
     private CourseMapper courseMapper;
+    @Resource
+    private MyCourseMapper myCourseMapper;
 
     /**
      * 列表查询
@@ -78,6 +84,15 @@ public class CourseService {
     private void update(Course course){
         course.setUpdatedAt(new Date());
         courseMapper.updateByPrimaryKey(course);
+    }
+
+    /**
+     * 更新课程时长
+     * @param courseId
+     */
+    public void updateTime(String courseId) {
+        log.info("更新课程时长：{}", courseId);
+        myCourseMapper.updateTime(courseId);
     }
 
 }

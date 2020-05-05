@@ -7,6 +7,7 @@ import com.windcoder.cloudCourseDemo.server.domain.Section;
 import com.windcoder.cloudCourseDemo.server.domain.SectionExample;
 import com.windcoder.cloudCourseDemo.server.dto.SectionDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
+import com.windcoder.cloudCourseDemo.server.dto.SectionPageDto;
 import com.windcoder.cloudCourseDemo.server.mapper.SectionMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
@@ -21,20 +22,29 @@ import java.util.Date;
 public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
+    @Resource
+    private CourseService courseService;
 
     /**
      * 列表查询
-     * @param pageDto
+     * @param sectionPageDto
      */
-    public void list(PageDto pageDto) {
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+    public void list(SectionPageDto sectionPageDto) {
+        PageHelper.startPage(sectionPageDto.getPage(),sectionPageDto.getSize());
         SectionExample sectionExample = new SectionExample();
-         sectionExample.setOrderByClause("sort asc");
+        SectionExample.Criteria criteria = sectionExample.createCriteria();
+        if (!StringUtils.isEmpty(sectionPageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(sectionPageDto.getCourseId());
+        }
+        if (!StringUtils.isEmpty(sectionPageDto.getChapterId())) {
+            criteria.andChapterIdEqualTo(sectionPageDto.getChapterId());
+        }
+        sectionExample.setOrderByClause("sort asc");
         List<Section> sections = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sections);
-        pageDto.setTotal(pageInfo.getTotal());
+        sectionPageDto.setTotal(pageInfo.getTotal());
         List<SectionDto> sectionDtoList = CopyUtil.copyList(sections, SectionDto.class);
-        pageDto.setList(sectionDtoList);
+        sectionPageDto.setList(sectionDtoList);
     }
 
 
@@ -49,6 +59,7 @@ public class SectionService {
         } else {
             this.update(section);
         }
+        courseService.updateTime(section.getCourseId());
     }
 
     /**
