@@ -151,8 +151,7 @@
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">概述</label>
                                 <div class="col-sm-10">
-
-                                     <input   v-model="course.summary" class="form-control" placeholder="概述">
+                                    <textarea v-model="course.summary" class="form-control"></textarea>
                                 </div>
                             </div>
  
