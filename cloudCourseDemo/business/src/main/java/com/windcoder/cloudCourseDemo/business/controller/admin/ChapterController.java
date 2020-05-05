@@ -2,6 +2,7 @@ package com.windcoder.cloudCourseDemo.business.controller.admin;
 
 import com.windcoder.cloudCourseDemo.server.domain.Chapter;
 import com.windcoder.cloudCourseDemo.server.dto.ChapterDto;
+import com.windcoder.cloudCourseDemo.server.dto.ChapterPageDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
 import com.windcoder.cloudCourseDemo.server.service.ChapterService;
@@ -24,13 +25,14 @@ public class ChapterController {
 
     /**
      * 列表查询
-     * @param pageDto
+     * @param chapterPageDto
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto testA(@RequestBody  PageDto pageDto) {
-        chapterService.list(pageDto);
-        ResponseDto responseDto = new ResponseDto(pageDto);
+    public ResponseDto testA(@RequestBody ChapterPageDto chapterPageDto) {
+        ValidatorUtil.require(chapterPageDto.getCourseId(), "课程ID");
+        chapterService.list(chapterPageDto);
+        ResponseDto responseDto = new ResponseDto(chapterPageDto);
         return responseDto;
     }
 

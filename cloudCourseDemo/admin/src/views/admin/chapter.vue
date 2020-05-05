@@ -2,7 +2,13 @@
 
 <template>
     <div>
+        <h3>{{course.name}}</h3>
         <p>
+            <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+             <i class="ace-icon fa fa-arrow-left"></i>
+             返回课程
+            </router-link>
+            &nbsp;
             <button v-on:click="add()" class="btn btn-white btn-default btn-round">
                <i class="ace-icon fa fa-edit"></i>
                 新增
@@ -89,9 +95,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label   class="col-sm-2 control-label">课程ID</label>
+                        <label   class="col-sm-2 control-label">课程</label>
                         <div class="col-sm-10">
-                        <input    v-model="chapter.courseId" class="form-control"   placeholder="课程ID">
+                            <p class="form-control-static">{{course.name}}</p>
                         </div>
                     </div>
                 </form>
@@ -117,13 +123,20 @@ export default {
     data: function() {
         return {
             chapter: {},
-            chapters: []
+            chapters: [],
+            course: {},
         }
     },
     mounted: function() {
         // this.$parent.activeSidebar("sidebar-business-chapter");
         let _this = this;
+        let course = SessionStorage.get("course") || {};
+        if(Tool.isEmpty(course)) {
+            _this.$router.push("/welcome");
+        }
+        _this.course = course;
         _this.list(1);
+
     },
     methods: {
         /**
@@ -151,10 +164,10 @@ export default {
             let _this = this;
             // 保存校验
             if (!Validator.require(_this.chapter.name, "名称")
-                || !Validator.require(_this.chapter.courseId, "课程ID")
                 || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
                 return;
             }
+            _this.chapter.courseId = _this.course.id;
             Loding.show();
             _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/save",  _this.chapter).then((response)=>{
                 Loding.hide(_this.$isDebug);
@@ -197,7 +210,8 @@ export default {
             let _this = this;
             _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/list", {
                 page: page,
-                size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
+                size: _this.$refs.pagination.size, // $refs使用组件别名pagination，获取组件里面的变量size
+                courseId: _this.course.id
             }).then((response)=>{
                 console.log("查询大章的结果：", response);
                 let resp = response.data;

@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.windcoder.cloudCourseDemo.server.domain.Chapter;
 import com.windcoder.cloudCourseDemo.server.domain.ChapterExample;
 import com.windcoder.cloudCourseDemo.server.dto.ChapterDto;
+import com.windcoder.cloudCourseDemo.server.dto.ChapterPageDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.mapper.ChapterMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
@@ -23,16 +24,20 @@ public class ChapterService {
 
     /**
      * 列表查询
-     * @param pageDto
+     * @param chapterPageDto
      */
-    public void list(PageDto pageDto) {
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-        ChapterExample testExample = new ChapterExample();
-        List<Chapter> chapters = chapterMapper.selectByExample(testExample);
+    public void list(ChapterPageDto chapterPageDto) {
+        PageHelper.startPage(chapterPageDto.getPage(),chapterPageDto.getSize());
+        ChapterExample chapterExample = new ChapterExample();
+        ChapterExample.Criteria criteria = chapterExample.createCriteria();
+        if (!StringUtils.isEmpty(chapterPageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(chapterPageDto.getCourseId());
+        }
+        List<Chapter> chapters = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapters);
-        pageDto.setTotal(pageInfo.getTotal());
+        chapterPageDto.setTotal(pageInfo.getTotal());
         List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapters, ChapterDto.class);
-        pageDto.setList(chapterDtoList);
+        chapterPageDto.setList(chapterDtoList);
     }
 
 
