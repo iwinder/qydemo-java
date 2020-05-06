@@ -39,12 +39,15 @@
                             <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
                                 <!-- <i class="ace-icon fa fa-pencil bigger-120"></i> -->
                                 大章
-                            </button>
+                            </button>&nbsp;
+                            <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+                                内容
+                            </button>&nbsp;
                             <!-- 编辑 -->
                             <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
                                 <!-- <i class="ace-icon fa fa-pencil bigger-120"></i> -->
                                 编辑
-                            </button>
+                            </button>&nbsp;
                             <!-- 删除 -->
                             <button v-on:click="del(course.id)" class="btn btn-white btn-xs btn-warning btn-round">
                                 删除
@@ -54,85 +57,8 @@
                 </div>
             </div>
         </div>
-        <!-- <table id="simple-table" class="table  table-bordered table-hover">
-            <thead>
-            <tr>
-                <th>id</th>
-                <th>名称</th>
-                <th>概述</th>
-                <th>时长</th>
-                <th>价格（元）</th>
-                <th>封面</th>
-                <th>级别</th>
-                <th>收费</th>
-                <th>状态</th>
-                <th>报名数</th>
-                <th>顺序</th>
-
-
-                <th>操作</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr v-for="course in courses" :key="course.id" >
-                <td>{{course.id}}</td>
-                <td>{{course.name}}</td>
-                <td>{{course.summary}}</td>
-                <td>{{course.time}}</td>
-                <td>{{course.price}}</td>
-                <td>{{course.image}}</td>
-                 <td>{{COURSE_LEVEL | optionKV(course.level)}}</td>
-                 <td>{{COURSE_CHARGE | optionKV(course.charge)}}</td>
-                 <td>{{COURSE_STATUS | optionKV(course.status)}}</td>
-                <td>{{course.enroll}}</td>
-                <td>{{course.sort}}</td>
-            <td>
-                <div class="hidden-sm hidden-xs btn-group">
-                   
-                    <button v-on:click="edit(course)" class="btn btn-xs btn-info">
-                        <i class="ace-icon fa fa-pencil bigger-120"></i>
-                    </button>
-                    
-                    <button v-on:click="del(course.id)" class="btn btn-xs btn-danger">
-                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                    </button>
-                </div>
-
-                <div class="hidden-md hidden-lg">
-                    <div class="inline pos-rel">
-                        <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                            <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-
-                            <li>
-                                <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-                                            <span class="green">
-                                                <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                            </span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-                                            <span class="red">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </td>
-            </tr>  
-            </tbody>
-        </table> -->
-
-
-
-        <!-- Modal -->
+      
+        <!-- 表单Modal -->
         <div id="form-modal" class="modal fade"   tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -227,10 +153,6 @@
                                      <input   v-model="course.enroll" class="form-control" placeholder="报名数">
                                 </div>
                             </div>
- 
- 
- 
-
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -240,6 +162,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- 课程内容Modal -->
+        <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">内容编辑</h4>
+                    </div>  <!-- 课程内容Modal  header end-->
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div id="content"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>  <!-- 课程内容Modal  body end-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" v-on:click="saveContent()" class="btn btn-primary">保存</button>
+                    </div>  <!-- 课程内容Modal  footer end-->
+                </div>
+            </div> 
+        </div><!-- 课程内容Modal end-->
     </div>
 
 </template>
@@ -275,6 +222,7 @@
             add() {
                 let _this = this;
                 _this.course = {};
+                _this.tree.checkAllNodes(false);
                 $("#form-modal").modal("show");
             },
             /**
@@ -285,6 +233,7 @@
                 // _this.course = course;
                 // 复制给新对象，防止修改影响到源对象
                 _this.course = $.extend({},course);
+                _this.listCategory(course.id);
                 $("#form-modal").modal("show");
             },
             /**
@@ -355,17 +304,22 @@
              */
             list(page) {
                 let _this = this;
+                 Loding.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/list", {
                     page: page,
                     size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
                 }).then((response)=>{
                     console.log("查询课程的结果：", response);
+                    Loding.hide(_this.$isDebug);
                     let resp = response.data;
                     _this.courses = resp.content.list;
                     // 重新渲染分页组件，使其页码样式与查询页数相同
                     _this.$refs.pagination.render(page, resp.content.total);
                 });
             },
+            /**
+             * 获取课程分类
+             */
             allCategory() {
                 let _this = this;
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/category/all").then((response)=>{
@@ -377,6 +331,9 @@
                      
                 });
             },
+            /**
+             * 初始化课程分类树
+             */
             initTree() {
                 let _this = this;
                 let setting = {
@@ -395,7 +352,69 @@
                 let zNodes = _this.categorys;
  
                 _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
-            }
+            },
+            /**
+             * 查找课程下所有分类
+             */
+            listCategory(courseId) {
+                let _this = this;
+                Loding.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
+                    Loding.hide();
+                    console.log("查询课程下所有分类的结果：", response);
+                    let resp = response.data;
+                    let categorys = resp.content;
+                    // 勾选查询到的分类
+                    _this.tree.checkAllNodes(false);
+                    for (let i = 0; i < categorys.length; i++) {
+                        let node = _this.tree.getNodeByParam("id", categorys[i].categoryId);
+                        _this.tree.checkNode(node, true);
+                    }
+                });
+            },
+            /**
+             * 打开内容编辑框
+             */
+            editContent(course) {
+                let _this = this;
+                let id = course.id;
+                _this.course = course;
+                $("#content").summernote({
+                    focus: true,
+                    height: 300
+                });
+                $("#content").summernote('code', '');
+                Loding.show();
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course/find-content/' + id).then((response)=>{
+                    Loding.hide();
+                    console.log("查询课程下所有分类的结果：", response);
+                    let resp = response.data;
+                    if(resp.success) {
+                        $("#course-content-modal").modal({backdrop: 'static', keyboard: false});
+                        if(resp.content) {
+                            $("#content").summernote('code', resp.content.content);
+                        }
+                    } else {
+                         Toast.warning(resp.message);
+                    }
+                });
+            },
+            saveContent() {
+                let _this = this;
+                let content = $("#content").summernote("code");
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save-content', {
+                    id: _this.course.id,
+                    content: content
+                }).then((response)=>{
+                    Loding.hide();
+                    let resp = response.data;
+                    if (resp.success) {
+                        Toast.success("内容保存成功");
+                    } else {
+                        Toast.warning(resp.message);
+                    }
+                });
+            },
         }
     }
 </script>

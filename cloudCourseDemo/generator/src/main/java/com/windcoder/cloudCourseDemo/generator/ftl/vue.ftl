@@ -218,10 +218,12 @@
              */
             list(page) {
                 let _this = this;
+                Loding.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/${module}/admin/${domain}/list", {
                     page: page,
                     size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
                 }).then((response)=>{
+                    Loding.hide(_this.$isDebug);
                     console.log("查询${tableNameCn}的结果：", response);
                     let resp = response.data;
                     _this.${domain}s = resp.content.list;

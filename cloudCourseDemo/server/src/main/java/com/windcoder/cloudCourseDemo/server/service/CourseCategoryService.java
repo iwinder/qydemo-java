@@ -87,4 +87,11 @@ public class CourseCategoryService {
             inster(courseCategory);
         }
     }
+
+    public List<CourseCategoryDto> listByCourse(String courseId) {
+        CourseCategoryExample example = new CourseCategoryExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<CourseCategory> courseCategories = courseCategoryMapper.selectByExample(example);
+        return CopyUtil.copyList(courseCategories, CourseCategoryDto.class);
+    }
 }

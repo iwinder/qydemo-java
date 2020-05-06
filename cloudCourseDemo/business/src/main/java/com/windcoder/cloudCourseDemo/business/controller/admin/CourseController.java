@@ -1,9 +1,8 @@
 package com.windcoder.cloudCourseDemo.business.controller.admin;
 
 import com.windcoder.cloudCourseDemo.server.domain.Course;
-import com.windcoder.cloudCourseDemo.server.dto.CourseDto;
-import com.windcoder.cloudCourseDemo.server.dto.PageDto;
-import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
+import com.windcoder.cloudCourseDemo.server.dto.*;
+import com.windcoder.cloudCourseDemo.server.service.CourseCategoryService;
 import com.windcoder.cloudCourseDemo.server.service.CourseService;
 import com.windcoder.cloudCourseDemo.server.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,8 @@ public class CourseController {
 
     @Resource
     private CourseService courseService;
-
+    @Resource
+    private CourseCategoryService courseCategoryService;
     public static final String BUSINESS_NAME = "课程";
 
     /**
@@ -63,4 +63,34 @@ public class CourseController {
         ResponseDto responseDto = new ResponseDto();
         return responseDto;
     }
+
+
+    /**
+     * 查找课程下所有分类
+     * @param courseId
+     * @return
+     */
+     @PostMapping("/list-category/{courseId}")
+   public ResponseDto listCategory(@PathVariable(value = "courseId") String courseId) {
+        ResponseDto responseDto = new ResponseDto();
+        List<CourseCategoryDto> dtoList = courseCategoryService.listByCourse(courseId);
+        responseDto.setContent(dtoList);
+        return responseDto;
+    }
+
+
+    @GetMapping("/find-content/{id}")
+   public ResponseDto findContent(@PathVariable String id) {
+       ResponseDto responseDto = new ResponseDto();
+       CourseContentDto contentDto = courseService.findContent(id);
+       responseDto.setContent(contentDto);
+       return responseDto;
+   }
+
+   @PostMapping("/save-content")
+   public ResponseDto saveContent(@RequestBody CourseContentDto contentDto) {
+       ResponseDto responseDto = new ResponseDto();
+       courseService.saveContent(contentDto);
+       return responseDto;
+   }
 }
