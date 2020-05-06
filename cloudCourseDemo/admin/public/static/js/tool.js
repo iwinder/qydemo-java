@@ -53,7 +53,7 @@ Tool = {
   * @param obj
   * @returns {number}
   */
- removeObj: function (array, obj) {
+  removeObj: function (array, obj) {
    let index = -1;
    for (let i = 0; i < array.length; i++) {
      if (array[i] === obj) {

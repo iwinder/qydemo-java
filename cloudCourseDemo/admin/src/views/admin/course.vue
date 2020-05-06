@@ -49,7 +49,7 @@
                                 <!-- <i class="ace-icon fa fa-pencil bigger-120"></i> -->
                                 大章
                             </button>&nbsp;
-                            <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+                            <button v-on:click="toContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                                 内容
                             </button>&nbsp;
                             <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -207,7 +207,7 @@
         </div>
 
         <!-- 课程内容Modal -->
-        <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog" style="overflow:auto;">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -545,6 +545,14 @@
                          Toast.warning(resp.message);
                     }
                 });
+            },
+            /**
+            * 点击【内容】
+            */
+            toContent(course) {
+                let _this = this;
+                SessionStorage.set(SESSION_KEY_COURSE, course);
+                _this.$router.push("/business/content");
             },
             /**
              * 保存内容
