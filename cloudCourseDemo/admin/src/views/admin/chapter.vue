@@ -138,7 +138,7 @@ export default {
     mounted: function() {
         this.$parent.activeSidebar("sidebar-business-course");
         let _this = this;
-        let course = SessionStorage.get("course") || {};
+        let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
         if(Tool.isEmpty(course)) {
             _this.$router.push("/welcome");
         }
@@ -170,7 +170,7 @@ export default {
          */
         toSection(chapter) {
             let _this = this;
-            SessionStorage.set("chapter", chapter);
+            SessionStorage.set(SESSION_KEY_CHAPTER, chapter);
             _this.$router.push("/business/section");
         },
         /**
