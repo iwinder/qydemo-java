@@ -254,7 +254,7 @@
              */
             afterUpload(response) {
                 let _this = this;
-                let image = response.content;
+                let image = response.content.path;
                 _this.teacher.image = process.env.VUE_APP_FILE_SERVER+image;
            },
         }
