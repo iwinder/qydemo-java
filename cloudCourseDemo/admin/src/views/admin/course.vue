@@ -88,6 +88,23 @@
                                 <ul id="tree" class="ztree"></ul>
                                 </div>
                             </div> 
+
+                            <div class="form-group">
+                                <label   class="col-sm-2 control-label">封面</label>
+                                <div class="col-sm-10"> 
+                                    <file v-bind:id="'image-upload'" v-bind:text="'上传封面'"  
+                                            v-bind:suffixs="['jpg','jpeg','png']" 
+                                            v-bind:use="FILE_USE.COURSE.key"
+                                            v-bind:after-upload="afterUpload"
+                                            ></file>
+                                     <div v-show="course.image" class="row">
+                                            <div class="col-md-4">
+                                                <img v-bind:src="course.image" class="img-responsive">
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+ 
  
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">名称</label>
@@ -128,13 +145,13 @@
                                 </div>
                             </div>
  
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label   class="col-sm-2 control-label">封面</label>
                                 <div class="col-sm-10">
 
                                      <input   v-model="course.image" class="form-control" placeholder="封面">
                                 </div>
-                            </div>
+                            </div> -->
  
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">级别</label>
@@ -268,10 +285,11 @@
 <script>
 
     import Pagination from '../../components/pagination';
+    import File from "../../components/file";
 
     export default {
         name: 'business-course',
-        components: {Pagination},
+        components: {Pagination, File},
         data: function() {
             return {
                 course: {},
@@ -279,6 +297,7 @@
                 COURSE_LEVEL:COURSE_LEVEL,
                 COURSE_CHARGE:COURSE_CHARGE,
                 COURSE_STATUS:COURSE_STATUS,
+                FILE_USE: FILE_USE,
                 categorys: {},
                 tree: {},
                 saveContentLabel:'',
@@ -288,6 +307,7 @@
                     newSort: 0,
                 },
                 teachers: [],
+                
             }
         },
         mounted: function() {
@@ -443,7 +463,7 @@
             listCategory(courseId) {
                 let _this = this;
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((response)=>{
                     Loading.hide();
                     console.log("查询课程下所有分类的结果：", response);
                     let resp = response.data;
@@ -558,6 +578,14 @@
                     _this.teachers = resp.content;
                 });
             },
+            /**
+             * 封面上传回调
+             */
+            afterUpload(response) {
+                let _this = this;
+                let image = response.content.path;
+                _this.course.image = process.env.VUE_APP_FILE_SERVER + image;
+           },
         }
     }
 </script>

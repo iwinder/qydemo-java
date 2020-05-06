@@ -367,7 +367,7 @@
 
 			 
 
-					<li class="">
+					<li class="active open">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> 系统管理 </span>
@@ -435,7 +435,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="">
+					<li class="active open">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> 文件管理 </span>
