@@ -206,65 +206,7 @@
             </div>
         </div>
 
-        <!-- 课程内容Modal -->
-        <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog" style="overflow:auto;">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">内容编辑</h4>
-                    </div>  <!-- 课程内容Modal  header end-->
-                    <div class="modal-body">
-                        <file v-bind:input-id="'content-file-upload'"
-                            v-bind:text="'上传文件1'"
-                            v-bind:suffixs="['jpg', 'jpeg', 'png', 'mp4']"
-                            v-bind:use="FILE_USE.COURSE.key"
-                            v-bind:after-upload="afterUploadContentFile"></file>
-                        <br>
-                        <table id="file-table" class="table  table-bordered table-hover">
-                            <thead>
-                            <tr>
-                            <th>名称</th>
-                            <th>地址</th>
-                            <th>大小</th>
-                            <th>操作</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <tr v-for="f in files"  v-bind:key="f.id">
-                            <td>{{f.name}}</td>
-                            <td>{{f.url}}</td>
-                            <td>{{f.size | formatFileSize}}</td>
-                            <td>
-                                <button v-on:click="delFile(f)" class="btn btn-white btn-xs btn-warning btn-round">
-                                <i class="ace-icon fa fa-times red2"></i>
-                                删除
-                                </button>
-                            </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <div class="col-lg-12">
-                                    {{saveContentLabel}}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-lg-12">
-                                    <div id="content"></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>  <!-- 课程内容Modal  body end-->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" v-on:click="saveContent()" class="btn btn-primary">保存</button>
-                    </div>  <!-- 课程内容Modal  footer end-->
-                </div>
-            </div> 
-        </div><!-- 课程内容Modal end-->
+ 
 
 
         <!-- 排序Modal -->
@@ -336,8 +278,7 @@
                     oldSort: 0,
                     newSort: 0,
                 },
-                teachers: [],
-                files: [],
+                teachers: [], 
                 
             }
         },
@@ -507,45 +448,7 @@
                     }
                 });
             },
-            /**
-             * 打开内容编辑框
-             */
-            editContent(course) {
-                let _this = this;
-                let id = course.id;
-                _this.course = course;
-                $("#content").summernote({
-                    focus: true,
-                    height: 300
-                });
-                // 先清空历史文本
-                $("#content").summernote('code', '');
-                _this.saveContentLabel = "";
-                 // 加载内容文件列表
-                _this.listContentFiles();
-                Loading.show();
-                _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course/find-content/' + id).then((response)=>{
-                    Loading.hide();
-                    console.log("查询课程下所有分类的结果：", response);
-                    let resp = response.data;
-                    if(resp.success) {
-                        $("#course-content-modal").modal({backdrop: 'static', keyboard: false});
-                        if(resp.content) {
-                            $("#content").summernote('code', resp.content.content);
-                        }
-                        // 定时自动保存
-                        let saveContentInterval = setInterval(function() {
-                            _this.saveContent();
-                        }, 5000);
-                        // 关闭内容框时，清空自动保存任务
-                        $('#course-content-modal').on('hidden.bs.modal', function (e) {
-                            clearInterval(saveContentInterval);
-                        })
-                    } else {
-                         Toast.warning(resp.message);
-                    }
-                });
-            },
+            
             /**
             * 点击【内容】
             */
@@ -553,27 +456,6 @@
                 let _this = this;
                 SessionStorage.set(SESSION_KEY_COURSE, course);
                 _this.$router.push("/business/content");
-            },
-            /**
-             * 保存内容
-             */
-            saveContent() {
-                let _this = this;
-                let content = $("#content").summernote("code");
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save-content', {
-                    id: _this.course.id,
-                    content: content
-                }).then((response)=>{
-                    Loading.hide();
-                    let resp = response.data;
-                    if (resp.success) {
-                        // Toast.success("内容保存成功");
-                         let now = Tool.dateFormat("hh:mm:ss");
-                        _this.saveContentLabel = "最后保存时间：" + now;
-                    } else {
-                        Toast.warning(resp.message);
-                    }
-                });
             },
              openSortModal(course) {
                 let _this = this;
@@ -627,53 +509,7 @@
                 let image = response.content.path;
                 _this.course.image = process.env.VUE_APP_FILE_SERVER + image;
            },
-            /**
-             * 加载内容文件列表
-             */
-            listContentFiles() {
-                let _this = this;
-                _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/list/' + _this.course.id).then((response)=>{
-                    let resp = response.data;
-                    if (resp.success) {
-                        _this.files = resp.content;
-                    }
-                });
-            },
-
-            /**
-             * 上传内容文件后，保存内容文件记录
-             */
-            afterUploadContentFile(response) {
-                let _this = this;
-                console.log("开始保存文件记录");
-                let file = response.content;
-                file.courseId = _this.course.id;
-                file.url = file.path;
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/save', file).then((response)=>{
-                let resp = response.data;
-                if (resp.success) {
-                    Toast.success("上传文件成功");
-                    _this.files.push(resp.content);
-                }
-                });
-
-            },
-
-            /**
-             * 删除内容文件
-             */
-            delFile(f) {
-                let _this = this;
-                Confirm.show("删除课程后不可恢复，确认删除？", function () {
-                _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/delete/' + f.id).then((response)=>{
-                    let resp = response.data;
-                    if (resp.success) {
-                    Toast.success("删除文件成功");
-                    Tool.removeObj(_this.files, f);
-                    }
-                });
-                });
-            },
+ 
         }
     }
 </script>
