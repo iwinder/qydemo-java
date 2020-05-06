@@ -22,6 +22,12 @@ spring:
           predicates[0]:
             name: Path
             args[0]: /business/**
+        routes[2]:
+          id: system
+          uri: lb://file
+          predicates[0]:
+            name: Path
+            args[0]: /file/**
 
 eureka:
   client:

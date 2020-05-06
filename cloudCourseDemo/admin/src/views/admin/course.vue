@@ -546,6 +546,9 @@
                     }
                 });
             },
+            /**
+             * 获取所有讲师
+             */
             allTeacher() {
                 let _this = this;
                 Loading.show();

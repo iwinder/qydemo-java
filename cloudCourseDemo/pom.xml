@@ -11,7 +11,8 @@
         <module>server</module>
         <module>business</module>
 		<module>generator</module>
-	</modules>
+        <module>file</module>
+    </modules>
 
 	<!-- 说明项目的父模块是一个springBoot项目 -->
 	<parent>
