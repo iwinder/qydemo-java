@@ -21,6 +21,17 @@ public class TeacherService {
     @Resource
     private TeacherMapper teacherMapper;
 
+
+    /**
+     * 列表查询-无分页
+     * @return
+     */
+    public  List<TeacherDto>  all() {
+        TeacherExample teacherExample = new TeacherExample();
+        List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
+        return CopyUtil.copyList(teachers, TeacherDto.class);
+    }
+
     /**
      * 列表查询
      * @param pageDto

@@ -80,6 +80,10 @@ public class CourseDto {
      * 课程分类
      */
     private List<CategoryDto> categorys;
+    /**
+     * 课程讲师
+     */
+    private String teacherId;
 
     public String getId() {
         return id;
