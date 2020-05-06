@@ -433,23 +433,27 @@
 
 								<b class="arrow"></b>
 							</li>
-							<!-- <li class="active" id="sidebar-business-chapter">
-								<router-link to="/business/chapter">
+						</ul>
+					</li>
+					<li class="">
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-list"></i>
+							<span class="menu-text"> 文件管理 </span>
+
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+							<li class="" id="sidebar-file-file">
+								<router-link to="/file/file">
 									<i class="menu-icon fa fa-caret-right"></i>
-									大章管理
+									文件管理
 								</router-link>
 
 								<b class="arrow"></b>
-							</li> -->
-
-							<!-- <li class="" id="sidebar-business-section">
-								<router-link to="/business/section">
-									<i class="menu-icon fa fa-caret-right"></i>
-									小节管理
-								</router-link>
-
-								<b class="arrow"></b>
-							</li> -->
+							</li>
 						</ul>
 					</li>
 

@@ -16,8 +16,8 @@ import java.util.*;
  *  用于后端代码的生成，包含controller、service、dto
  */
 public class ServerGenerator {
-    static final String MODULE = "business";
-
+//    static final String MODULE = "business";
+    static String MODULE = "file";
     static String toServicePath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\service\\";
     static String toDtoPath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\dto\\";
     static String toControllerPath = MODULE + "\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\" + MODULE + "\\controller\\admin\\";
