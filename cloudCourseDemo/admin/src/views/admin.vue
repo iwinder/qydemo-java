@@ -408,7 +408,7 @@
 						<b class="arrow"></b>
 
 						<ul class="submenu">
-							<li class="active" id="sidebar-business-chapter">
+							<li class="active" id="sidebar-business-category">
 								<router-link to="/business/category">
 									<i class="menu-icon fa fa-caret-right"></i>
 									分类管理

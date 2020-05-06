@@ -11,6 +11,7 @@ import com.windcoder.cloudCourseDemo.server.mapper.CategoryMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -67,7 +68,9 @@ public class CategoryService {
      * 删除
      * @param id
      */
+    @Transactional
     public void delete(String id) {
+        deleteChildren(id);
         categoryMapper.deleteByPrimaryKey(id);
     }
 
@@ -86,6 +89,16 @@ public class CategoryService {
      */
     private void update(Category category){
         categoryMapper.updateByPrimaryKey(category);
+    }
+
+    private void deleteChildren(String id) {
+        Category category = categoryMapper.selectByPrimaryKey(id);
+        if ("00000000".equals(category.getParent())) {
+            // 如果是一级分类，需要删除其下的二级分类
+            CategoryExample categoryExample = new CategoryExample();
+            categoryExample.createCriteria().andParentEqualTo(id);
+            categoryMapper.deleteByExample(categoryExample);
+        }
     }
 
 }
