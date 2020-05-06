@@ -228,9 +228,9 @@
                 }
                 _this.section.courseId = _this.course.id;
                 _this.section.chapterId = _this.chapter.id;
-                Loding.show();
+                Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/section/save",  _this.section).then((response)=>{
-                    Loding.hide(_this.$isDebug);
+                    Loading.hide(_this.$isDebug);
                     console.log("保存小节的结果：", response);
                     let resp = response.data;
                     if(resp.success) {
@@ -250,9 +250,9 @@
             del(sectionId) {
                 let _this = this;
                 Confirm.show('确认删除？',"删除后不可恢复，确认删除？", function(){
-                    Loding.show();
+                    Loading.show();
                     _this.$ajax.delete(process.env.VUE_APP_SERVER + "/business/admin/section/delete/"+sectionId).then((response)=>{
-                        Loding.hide(_this.$isDebug);
+                        Loading.hide(_this.$isDebug);
                         console.log("删除小节列表结果：", response);
                         let resp = response.data;
                         if (resp.success) {

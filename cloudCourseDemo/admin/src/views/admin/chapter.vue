@@ -184,9 +184,9 @@ export default {
                 return;
             }
             _this.chapter.courseId = _this.course.id;
-            Loding.show();
+            Loading.show();
             _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/save",  _this.chapter).then((response)=>{
-                Loding.hide(_this.$isDebug);
+                Loading.hide(_this.$isDebug);
                 console.log("保存大章的结果：", response);
                 let resp = response.data;
                 if(resp.success) {
@@ -206,9 +206,9 @@ export default {
         del(chapterId) {
             let _this = this;
             Confirm.show('确认删除？',"删除后不可恢复，确认删除？", function(){
-                Loding.show();
+                Loading.show();
                 _this.$ajax.delete(process.env.VUE_APP_SERVER + "/business/admin/chapter/delete/"+chapterId).then((response)=>{
-                Loding.hide(_this.$isDebug);
+                Loading.hide(_this.$isDebug);
                 console.log("删除大章列表结果：", response);
                 let resp = response.data;
                     if (resp.success) {

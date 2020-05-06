@@ -1,4 +1,4 @@
-Loding = {
+Loading = {
     show: function() {
         $.blockUI({
             message: '<img src="/static/images/loading.gif" />',

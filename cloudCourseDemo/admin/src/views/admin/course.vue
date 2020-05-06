@@ -43,6 +43,9 @@
                             <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                                 内容
                             </button>&nbsp;
+                            <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
+                                排序
+                            </button>&nbsp;
                             <!-- 编辑 -->
                             <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
                                 <!-- <i class="ace-icon fa fa-pencil bigger-120"></i> -->
@@ -153,6 +156,12 @@
                                      <input   v-model="course.enroll" class="form-control" placeholder="报名数">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">顺序</label>
+                                <div class="col-sm-10">
+                                <input v-model="course.sort" class="form-control" disabled>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -192,6 +201,49 @@
                 </div>
             </div> 
         </div><!-- 课程内容Modal end-->
+
+
+        <!-- 排序Modal -->
+        <div id="course-sort-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">排序</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3">
+                        当前排序
+                        </label>
+                        <div class="col-lg-9">
+                        <input class="form-control" v-model="sort.oldSort" name="oldSort" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3">
+                        新排序
+                        </label>
+                        <div class="col-lg-9">
+                        <input class="form-control" v-model="sort.newSort" name="newSort">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    取消
+                    </button>
+                    <button type="button" class="btn btn-white btn-info btn-round" v-on:click="updateSort()">
+                    <i class="ace-icon fa fa-plus blue"></i>
+                    更新排序
+                    </button>
+                </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.排序 modal -->
     </div>
 
 </template>
@@ -213,6 +265,11 @@
                 categorys: {},
                 tree: {},
                 saveContentLabel:'',
+                sort: {
+                    id: '',
+                    oldSort: 0,
+                    newSort: 0,
+                },
             }
         },
         mounted: function() {
@@ -227,7 +284,9 @@
              */
             add() {
                 let _this = this;
-                _this.course = {};
+                _this.course = {
+                     sort: _this.$refs.pagination.total + 1
+                };
                 _this.tree.checkAllNodes(false);
                 $("#form-modal").modal("show");
             },
@@ -270,9 +329,9 @@
                     return;
                 }
                 _this.course.categorys = categorys;
-                Loding.show();
+                Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/save",  _this.course).then((response)=>{
-                    Loding.hide(_this.$isDebug);
+                    Loading.hide(_this.$isDebug);
                     console.log("保存课程的结果：", response);
                     let resp = response.data;
                     if(resp.success) {
@@ -292,9 +351,9 @@
             del(courseId) {
                 let _this = this;
                 Confirm.show('确认删除？',"删除后不可恢复，确认删除？", function(){
-                    Loding.show();
+                    Loading.show();
                     _this.$ajax.delete(process.env.VUE_APP_SERVER + "/business/admin/course/delete/"+courseId).then((response)=>{
-                        Loding.hide(_this.$isDebug);
+                        Loading.hide(_this.$isDebug);
                         console.log("删除课程列表结果：", response);
                         let resp = response.data;
                         if (resp.success) {
@@ -310,13 +369,13 @@
              */
             list(page) {
                 let _this = this;
-                 Loding.show();
+                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/list", {
                     page: page,
                     size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
                 }).then((response)=>{
                     console.log("查询课程的结果：", response);
-                    Loding.hide(_this.$isDebug);
+                    Loading.hide(_this.$isDebug);
                     let resp = response.data;
                     _this.courses = resp.content.list;
                     // 重新渲染分页组件，使其页码样式与查询页数相同
@@ -364,9 +423,9 @@
              */
             listCategory(courseId) {
                 let _this = this;
-                Loding.show();
+                Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
-                    Loding.hide();
+                    Loading.hide();
                     console.log("查询课程下所有分类的结果：", response);
                     let resp = response.data;
                     let categorys = resp.content;
@@ -392,9 +451,9 @@
                 // 先清空历史文本
                 $("#content").summernote('code', '');
                 _this.saveContentLabel = "";
-                Loding.show();
+                Loading.show();
                 _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course/find-content/' + id).then((response)=>{
-                    Loding.hide();
+                    Loading.hide();
                     console.log("查询课程下所有分类的结果：", response);
                     let resp = response.data;
                     if(resp.success) {
@@ -415,6 +474,9 @@
                     }
                 });
             },
+            /**
+             * 保存内容
+             */
             saveContent() {
                 let _this = this;
                 let content = $("#content").summernote("code");
@@ -422,7 +484,7 @@
                     id: _this.course.id,
                     content: content
                 }).then((response)=>{
-                    Loding.hide();
+                    Loading.hide();
                     let resp = response.data;
                     if (resp.success) {
                         // Toast.success("内容保存成功");
@@ -430,6 +492,38 @@
                         _this.saveContentLabel = "最后保存时间：" + now;
                     } else {
                         Toast.warning(resp.message);
+                    }
+                });
+            },
+             openSortModal(course) {
+                let _this = this;
+                _this.sort = {
+                    id: course.id,
+                    oldSort: course.sort?course.sort:0,
+                    newSort: course.sort?course.sort:0
+                };
+                $("#course-sort-modal").modal("show");
+            },
+
+            /**
+             * 排序
+             */
+            updateSort() {
+                let _this = this;
+                if (_this.sort.newSort === _this.sort.oldSort) {
+                    Toast.warning("排序没有变化");
+                    return;
+                }
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/sort", _this.sort).then((res) => {
+                    let response = res.data;
+
+                    if (response.success) {
+                        Toast.success("更新排序成功");
+                        $("#course-sort-modal").modal("hide");
+                        _this.list(1);
+                    } else {
+                        Toast.error("更新排序失败");
                     }
                 });
             },

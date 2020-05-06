@@ -93,4 +93,12 @@ public class CourseController {
        courseService.saveContent(contentDto);
        return responseDto;
    }
+
+    @PostMapping("/sort")
+    public ResponseDto sort(@RequestBody SortDto sortDto) {
+         log.info("更新排序");
+        ResponseDto responseDto = new ResponseDto();
+        courseService.sort(sortDto);
+        return responseDto;
+    }
 }

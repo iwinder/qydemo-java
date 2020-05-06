@@ -178,9 +178,9 @@
                 ) {
                     return;
                 }
-                Loding.show();
+                Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/${module}/admin/${domain}/save",  _this.${domain}).then((response)=>{
-                    Loding.hide(_this.$isDebug);
+                    Loading.hide(_this.$isDebug);
                     console.log("保存${tableNameCn}的结果：", response);
                     let resp = response.data;
                     if(resp.success) {
@@ -200,9 +200,9 @@
             del(${domain}Id) {
                 let _this = this;
                 Confirm.show('确认删除？',"删除后不可恢复，确认删除？", function(){
-                    Loding.show();
+                    Loading.show();
                     _this.$ajax.delete(process.env.VUE_APP_SERVER + "/${module}/admin/${domain}/delete/"+${domain}Id).then((response)=>{
-                        Loding.hide(_this.$isDebug);
+                        Loading.hide(_this.$isDebug);
                         console.log("删除${tableNameCn}列表结果：", response);
                         let resp = response.data;
                         if (resp.success) {
@@ -218,12 +218,12 @@
              */
             list(page) {
                 let _this = this;
-                Loding.show();
+                Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + "/${module}/admin/${domain}/list", {
                     page: page,
                     size: _this.$refs.pagination.size // $refs使用组件别名pagination，获取组件里面的变量size
                 }).then((response)=>{
-                    Loding.hide(_this.$isDebug);
+                    Loading.hide(_this.$isDebug);
                     console.log("查询${tableNameCn}的结果：", response);
                     let resp = response.data;
                     _this.${domain}s = resp.content.list;
