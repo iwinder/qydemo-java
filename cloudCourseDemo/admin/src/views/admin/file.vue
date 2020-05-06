@@ -55,6 +55,7 @@
                 file: {},
                 files: [],
                 FILE_USE:FILE_USE,
+               
             }
         },
         mounted: function() {
