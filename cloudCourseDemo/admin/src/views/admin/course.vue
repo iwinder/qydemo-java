@@ -142,7 +142,14 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
-                             
+                             <div class="form-group">
+                                <label class="col-sm-2 control-label">
+                                分类
+                                </label>
+                                <div class="col-sm-10">
+                                <ul id="tree" class="ztree"></ul>
+                                </div>
+                            </div> 
  
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">名称</label>
@@ -251,11 +258,13 @@
             COURSE_LEVEL:COURSE_LEVEL,
             COURSE_CHARGE:COURSE_CHARGE,
             COURSE_STATUS:COURSE_STATUS,
+            categorys: {}
         }
         },
         mounted: function() {
             // this.$parent.activeSidebar("sidebar-business-course");
             let _this = this;
+            _this.allCategory();
             _this.list(1);
         },
         methods: {
@@ -349,6 +358,52 @@
                     // 重新渲染分页组件，使其页码样式与查询页数相同
                     _this.$refs.pagination.render(page, resp.content.total);
                 });
+            },
+            allCategory() {
+                let _this = this;
+                _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/category/all").then((response)=>{
+                    console.log("查询分类的结果：", response);
+                    let resp = response.data;
+                    _this.categorys = resp.content;
+                    // 将所有记录格式化成树形结构
+                    _this.initTree();
+                     
+                });
+            },
+            initTree() {
+                let _this = this;
+                let setting = {
+                    check: {
+                        enable: true
+                    },
+                    data: {
+                        simpleData: {
+                            idKey: "id",
+                            pIdKey: "parent",
+                            rootPId: "00000000",
+                        enable: true
+                        }
+                    }
+                };
+ 
+                // let zNodes =[
+                //     { id:1, pId:0, name:"随意勾选 1", open:true},
+                //     { id:11, pId:1, name:"随意勾选 1-1", open:true},
+                //     { id:111, pId:11, name:"随意勾选 1-1-1"},
+                //     { id:112, pId:11, name:"随意勾选 1-1-2"},
+                //     { id:12, pId:1, name:"随意勾选 1-2", open:true},
+                //     { id:121, pId:12, name:"随意勾选 1-2-1"},
+                //     { id:122, pId:12, name:"随意勾选 1-2-2"},
+                //     { id:2, pId:0, name:"随意勾选 2", checked:true, open:true},
+                //     { id:21, pId:2, name:"随意勾选 2-1"},
+                //     { id:22, pId:2, name:"随意勾选 2-2", open:true},
+                //     { id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
+                //     { id:222, pId:22, name:"随意勾选 2-2-2"},
+                //     { id:23, pId:2, name:"随意勾选 2-3"}
+                // ];
+                let zNodes = _this.categorys;
+ 
+                $.fn.zTree.init($("#tree"), setting, zNodes);
             }
         }
     }
