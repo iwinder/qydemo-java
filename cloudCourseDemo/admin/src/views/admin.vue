@@ -408,7 +408,7 @@
 						<b class="arrow"></b>
 
 						<ul class="submenu">
-							<li class="active" id="sidebar-business-category">
+							<li class="" id="sidebar-business-category">
 								<router-link to="/business/category">
 									<i class="menu-icon fa fa-caret-right"></i>
 									分类管理
@@ -417,10 +417,18 @@
 								<b class="arrow"></b>
 							</li>
 
-							<li class="active" id="sidebar-business-chapter">
+							<li class="" id="sidebar-business-course">
 								<router-link to="/business/course">
 									<i class="menu-icon fa fa-caret-right"></i>
 									课程管理
+								</router-link>
+
+								<b class="arrow"></b>
+							</li>
+							<li class="" id="sidebar-business-teacher">
+								<router-link to="/business/teacher">
+									<i class="menu-icon fa fa-caret-right"></i>
+									讲师管理
 								</router-link>
 
 								<b class="arrow"></b>
