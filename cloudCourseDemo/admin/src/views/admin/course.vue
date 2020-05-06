@@ -20,20 +20,29 @@
                     <img v-show="course.image" class="media-object" v-bind:src="course.image" />
                     <div class="caption">
                         <div class="clearfix">
-                            <span class="pull-right label label-primary info-label">{{COURSE_LEVEL | optionKV(course.level)}}</span>
-                            <span class="pull-right label label-primary info-label">{{COURSE_CHARGE | optionKV(course.charge)}}</span>
-                            <span class="pull-right label label-primary info-label">{{COURSE_STATUS | optionKV(course.status)}}</span>
+                            <span class="pull-right label label-primary info-label">{{COURSE_LEVEL | optionKV(course.level)}}</span>&nbsp;
+                            <span class="pull-right label label-primary info-label">{{COURSE_CHARGE | optionKV(course.charge)}}</span>&nbsp;
+                            <span class="pull-right label label-primary info-label">{{COURSE_STATUS | optionKV(course.status)}}</span>&nbsp;
                         </div>
 
                         <h3 class="search-title">
                             <a href="#" class="blue">{{course.name}}</a>
                         </h3>
+                        <div v-for="teacher in teachers.filter(t=>{return t.id===course.teacherId})" :key="teacher.id" class="profile-activity clearfix">
+                            <div>
+                                <img v-show="!teacher.image" class="pull-left" src="/ace/assets/images/avatars/avatar5.png">
+                                <img v-show="teacher.image" class="pull-left" v-bind:src="teacher.image">
+                                <a class="user" href="#"> {{teacher.name}} </a>
+                                <br>
+                                {{teacher.position}}
+                            </div>
+                        </div>
                         <P> <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;</P>
                         <p>{{course.summary}}</p>
                         <p>
-                            <span class="badge badge-info">{{course.id}}</span>
-                            <span class="badge badge-info">排序：{{course.sort}}</span>
-                            <span class="badge badge-info">时长：{{course.time | formatSecond}}</span>
+                            <span class="badge badge-info">{{course.id}}</span>&nbsp;
+                            <span class="badge badge-info">排序：{{course.sort}}</span>&nbsp;
+                            <span class="badge badge-info">{{course.time | formatSecond}}</span>&nbsp;
                         </p>
                         <p>
                             <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -554,4 +563,9 @@
   .caption h3 {
     font-size: 20px;
   }
+  @media (max-width: 1199px) {
+    .caption h3 {
+      font-size: 16px;
+     }
+   }
 </style>
