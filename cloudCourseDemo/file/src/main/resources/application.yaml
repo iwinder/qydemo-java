@@ -12,3 +12,5 @@ eureka:
       # 将服务注册到注册中心：增加配置，执行注册中心地址。
       defaultZoone: http://localhost:8761/eureka/
 
+file:
+  path: E:/00Work/Program/data/imooc/
