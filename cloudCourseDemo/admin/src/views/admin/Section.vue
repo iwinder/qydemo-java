@@ -183,7 +183,7 @@
             }
         },
         mounted: function() {
-            // this.$parent.activeSidebar("sidebar-business-section");
+            this.$parent.activeSidebar("sidebar-business-course");
             let _this = this;
             let course = SessionStorage.get("course") || {};
             let chapter = SessionStorage.get("chapter") || {};

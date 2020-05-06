@@ -136,7 +136,7 @@ export default {
         }
     },
     mounted: function() {
-        // this.$parent.activeSidebar("sidebar-business-chapter");
+        this.$parent.activeSidebar("sidebar-business-course");
         let _this = this;
         let course = SessionStorage.get("course") || {};
         if(Tool.isEmpty(course)) {
