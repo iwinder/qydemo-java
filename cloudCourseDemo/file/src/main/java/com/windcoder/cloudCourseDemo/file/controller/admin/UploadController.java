@@ -28,6 +28,7 @@ public class UploadController {
         file.transferTo(dest);
         log.info(dest.getAbsolutePath());
         ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent("/teacher/" + key + "-" + fileName);
         return responseDto;
     }
 
