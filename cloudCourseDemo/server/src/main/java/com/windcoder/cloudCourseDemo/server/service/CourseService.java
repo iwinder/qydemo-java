@@ -14,6 +14,7 @@ import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -27,6 +28,8 @@ public class CourseService {
     private CourseMapper courseMapper;
     @Resource
     private MyCourseMapper myCourseMapper;
+    @Resource
+    private CourseCategoryService courseCategoryService;
 
     /**
      * 列表查询
@@ -48,6 +51,7 @@ public class CourseService {
      * 保存，id有值时更新，无值时新增
      * @param courseDto
      */
+    @Transactional
     public void save(CourseDto courseDto){
         Course course = CopyUtil.copy(courseDto, Course.class);
         if (StringUtils.isEmpty(course.getId())) {
@@ -55,6 +59,8 @@ public class CourseService {
         } else {
             this.update(course);
         }
+        // 批量保存课程分类
+        courseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
     }
 
     /**

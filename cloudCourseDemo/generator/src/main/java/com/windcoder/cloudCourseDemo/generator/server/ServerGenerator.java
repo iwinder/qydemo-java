@@ -48,7 +48,7 @@ public class ServerGenerator {
         System.out.println("Domain："+tableElement.attributeValue("domainObjectName"));
 
         String module = MODULE;
-        List<Field> fieldList = DbUtil.getColumnByTableName(domain);
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName);
         Set<String> typeSet = getJavaTypes(fieldList);
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);
@@ -67,8 +67,8 @@ public class ServerGenerator {
         FreeMarkerUtil.generator(toServicePath+ Domain +"Service.java", map);
 
         // 生成Controller
-        FreeMarkerUtil.initConfig("controller.ftl");
-        FreeMarkerUtil.generator(toControllerPath+ Domain +"Controller.java", map);
+//        FreeMarkerUtil.initConfig("controller.ftl");
+//        FreeMarkerUtil.generator(toControllerPath+ Domain +"Controller.java", map);
     }
 
 
