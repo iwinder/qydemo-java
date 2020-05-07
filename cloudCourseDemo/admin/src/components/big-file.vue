@@ -86,9 +86,7 @@ export default {
           let fileReader = new FileReader();
           fileReader.readAsDataURL(fileShard);
           fileReader.onload = function(e) {
-             console.log("base64 e:",e);
             let base64 = e.target.result;
-            console.log("base64",base64);
 
             let param = {
               'shard': base64,

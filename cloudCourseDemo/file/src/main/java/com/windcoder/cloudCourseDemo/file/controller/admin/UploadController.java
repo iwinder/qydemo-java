@@ -49,7 +49,9 @@ public class UploadController {
             fullDir.mkdir();
         }
 
+
         String path = dir + File.separator + key + "." + suffix;
+
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         file.transferTo(dest);
@@ -89,7 +91,13 @@ public class UploadController {
             fullDir.mkdir();
         }
 
-        String path = dir + File.separator + key + "." + suffix;
+        String path = new StringBuffer(dir)
+                .append(File.separator)
+                .append(key)
+                .append(".")
+                .append(suffix)
+                .append(".")
+                .append(fileDto.getShardIndex()).toString();
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         shard.transferTo(dest);
