@@ -11,9 +11,11 @@ import com.windcoder.cloudCourseDemo.server.mapper.FileMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Date;
 
@@ -50,6 +52,17 @@ public class FileService {
         }
     }
 
+    public void saveBigFile(FileDto fileDto) {
+        File fileDb = selectByKey(fileDto.getKey());
+        if (null == fileDb) {
+            File file = CopyUtil.copy(fileDto, File.class);
+            this.inster(file);
+        } else {
+            fileDb.setShardIndex(fileDto.getShardIndex());
+            this.update(fileDb);
+        }
+    }
+
     /**
      * 删除
      * @param id
@@ -77,6 +90,22 @@ public class FileService {
     private void update(File file){
         file.setUpdatedAt(new Date());
         fileMapper.updateByPrimaryKey(file);
+    }
+
+    /**
+     * 根据key获取File
+     * @param key
+     * @return
+     */
+    private File selectByKey(String key) {
+        FileExample example = new FileExample();
+        example.createCriteria().andKeyEqualTo(key);
+        List<File> fileList = fileMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(fileList)) {
+            return null;
+        } else {
+            return fileList.get(0);
+        }
     }
 
 }
