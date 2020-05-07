@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -62,6 +61,47 @@ public class UploadController {
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(fileDto);
         return responseDto;
+    }
+
+    @GetMapping("/merge")
+    public void merge() {
+        File newFile = new File(FILE_PATH + "/course/test123.mp4");
+        byte[] byt = new byte[10 * 1024 * 1024];
+        FileInputStream inputStream = null;
+        int len;
+
+        // 文件追加写入
+        try (FileOutputStream outputStream = new FileOutputStream(newFile, true);
+              ) {
+            // 读取第一个分片
+            inputStream = new FileInputStream(new File(FILE_PATH + "/course/NtZBZajp.blob"));
+            while ((len = inputStream.read(byt))!=-1) {
+                outputStream.write(byt, 0, len);
+            }
+            // 读取第二个分片
+            inputStream = new FileInputStream(new File(FILE_PATH + "course/RzYnC43R.blob"));
+            while ((len = inputStream.read(byt))!=-1) {
+                outputStream.write(byt, 0, len);
+            }
+
+        } catch (FileNotFoundException e) {
+            log.info("文件寻找异常", e);
+        } catch (IOException e) {
+            log.info("分片合并异常", e);
+        } finally {
+            try {
+                if(inputStream !=null) {
+                    inputStream.close();
+                }
+                log.info("IO流关闭");
+            } catch (IOException e) {
+                log.error("IO流关闭", e);
+            }
+
+        }
+
+
+
     }
 
 }
