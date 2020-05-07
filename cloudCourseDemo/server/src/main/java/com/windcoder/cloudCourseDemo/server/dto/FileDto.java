@@ -47,6 +47,14 @@ public class FileDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
+    private Integer shardIndex;
+
+    private Integer shardSize;
+
+    private Integer shardTotal;
+
+    private String key;
+
     public String getId() {
         return id;
     }
