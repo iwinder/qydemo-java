@@ -4,6 +4,7 @@ import com.windcoder.cloudCourseDemo.server.dto.FileDto;
 import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
 import com.windcoder.cloudCourseDemo.server.enums.FileUseEnum;
 import com.windcoder.cloudCourseDemo.server.service.FileService;
+import com.windcoder.cloudCourseDemo.server.utils.Base64ToMultipartFile;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +35,6 @@ public class UploadController {
     @PostMapping("/upload")
     public ResponseDto upload(@RequestParam MultipartFile file, String use) throws IOException {
         log.info("上传文件开始");
-        log.info(file.getOriginalFilename());
-        log.info(String.valueOf(file.getSize()));
 
         // 保存文件到本地
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
@@ -71,22 +70,19 @@ public class UploadController {
     }
 
     @PostMapping("/big-upload")
-    public ResponseDto uploadOfMerge(@RequestParam MultipartFile shard,
-                                     String use,
-                                     String name,
-                                     String suffix,
-                                     Integer size,
-                                     Integer shardIndex,
-                                     Integer shardSize,
-                                     Integer shardTotal,
-                                     String key) throws IOException {
+    public ResponseDto uploadOfMerge(@RequestBody FileDto fileDto) throws IOException {
         log.info("上传文件开始");
 
         // 保存文件到本地
-        FileUseEnum useEnum = FileUseEnum.getByCode(use);
-//        String key = UuidUtil.getShortUuid();
+        String use = fileDto.getUse();
+        String key = fileDto.getKey();
+        String suffix = fileDto.getSuffix();
+        String shardBase64 = fileDto.getShard();
+        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(fileDto.getShard());
 
-        // 若文件夹不存在则创建
+        // 保存文件到本地
+        FileUseEnum useEnum = FileUseEnum.getByCode(use);
+            // 若文件夹不存在则创建
         String dir = useEnum.name().toLowerCase();
         File fullDir = new File(FILE_PATH + dir);
         if (!fullDir.exists()) {
@@ -100,17 +96,8 @@ public class UploadController {
         log.info(dest.getAbsolutePath());
 
         log.info("保存文件记录开始");
-        FileDto fileDto = new FileDto();
-        fileDto.setName(name);
         fileDto.setPath(path);
-        fileDto.setSize(size);
-        fileDto.setSuffix(suffix);
-        fileDto.setUse(use);
-        fileDto.setShardIndex(shardIndex);
-        fileDto.setShardSize(shardSize);
-        fileDto.setShardTotal(shardTotal);
-        fileDto.setKey(key);
-        fileService.save(fileDto);
+        fileService.saveBigFile(fileDto);
 
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(fileDto);

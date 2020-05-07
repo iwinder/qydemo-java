@@ -82,26 +82,35 @@ export default {
           let key10 = parseInt(key, 16);
           let key62 = Tool._10to62(key10);
           console.log(key, key10, key62);
+          // 将文件转为base64进行传输
+          let fileReader = new FileReader();
+          fileReader.readAsDataURL(fileShard);
+          fileReader.onload = function(e) {
+             console.log("base64 e:",e);
+            let base64 = e.target.result;
+            console.log("base64",base64);
 
-          // key:"file" 必须和后端controller中参数名一致
-          formData.append("shard", fileShard);
-          formData.append("shardIndex", shardIndex);
-          formData.append("shardSize", shardSize);
-          formData.append("shardTotal", shardTotal);
-          formData.append('use', _this.use);
-          formData.append('name', file.name);
-          formData.append('suffix', suffix);
-          formData.append('size', size);
-          formData.append('key', key62);
-          Loading.show();
-          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/big-upload", formData).then((res)=> {
-              Loading.hide();
-              let resp = res.data;
-              console.log("文件上传的结果：", resp);
-              _this.afterUpload(resp);
-              $("#" + _this.inputId + "-input").val("");
-              
-          });
+            let param = {
+              'shard': base64,
+              'shardIndex': shardIndex,
+              'shardSize': shardSize,
+              'shardTotal': shardTotal,
+              'use': _this.use,
+              'name': file.name,
+              'suffix': suffix,
+              'size': file.size,
+              'key': key62
+            };
+            Loading.show();
+            _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/big-upload", param).then((res)=> {
+                Loading.hide();
+                let resp = res.data;
+                console.log("文件上传的结果：", resp);
+                _this.afterUpload(resp);
+                $("#" + _this.inputId + "-input").val("");
+                
+            });
+          }
       },
 
       
