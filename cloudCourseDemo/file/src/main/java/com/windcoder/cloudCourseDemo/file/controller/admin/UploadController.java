@@ -24,6 +24,13 @@ public class UploadController {
     @Resource
     private FileService fileService;
 
+    /**
+     * 普通文件上传
+     * @param file
+     * @param use
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/upload")
     public ResponseDto upload(@RequestParam MultipartFile file, String use) throws IOException {
         log.info("上传文件开始");
@@ -63,6 +70,55 @@ public class UploadController {
         return responseDto;
     }
 
+    @PostMapping("/big-upload")
+    public ResponseDto uploadOfMerge(@RequestParam MultipartFile shard,
+                                     String use,
+                                     String name,
+                                     String suffix,
+                                     Integer size,
+                                     Integer shardIndex,
+                                     Integer shardSize,
+                                     Integer shardTotal,
+                                     String key) throws IOException {
+        log.info("上传文件开始");
+
+        // 保存文件到本地
+        FileUseEnum useEnum = FileUseEnum.getByCode(use);
+//        String key = UuidUtil.getShortUuid();
+
+        // 若文件夹不存在则创建
+        String dir = useEnum.name().toLowerCase();
+        File fullDir = new File(FILE_PATH + dir);
+        if (!fullDir.exists()) {
+            fullDir.mkdir();
+        }
+
+        String path = dir + File.separator + key + "." + suffix;
+        String fullPath = FILE_PATH + path;
+        File dest = new File(fullPath);
+        shard.transferTo(dest);
+        log.info(dest.getAbsolutePath());
+
+        log.info("保存文件记录开始");
+        FileDto fileDto = new FileDto();
+        fileDto.setName(name);
+        fileDto.setPath(path);
+        fileDto.setSize(size);
+        fileDto.setSuffix(suffix);
+        fileDto.setUse(use);
+        fileDto.setShardIndex(shardIndex);
+        fileDto.setShardSize(shardSize);
+        fileDto.setShardTotal(shardTotal);
+        fileDto.setKey(key);
+        fileService.save(fileDto);
+
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(fileDto);
+        return responseDto;
+    }
+    /**
+     * 分片合并测试
+     */
     @GetMapping("/merge")
     public void merge() {
         File newFile = new File(FILE_PATH + "/course/test123.mp4");

@@ -297,7 +297,8 @@
             afterUpload(resp) {
                 let _this = this;
                 let video = process.env.VUE_APP_FILE_SERVER + resp.content.path;
-                _this.section.video =  video;
+                // _this.section.video =  video;
+                _this.$set(_this.section, 'video', video);
                 _this.getTime();
             },
             getTime() {

@@ -51,9 +51,9 @@ export default {
 
           // 判断文件格式
           let suffixs = _this.suffixs;
+          let fileName = file.name;
+          let suffix = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length).toLowerCase();
           if(!(!suffixs || JSON.stringify(suffixs) === "{}" || suffixs.length === 0)) {
-              let fileName = file.name;
-              let suffix = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length).toLowerCase();
               let validateSuffix = false;
               for(let s of suffixs) {
                   if(s.toLocaleLowerCase() === suffix) {
@@ -74,13 +74,27 @@ export default {
           let start = shardIndex * shardSize; // 当前分片起始位置
           let end = Math.min(file.size, start + shardSize); // 当前分片结束位置
           let fileShard = file.slice(start, end); // 从文件中截取当前的分片数据
-          
+          let size = file.size;
+          let shardTotal = Math.ceil(size / shardSize); // 总分片数
+
+          // 生成文件标识，标识多次上传的是不是同一个文件
+          let key = hex_md5(file);
+          let key10 = parseInt(key, 16);
+          let key62 = Tool._10to62(key10);
+          console.log(key, key10, key62);
 
           // key:"file" 必须和后端controller中参数名一致
-          formData.append("file", fileShard);
+          formData.append("shard", fileShard);
+          formData.append("shardIndex", shardIndex);
+          formData.append("shardSize", shardSize);
+          formData.append("shardTotal", shardTotal);
           formData.append('use', _this.use);
+          formData.append('name', file.name);
+          formData.append('suffix', suffix);
+          formData.append('size', size);
+          formData.append('key', key62);
           Loading.show();
-          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload", formData).then((res)=> {
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/big-upload", formData).then((res)=> {
               Loading.hide();
               let resp = res.data;
               console.log("文件上传的结果：", resp);
