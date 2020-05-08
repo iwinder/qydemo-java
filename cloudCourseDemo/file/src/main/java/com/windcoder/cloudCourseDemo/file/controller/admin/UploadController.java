@@ -95,10 +95,11 @@ public class UploadController {
                 .append(File.separator)
                 .append(key)
                 .append(".")
-                .append(suffix)
+                .append(suffix).toString(); // course\6sfSqfOwzmik4A4icMYuUe.mp4
+        String localPath = new StringBuffer(path)
                 .append(".")
-                .append(fileDto.getShardIndex()).toString();
-        String fullPath = FILE_PATH + path;
+                .append(fileDto.getShardIndex()).toString(); // course\6sfSqfOwzmik4A4icMYuUe.mp4.1
+        String fullPath = FILE_PATH + localPath;
         File dest = new File(fullPath);
         shard.transferTo(dest);
         log.info(dest.getAbsolutePath());
@@ -109,32 +110,33 @@ public class UploadController {
 
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(fileDto);
+
+        // 合并
+        if (fileDto.getShardIndex().equals(fileDto.getShardTotal())) {
+            this.merge(fileDto);
+        }
         return responseDto;
     }
-    /**
-     * 分片合并测试
-     */
-    @GetMapping("/merge")
-    public void merge() {
-        File newFile = new File(FILE_PATH + "/course/test123.mp4");
+
+    private void merge(FileDto fileDto) {
+        log.info("合并分片开始");
+        String path = fileDto.getPath();
+        Integer shardTotal = fileDto.getShardTotal();
+        File newFile = new File(FILE_PATH + path);
         byte[] byt = new byte[10 * 1024 * 1024];
-        FileInputStream inputStream = null;
+        FileInputStream inputStream = null;   // 分片文件
         int len;
 
         // 文件追加写入
         try (FileOutputStream outputStream = new FileOutputStream(newFile, true);
               ) {
-            // 读取第一个分片
-            inputStream = new FileInputStream(new File(FILE_PATH + "/course/NtZBZajp.blob"));
-            while ((len = inputStream.read(byt))!=-1) {
-                outputStream.write(byt, 0, len);
+            for (int i = 0; i < shardTotal; i++) {
+                // 读取第一个分片
+                inputStream = new FileInputStream(new File(FILE_PATH + path + "." + (i+1))); // course\6sfSqfOwzmik4A4icMYuUe.mp4.1
+                while ((len = inputStream.read(byt))!=-1) {
+                    outputStream.write(byt, 0, len);
+                }
             }
-            // 读取第二个分片
-            inputStream = new FileInputStream(new File(FILE_PATH + "course/RzYnC43R.blob"));
-            while ((len = inputStream.read(byt))!=-1) {
-                outputStream.write(byt, 0, len);
-            }
-
         } catch (FileNotFoundException e) {
             log.info("文件寻找异常", e);
         } catch (IOException e) {
@@ -150,9 +152,27 @@ public class UploadController {
             }
 
         }
+        log.error("合并分片结束");
 
+        System.gc();
+        // 删除分片
+        log.info("删除分片开始");
+        for (int i = 0; i < shardTotal; i++) {
+            String filePath = FILE_PATH + path + "." + (i + 1);
+            File file = new File(filePath);
+            boolean result = file.delete();
+            log.info("删除{}，{}", filePath, result ? "成功" : "失败");
+        }
+        log.info("删除分片结束");
+    }
 
-
+    @GetMapping("/check/{key}")
+    public ResponseDto check(@PathVariable String key) {
+        log.info("检测上传分片开始：{}}", key);
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findByKey(key);
+        responseDto.setContent(fileDto);
+        return responseDto;
     }
 
 }

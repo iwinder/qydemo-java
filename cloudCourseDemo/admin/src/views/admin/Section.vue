@@ -304,7 +304,13 @@
             getTime() {
                 let _this = this;
                 let ele = document.getElementById("video");
-                _this.section.time = parseInt(ele.duration, 10);
+                ele.oncanplay = function () { 
+                    console.log("ele", ele);
+                    console.log("ele", ele.duration);   
+                    // _this.section.time = parseInt(ele.duration, 10);
+                    _this.$set(_this.section, 'time', parseInt(ele.duration, 10));
+                }
+               
             },
         }
     }

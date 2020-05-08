@@ -48,10 +48,11 @@ export default {
         let _this = this;
         let formData = new window.FormData();
         let file = _this.$refs.file.files[0];
+        console.log(file);
 
 
         // 生成文件标识，标识多次上传的是不是同一个文件
-        let key = hex_md5(file);
+        let key = hex_md5(file.name + file.size + file.type);
         let key10 = parseInt(key, 16);
         let key62 = Tool._10to62(key10);
         console.log(key, key10, key62);
@@ -76,7 +77,7 @@ export default {
         }
 
         // 文件分片
-        let shardSize = 20 * 1024 *1024; // 20M为一个分片
+        let shardSize = 10 * 1024 *1024; // 20M为一个分片
         let shardIndex = 1;   // 分片索引，1表示第1个分片
         let size = file.size;
         let shardTotal = Math.ceil(size / shardSize); // 总分片数
@@ -91,9 +92,35 @@ export default {
           'size': file.size,
           'key': key62
         };
-
-        _this.upload(param);
+        _this.check(param);
+        // _this.upload(param);
         
+      },
+      check(param) {
+        let _this = this;
+        _this.$ajax.get(process.env.VUE_APP_SERVER + "/file/admin/check/" + param.key).then((res)=> {
+            let resp = res.data;
+            if(resp.success) {
+              let obj = resp.content;
+              if(!obj) {
+                param.shardIndex = 1;
+                console.log("没有找到文件记录，从分片1开始上传");
+                _this.upload(param);
+              } else if (obj.shardIndex === obj.shardTotal) {
+                // 已上传分片 = 分片总数，说明已全部上传完，不需要再上传
+                Toast.success("文件极速秒传成功！");
+                _this.afterUpload(resp);  
+                $("#" + _this.inputId + "-input").val("");  
+              }else {
+                param.shardIndex = obj.shardIndex + 1;
+                console.log("没有找到文件记录，从分片1开始上传");
+                _this.upload(param);
+              }
+            } else {
+              console.log("文件上传失败");
+              $("#" + _this.inputId + "-input").val("");
+            }
+        });
       },
       /**
        * 递归上传分片
@@ -123,9 +150,9 @@ export default {
                 param.shardIndex = param.shardIndex + 1;
                 _this.upload(param);
               } else {
-                 _this.afterUpload(resp);
+                _this.afterUpload(resp);  
+                $("#" + _this.inputId + "-input").val("");
               }
-              $("#" + _this.inputId + "-input").val("");
           });
         };
 
