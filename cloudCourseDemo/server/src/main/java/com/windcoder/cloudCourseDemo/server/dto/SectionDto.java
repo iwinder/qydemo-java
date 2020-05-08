@@ -57,6 +57,8 @@ public class SectionDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
+    private String vod;
+
     public String getId() {
         return id;
     }
@@ -137,26 +139,28 @@ public class SectionDto {
         this.updatedAt = updatedAt;
     }
 
+    public String getVod() {
+        return vod;
+    }
+
+    public void setVod(String vod) {
+        this.vod = vod;
+    }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", title=").append(title);
-        sb.append(", courseId=").append(courseId);
-        sb.append(", chapterId=").append(chapterId);
-        sb.append(", video=").append(video);
-        sb.append(", time=").append(time);
-        sb.append(", charge=").append(charge);
-        sb.append(", sort=").append(sort);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append("]");
-        return sb.toString();
+        return "SectionDto{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", courseId='" + courseId + '\'' +
+                ", chapterId='" + chapterId + '\'' +
+                ", video='" + video + '\'' +
+                ", time=" + time +
+                ", charge='" + charge + '\'' +
+                ", sort=" + sort +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", vod='" + vod + '\'' +
+                '}';
     }
-
-
 }
