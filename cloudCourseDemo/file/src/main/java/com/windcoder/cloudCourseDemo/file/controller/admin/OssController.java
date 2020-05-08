@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/admin/oss")
+@RequestMapping("/admin")
 @Slf4j
 public class OssController {
 

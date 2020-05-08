@@ -58,6 +58,7 @@ public class FileDto {
     private String key;
 
     private String shard;
+    private String vod;
 
     public String getId() {
         return id;

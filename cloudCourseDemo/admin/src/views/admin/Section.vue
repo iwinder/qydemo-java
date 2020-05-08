@@ -125,11 +125,11 @@
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">视频</label>
                                 <div class="col-sm-10"> 
-                                    <oss-file v-bind:input-id="'video-upload'" v-bind:text="'上传大视频'"  
+                                    <vod v-bind:input-id="'video-upload'" v-bind:text="'上传大视频'"  
                                             v-bind:suffixs="['mp4']" 
                                             v-bind:use="FILE_USE.COURSE.key"
                                             v-bind:after-upload="afterUpload"
-                                            ></oss-file>
+                                            ></vod>
                                      <div v-show="section.video"  class="row">
                                         <div class="col-md-9">
                                             <video v-bind:src="section.video"   id="video"  controls="controls"></video>
@@ -191,11 +191,11 @@
 
     import Pagination from '../../components/pagination';
     // import BigFile from "../../components/big-file";
-    import OssFile from '../../components/oss-file';
+    import Vod from '../../components/vod';
 
     export default {
         name: 'business-section',
-        components: {Pagination, OssFile},
+        components: {Pagination, Vod},
         data: function() {
             return {
                 section: {},
