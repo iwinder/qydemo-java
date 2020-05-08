@@ -92,11 +92,11 @@
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">头像</label>
                                 <div class="col-sm-10"> 
-                                    <big-file v-bind:input-id="'image-upload'" v-bind:text="'上传头像'"  
+                                    <oss-file v-bind:input-id="'image-upload'" v-bind:text="'上传头像'"  
                                             v-bind:suffixs="['jpg','jpeg','png']" 
                                             v-bind:use="FILE_USE.TEACHER.key"
                                             v-bind:after-upload="afterUpload"
-                                            ></big-file>
+                                            ></oss-file>
                                      <div v-show="teacher.image" class="row">
                                             <div class="col-md-4">
                                                 <img v-bind:src="teacher.image" class="img-responsive">
@@ -144,10 +144,11 @@
 <script>
 
     import Pagination from '../../components/pagination';
-    import BigFile from '../../components/big-file';
+    // import BigFile from '../../components/big-file';
+    import OssFile from '../../components/oss-file';
     export default {
         name: 'business-teacher',
-        components: {Pagination,BigFile},
+        components: {Pagination,OssFile},
         data: function() {
             return {
                 teacher: {},
@@ -255,7 +256,8 @@
             afterUpload(response) {
                 let _this = this;
                 let image = response.content.path;
-                _this.teacher.image = process.env.VUE_APP_FILE_SERVER+image;
+                // _this.teacher.image = process.env.VUE_APP_FILE_SERVER+image;
+                _this.teacher.image = process.env.VUE_APP_FILE_OSS+image;
            },
         }
     }

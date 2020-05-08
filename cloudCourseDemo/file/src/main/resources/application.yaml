@@ -18,3 +18,9 @@ eureka:
 
 file:
   path: E:/00Work/Program/data/imooc/
+  oss:
+    accessKeyId: LTAI4G3EZQ5Pxa9f6RG6P7zR
+    accessKeySecret: N73eozUI78oIPrw11q3H6S78QJHK1R
+    endpoint: http://oss-cn-beijing.aliyuncs.com
+    ossDomain:  http://windcoder-imooc.oss-cn-beijing.aliyuncs.com
+    bucket: windcoder-imooc

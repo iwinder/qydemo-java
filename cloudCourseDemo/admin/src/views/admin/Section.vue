@@ -125,11 +125,11 @@
                             <div class="form-group">
                                 <label   class="col-sm-2 control-label">视频</label>
                                 <div class="col-sm-10"> 
-                                    <big-file v-bind:input-id="'video-upload'" v-bind:text="'上传大视频'"  
+                                    <oss-file v-bind:input-id="'video-upload'" v-bind:text="'上传大视频'"  
                                             v-bind:suffixs="['mp4']" 
                                             v-bind:use="FILE_USE.COURSE.key"
                                             v-bind:after-upload="afterUpload"
-                                            ></big-file>
+                                            ></oss-file>
                                      <div v-show="section.video"  class="row">
                                         <div class="col-md-9">
                                             <video v-bind:src="section.video"   id="video"  controls="controls"></video>
@@ -179,12 +179,12 @@
 <script>
 
     import Pagination from '../../components/pagination';
-    import BigFile from "../../components/big-file";
-    
+    // import BigFile from "../../components/big-file";
+    import OssFile from '../../components/oss-file';
 
     export default {
         name: 'business-section',
-        components: {Pagination, BigFile},
+        components: {Pagination, OssFile},
         data: function() {
             return {
                 section: {},
@@ -296,7 +296,9 @@
             },
             afterUpload(resp) {
                 let _this = this;
-                let video = process.env.VUE_APP_FILE_SERVER + resp.content.path;
+                // let video = process.env.VUE_APP_FILE_SERVER + resp.content.path;
+                let video = process.env.VUE_APP_FILE_OSS + resp.content.path;
+                
                 // _this.section.video =  video;
                 _this.$set(_this.section, 'video', video);
                 _this.getTime();
