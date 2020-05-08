@@ -27,6 +27,12 @@ export default {
       use: {
           default: ""
       },
+      shardSize: {  
+        default: 50 * 1024 //以50KB为一个分片
+      },
+      url: {
+          default: "big-upload"
+      },
     },
     data: function () {
       return {
@@ -77,7 +83,7 @@ export default {
         }
 
         // 文件分片
-        let shardSize = 10 * 1024 *1024; // 20M为一个分片
+        let shardSize = _this.shardSize;  
         let shardIndex = 1;   // 分片索引，1表示第1个分片
         let size = file.size;
         let shardTotal = Math.ceil(size / shardSize); // 总分片数
@@ -141,7 +147,7 @@ export default {
           let base64 = e.target.result;
           param.shard = base64;
           // Loading.show();
-          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/big-upload", param).then((res)=> {
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/" + _this.url, param).then((res)=> {
               // Loading.hide();
               let resp = res.data;  
               Progress.show(parseInt(shardIndex * 100 / shardTotal));
