@@ -1,6 +1,7 @@
 package com.windcoder.cloudCourseDemo.system.controller.admin;
 
 import com.windcoder.cloudCourseDemo.server.domain.User;
+import com.windcoder.cloudCourseDemo.server.dto.LoginUserDto;
 import com.windcoder.cloudCourseDemo.server.dto.UserDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
@@ -63,6 +64,32 @@ public class UserController {
     public ResponseDto delete(@PathVariable String id) {
         userService.delete(id);
         ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+
+    /**
+     * 重置密码
+     */
+    @PostMapping("/save-password")
+    public ResponseDto savePassword(@RequestBody UserDto userDto) {
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        ResponseDto responseDto = new ResponseDto();
+        userService.savePassword(userDto);
+        responseDto.setContent(userDto);
+        return responseDto;
+    }
+
+    /**
+     * 登录
+     * @param userDto
+     * @return
+     */
+    @PostMapping("/login")
+    public ResponseDto login(@RequestBody UserDto userDto) {
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        ResponseDto responseDto = new ResponseDto();
+        LoginUserDto loginUserDto = userService.login(userDto);
+        responseDto.setContent(loginUserDto);
         return responseDto;
     }
 }

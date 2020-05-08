@@ -31,14 +31,14 @@
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Username" />
+															<input  v-model="user.loginName" type="text" class="form-control" placeholder="用户名" />
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password" />
+															<input  v-model="user.password" type="password" class="form-control" placeholder="密码" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
@@ -90,15 +90,35 @@
  
 
 export default {
-  name: 'login',
-  mounted: function() {
-      $('body').removeClass('no-skin');
-      $('body').attr('class', 'login-layout light-login');
-  },
-  methods: {
-      login() {
-          this.$router.push("/welcome");
-      }
+	name: 'login',
+	mounted: function() {
+		$('body').removeClass('no-skin');
+		$('body').attr('class', 'login-layout light-login');
+	},
+	data: function() {
+		return {
+			user: {},
+		}
+	},
+  	methods: {
+      	login() {
+			let _this = this;
+			_this.user.password = hex_md5(_this.user.password + KEY);
+			Loading.show();
+			_this.$ajax.post(process.env.VUE_APP_SERVER + "/system/admin/user/login", _this.user).then((response)=>{
+				Loading.hide(_this.$isDebug);
+				let resp = response.data;
+				if(resp.success) {
+					this.$router.push("/welcome");
+				}else {
+					Toast.warning(resp.message)
+				}
+				_this.users = resp.content.list;
+				// 重新渲染分页组件，使其页码样式与查询页数相同
+				_this.$refs.pagination.render(page, resp.content.total);
+			});
+          
+      },
   }
 }
 </script>
