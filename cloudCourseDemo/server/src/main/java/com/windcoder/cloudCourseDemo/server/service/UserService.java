@@ -7,10 +7,13 @@ import com.windcoder.cloudCourseDemo.server.domain.User;
 import com.windcoder.cloudCourseDemo.server.domain.UserExample;
 import com.windcoder.cloudCourseDemo.server.dto.UserDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
+import com.windcoder.cloudCourseDemo.server.enums.BusinessExceptionCode;
+import com.windcoder.cloudCourseDemo.server.exception.BusinessException;
 import com.windcoder.cloudCourseDemo.server.mapper.UserMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -63,6 +66,10 @@ public class UserService {
      */
     private void inster(User user){
         user.setId(UuidUtil.getShortUuid());
+        User userDb = this.selectByLoginName(user.getLoginName());
+        if (userDb != null) {
+            throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+        }
         userMapper.insert(user);
     }
 
@@ -72,6 +79,18 @@ public class UserService {
      */
     private void update(User user){
         userMapper.updateByPrimaryKey(user);
+    }
+
+
+    public User selectByLoginName(String loginName) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andLoginNameEqualTo(loginName);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(userList)) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
     }
 
 }

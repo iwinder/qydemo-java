@@ -1,4 +1,4 @@
-package com.windcoder.cloudCourseDemo.system.controller;
+package com.windcoder.cloudCourseDemo.system.controller.admin;
 
 import com.windcoder.cloudCourseDemo.server.domain.Test;
 import com.windcoder.cloudCourseDemo.server.service.TestService;
