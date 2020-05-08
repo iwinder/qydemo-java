@@ -109,6 +109,8 @@ export default {
 				Loading.hide(_this.$isDebug);
 				let resp = response.data;
 				if(resp.success) {
+					console.log("登录成功：", resp.content);
+					Tool.setLoginUser(resp.content);
 					this.$router.push("/welcome");
 				}else {
 					Toast.warning(resp.message)

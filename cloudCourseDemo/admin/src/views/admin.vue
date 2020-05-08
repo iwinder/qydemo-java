@@ -359,7 +359,7 @@
 						<router-link to="/welcome">
 						 
 							<i class="menu-icon fa fa-tachometer"></i>
-							<span class="menu-text"> 欢迎 </span>
+							<span class="menu-text"> 欢迎：{{loginUser.name}} </span>
 						</router-link>
 
 						<b class="arrow"></b>
@@ -523,7 +523,12 @@
 
 
 export default {
-    name: 'admin',
+	name: 'admin',
+	data: function() {
+		return {
+			loginUser: {},
+		}
+	},
     mounted: function() {
 		let _this = this;
 		 $('body').removeClass('login-layout light-login');
@@ -534,6 +539,8 @@ export default {
 
 		// 解决从登录页面跳到控台主页时，侧边栏失效的问题
 		$.getScript('/ace/assets/js/ace.min.js');
+		// 获取用户登录信息
+		_this.loginUser = Tool.getLoginUser();
 	},
 	watch: {
 		// vue内置的watch,用来监听vue实例上的数据变动。$route也是个变量
