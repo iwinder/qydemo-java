@@ -1,13 +1,18 @@
 package com.windcoder.cloudCourseDemo.file.controller.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.vod.model.v20170321.GetMezzanineInfoResponse;
 import com.windcoder.cloudCourseDemo.server.dto.FileDto;
 import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
 import com.windcoder.cloudCourseDemo.server.enums.FileUseEnum;
 import com.windcoder.cloudCourseDemo.server.service.FileService;
 import com.windcoder.cloudCourseDemo.server.utils.Base64ToMultipartFile;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
+import com.windcoder.cloudCourseDemo.server.utils.VodUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,8 +27,15 @@ public class UploadController {
 
     @Value("${file.path}")
     private String FILE_PATH;
+    @Value("${file.domain}")
+    private String FILE_DOMAIN;
+    @Value("${file.vod.accessKeyId}")
+    private String accessKeyId;
+    @Value("${file.vod.accessKeySecret}")
+    private String accessKeySecret;
     @Resource
     private FileService fileService;
+
 
     /**
      * 普通文件上传
@@ -167,10 +179,21 @@ public class UploadController {
     }
 
     @GetMapping("/check/{key}")
-    public ResponseDto check(@PathVariable String key) {
+    public ResponseDto check(@PathVariable String key) throws Exception {
         log.info("检测上传分片开始：{}}", key);
         ResponseDto responseDto = new ResponseDto();
         FileDto fileDto = fileService.findByKey(key);
+        if (null != fileDto) {
+            if (StringUtils.isEmpty(fileDto.getVod())) {
+                fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+            } else {
+                DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
+                GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDto.getVod());
+                System.out.println("获取视频信息, response : " + JSON.toJSONString(response));
+                String fileUrl = response.getMezzanine().getFileURL();
+                fileDto.setPath(fileUrl);
+            }
+        }
         responseDto.setContent(fileDto);
         return responseDto;
     }

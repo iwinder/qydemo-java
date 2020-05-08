@@ -18,6 +18,7 @@ eureka:
 
 file:
   path: E:/00Work/Program/data/imooc/
+  domain: http://127.0.0.1:9000/file/f/
   oss:
     accessKeyId: LTAI4G3EZQ5Pxa9f6RG6P7zR
     accessKeySecret: N73eozUI78oIPrw11q3H6S78QJHK1R
