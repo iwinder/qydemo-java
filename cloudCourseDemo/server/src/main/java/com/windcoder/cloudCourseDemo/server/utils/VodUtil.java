@@ -6,13 +6,11 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.FormatType;
 import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.vod.model.v20170321.CreateUploadVideoRequest;
-import com.aliyuncs.vod.model.v20170321.CreateUploadVideoResponse;
-import com.aliyuncs.vod.model.v20170321.RefreshUploadVideoRequest;
-import com.aliyuncs.vod.model.v20170321.RefreshUploadVideoResponse;
+import com.aliyuncs.vod.model.v20170321.*;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.File;
+import java.io.InputStream;
 
 public class VodUtil {
     /**
@@ -37,13 +35,13 @@ public class VodUtil {
      * @return
      * @throws ClientException
      */
-    public static CreateUploadVideoResponse createUploadVideo(DefaultAcsClient vodClient) throws ClientException {
+    public static CreateUploadVideoResponse createUploadVideo(DefaultAcsClient vodClient, String fileName) throws ClientException {
         CreateUploadVideoRequest request = new CreateUploadVideoRequest();
-        request.setFileName("vod_test.mp4");
-        request.setTitle("this is title");
+        request.setFileName(fileName);
+        request.setTitle(fileName);
         //request.setDescription("this is desc");
         //request.setTags("tag1,tag2");
-        request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
+//        request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
         request.setCateId(1000136623L);
         request.setTemplateGroupId("5e3c039a8b5bc6a71a101c729b3b4a7a");
         //request.setWorkflowId("");
@@ -68,6 +66,28 @@ public class VodUtil {
         String accessKeySecret = uploadAuth.getString("AccessKeySecret");
         String securityToken = uploadAuth.getString("SecurityToken");
         return new OSSClient(endpoint, accessKeyId, accessKeySecret, securityToken);
+    }
+
+
+    /**
+     * 简单上传
+     * @param ossClient
+     * @param uploadAddress
+     * @param inputStream
+     */
+    public static void uploadLocalFile(OSSClient ossClient, JSONObject uploadAddress, InputStream inputStream){
+        String bucketName = uploadAddress.getString("Bucket");
+        String objectName = uploadAddress.getString("FileName");
+        // 单文件上传
+        ossClient.putObject(bucketName, objectName, inputStream);
+
+        /* 视频点播不支持追加上传
+        // 追加上传
+        ObjectMetadata meta = new ObjectMetadata();
+        meta.setContentType("text/plain");
+        AppendObjectRequest request = new AppendObjectRequest(bucketName, objectName, file, meta);
+        request.setPosition(0L);
+        ossClient.appendObject(request);*/
     }
 
     /**
@@ -122,9 +142,10 @@ public class VodUtil {
         //需要上传到VOD的本地视频文件的完整路径，需要包含文件扩展名
         String localFile = "E:\\00Work\\Program\\data\\test1.mp4";
         try {
+            String fileName = "test.mp4";
             // 初始化VOD客户端并获取上传地址和凭证
             DefaultAcsClient vodClient = initVodClient(accessKeyId, accessKeySecret);
-            CreateUploadVideoResponse createUploadVideoResponse = createUploadVideo(vodClient);
+            CreateUploadVideoResponse createUploadVideoResponse = createUploadVideo(vodClient, fileName);
             // 执行成功会返回VideoId、UploadAddress和UploadAuth
             String videoId = createUploadVideoResponse.getVideoId();
             JSONObject uploadAuth = JSONObject.parseObject(
@@ -139,5 +160,20 @@ public class VodUtil {
         } catch (Exception e) {
             System.out.println("上传视频失败, ErrorMessage : " + e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * 获取源文件信息
+     * @param vodClient 发送请求客户端
+     * @param videoId 获取源文件信息响应数据
+     * @return
+     * @throws Exception
+     */
+    public static GetMezzanineInfoResponse getMezzanineInfo(DefaultAcsClient vodClient, String videoId) throws Exception  {
+        GetMezzanineInfoRequest request = new GetMezzanineInfoRequest();
+        request.setVideoId(videoId);
+        //源片下载地址过期时间
+        request.setAuthTimeout(3600L);
+        return vodClient.getAcsResponse(request);
     }
 }

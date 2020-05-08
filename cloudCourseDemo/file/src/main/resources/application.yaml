@@ -24,3 +24,6 @@ file:
     endpoint: http://oss-cn-beijing.aliyuncs.com
     ossDomain:  http://windcoder-imooc.oss-cn-beijing.aliyuncs.com
     bucket: windcoder-imooc
+  vod:
+    accessKeyId: LTAI4G8A8VecydHMmrTvRmW5
+    accessKeySecret: xuDwZqxyY58JPOO7qIYpCx9g9OBdjG

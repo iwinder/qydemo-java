@@ -242,6 +242,7 @@
              */
             save() {
                 let _this = this;
+                 _this.section.video = "";
                 // 保存校验
                 if (1 != 1
                     || !Validator.require(_this.section.title, "标题")
@@ -308,10 +309,13 @@
             afterUpload(resp) {
                 let _this = this;
                 // let video = process.env.VUE_APP_FILE_SERVER + resp.content.path;
-                let video = process.env.VUE_APP_FILE_OSS + resp.content.path;
-                
+                // let video = process.env.VUE_APP_FILE_OSS + resp.content.path;
+                 let video =  resp.content.path;
+                 let vod = resp.content.vod;
+
                 // _this.section.video =  video;
                 _this.$set(_this.section, 'video', video);
+                _this.section.vod = vod;
                 _this.getTime();
             },
             getTime() {
@@ -319,9 +323,10 @@
                 let ele = document.getElementById("video");
                 ele.oncanplay = function () { 
                     console.log("ele", ele);
-                    console.log("ele", ele.duration);   
-                    // _this.section.time = parseInt(ele.duration, 10);
-                    _this.$set(_this.section, 'time', parseInt(ele.duration, 10));
+                    console.log("ele", ele.duration); 
+                     setTimeout(function () {  
+                    _this.section.time = parseInt(ele.duration, 10);}, 1000);
+                    // _this.$set(_this.section, 'time', parseInt(ele.duration, 10));
                 }
                
             },

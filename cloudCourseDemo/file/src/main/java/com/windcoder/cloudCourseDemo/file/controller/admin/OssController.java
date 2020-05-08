@@ -56,7 +56,7 @@ public class OssController {
         Integer shardIndex = fileDto.getShardIndex();
         Integer shardSize = fileDto.getShardSize();
         String shardBase64 = fileDto.getShard();
-        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(fileDto.getShard());
+        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
 
         // 保存文件到本地
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
