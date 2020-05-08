@@ -16,4 +16,9 @@ public class LoginUserDto {
      * 昵称
      */
     private String name;
+
+    /**
+     * 登录凭证
+     */
+    private String token;
 }

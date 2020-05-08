@@ -31,6 +31,9 @@ export default new Router({
         path: '/',
         name: 'admin', // 为每个路由增加name属性，后续做通用sidebar激活样式方法时需要用到，
         component: Admin,
+        meta:{
+            loginRequire: true // 属性名称可以自定义
+        },
         children: [{
             path: 'welcome',
             name: 'welcome',
