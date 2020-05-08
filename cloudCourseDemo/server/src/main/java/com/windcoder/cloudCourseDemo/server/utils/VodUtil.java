@@ -101,6 +101,10 @@ public class VodUtil {
         return vodClient.getAcsResponse(request);
     }
 
+    /**
+     *  [基于OSS原生SDK上传视频到点播](https://help.aliyun.com/document_detail/61388.html?spm=a2c4g.11186623.6.1142.6fa5aa71J1HTo3#Java%E4%B8%8A%E4%BC%A0%E7%A4%BA%E4%BE%8B)
+     * @param argv
+     */
     public static void main(String[] argv) {
         //您的AccessKeyId
         String accessKeyId = "LTAI4G8A8VecydHMmrTvRmW5";
