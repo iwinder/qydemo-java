@@ -307,7 +307,7 @@
 								<li class="divider"></li>
 
 								<li>
-									<a  v-on:click="logout()" href="javascript:vodi(0)">
+									<a  v-on:click="logout()" href="javascript:void(0)">
 										<i class="ace-icon fa fa-power-off"></i>
 										退出登录
 									</a>

@@ -93,6 +93,12 @@ Tool = {
    */
   getLoginUser: function() {
       return SessionStorage.get(SESSION_KEY_LOGIN_USER) || {};
+  },
+  setRememberUser: function(loginUser) {
+    LocalStorage.set(LOCAL_KEY_REMEMBER_USER,loginUser);
+  },
+  getRememberUser: function() {
+    return LocalStorage.get(LOCAL_KEY_REMEMBER_USER)  || {};
   }
 
 }
