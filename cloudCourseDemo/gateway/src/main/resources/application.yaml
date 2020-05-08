@@ -13,6 +13,9 @@ spring:
           predicates[0]:
             name: Path
             args[0]: /system/**
+          filters[0]:
+            name: LoginAdmin
+            args[0]: true
         routes[1]:
           id: business
           # 若配置的是ip端口号，发布到生产上可能访问不到，即使配置了maven环境，也需要提前知道上线后的端口号，提前配好。
@@ -22,12 +25,18 @@ spring:
           predicates[0]:
             name: Path
             args[0]: /business/**
+            filters[0]:
+              name: LoginAdmin
+              args[0]: true
         routes[2]:
           id: system
           uri: lb://file
           predicates[0]:
             name: Path
             args[0]: /file/**
+            filters[0]:
+              name: LoginAdmin
+              args[0]: true
 
 eureka:
   client:
