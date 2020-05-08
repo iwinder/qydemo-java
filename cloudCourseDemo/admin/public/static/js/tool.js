@@ -94,11 +94,27 @@ Tool = {
   getLoginUser: function() {
       return SessionStorage.get(SESSION_KEY_LOGIN_USER) || {};
   },
+  /**
+   *  设置【记住我】的用户信息
+   * @param {*} loginUser 
+   */
   setRememberUser: function(loginUser) {
     LocalStorage.set(LOCAL_KEY_REMEMBER_USER,loginUser);
   },
+  /**
+   * 获取【记住我】的用户信息
+   */
   getRememberUser: function() {
     return LocalStorage.get(LOCAL_KEY_REMEMBER_USER)  || {};
+  },
+  uuid: function(len, radix) {
+    let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    let uuid = [];
+    radix = radix || chars.length;
+    for (let i = 0; i < len; i++) {
+      uuid[i] = chars[0 | Math.random() * radix];
+    }
+    return uuid.join("");
   }
 
 }
