@@ -7,6 +7,7 @@ import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
 import com.windcoder.cloudCourseDemo.server.service.UserService;
 import com.windcoder.cloudCourseDemo.server.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -41,6 +42,7 @@ public class UserController {
      */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody  UserDto userDto) {
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         // 保存校验
         ValidatorUtil.require(userDto.getLoginName(), "登陆名");
         ValidatorUtil.length(userDto.getLoginName(), "登陆名", 1, 50);
