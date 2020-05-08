@@ -131,6 +131,19 @@ public class VodUtil {
     }
 
     /**
+     * 获取播放凭证函数
+     * https://help.aliyun.com/document_detail/61064.html?spm=a2c4g.11186623.6.909.64ff1c4cPqNv0G#h2--div-id-getvideoplayauth-div-2
+     * @param client
+     * @return
+     * @throws Exception
+     */
+    public static GetVideoPlayAuthResponse getVideoPlayAuth(DefaultAcsClient client, String videoId) throws Exception {
+        GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
+        request.setVideoId(videoId);
+        return client.getAcsResponse(request);
+    }
+
+    /**
      *  [基于OSS原生SDK上传视频到点播](https://help.aliyun.com/document_detail/61388.html?spm=a2c4g.11186623.6.1142.6fa5aa71J1HTo3#Java%E4%B8%8A%E4%BC%A0%E7%A4%BA%E4%BE%8B)
      * @param argv
      */

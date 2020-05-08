@@ -10,8 +10,10 @@ import com.aliyun.oss.model.AppendObjectResult;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.CreateUploadVideoResponse;
 import com.aliyuncs.vod.model.v20170321.GetMezzanineInfoResponse;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.windcoder.cloudCourseDemo.server.dto.FileDto;
 import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
 import com.windcoder.cloudCourseDemo.server.enums.FileUseEnum;
@@ -92,6 +94,26 @@ public class VodController {
         fileDto.setPath(fileUrl);
         responseDto.setContent(fileDto);
 
+        return responseDto;
+    }
+
+
+    @GetMapping(value = "/get-auth/{vod}")
+    public ResponseDto getAuth(@PathVariable String vod) throws ClientException {
+        log.info("获取播放授权开始: ");
+        ResponseDto responseDto = new ResponseDto();
+        DefaultAcsClient client = VodUtil.initVodClient(accessKeyId, accessKeySecret);
+        GetVideoPlayAuthResponse response = new GetVideoPlayAuthResponse();
+        try {
+            response = VodUtil.getVideoPlayAuth(client, vod);
+            log.info("授权码 = {}", response.getPlayAuth());
+            responseDto.setContent(response.getPlayAuth());
+            //VideoMeta信息
+            log.info("VideoMeta = {}", JSON.toJSONString(response.getVideoMeta()));
+        } catch (Exception e) {
+            System.out.print("ErrorMessage = " + e.getLocalizedMessage());
+        }
+        log.info("获取播放授权结束");
         return responseDto;
     }
 }

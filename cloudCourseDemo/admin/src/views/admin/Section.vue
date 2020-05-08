@@ -24,7 +24,7 @@
             <tr>
                 <th>ID</th>
                 <th>标题</th>
-                <th>视频</th>
+                <th>VOD</th>
                 <th>时长</th>
                 <th>收费</th>
                 <th>顺序</th>
@@ -38,14 +38,14 @@
             <tr v-for="section in sections" :key="section.id" >
                 <td>{{section.id}}</td>
                 <td>{{section.title}}</td>
-                <td>{{section.video}}</td>
+                <td>{{section.vod}}</td>
                 <td>{{section.time | formatSecond}}</td>
                  <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
                 <td>{{section.sort}}</td>
-
-
-            <td>
-                <div class="hidden-sm hidden-xs btn-group">
+                <td> 
+                    <button v-on:click="play(section)" class="btn btn-xs btn-info">
+                        <i class="ace-icon fa fa-video-camera bigger-120"></i>
+                    </button>
                     <!-- 编辑 -->
                     <button v-on:click="edit(section)" class="btn btn-xs btn-info">
                         <i class="ace-icon fa fa-pencil bigger-120"></i>
@@ -54,35 +54,7 @@
                     <button v-on:click="del(section.id)" class="btn btn-xs btn-danger">
                         <i class="ace-icon fa fa-trash-o bigger-120"></i>
                     </button>
-                </div>
-
-                <div class="hidden-md hidden-lg">
-                    <div class="inline pos-rel">
-                        <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                            <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-
-                            <li>
-                                <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-                                            <span class="green">
-                                                <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                            </span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-                                            <span class="red">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </td>
+                </td>
             </tr> <!--tr结束 -->
             </tbody>
         </table>
@@ -132,7 +104,7 @@
                                             ></vod>
                                      <div v-show="section.video"  class="row">
                                         <div class="col-md-9">
-                                            <player ref="player"></player>
+                                            <player ref="player" v-bind:player-id="'form-player-div'" ></player>
                                             <video v-bind:src="section.video"   id="video"  class="hidden" controls="controls"></video>
                                         </div>
                                     </div>
@@ -184,6 +156,8 @@
                 </div>
             </div>
         </div>
+
+         <modal-player ref="modalPlayer"></modal-player>
     </div>
 
 </template>
@@ -193,11 +167,11 @@
     import Pagination from '../../components/pagination';
     import Vod from '../../components/vod';
     import Player from '../../components/player';
-    
+    import ModalPlayer from "../../components/modal-player";
 
     export default {
         name: 'business-section',
-        components: {Pagination, Vod, Player},
+        components: {Pagination, Vod, Player,ModalPlayer},
         data: function() {
             return {
                 section: {},
@@ -334,6 +308,14 @@
                   
                 }
                
+            },
+            /**
+            * 播放视频
+            * @param section
+            */
+            play(section) {
+                let _this = this;
+                _this.$refs.modalPlayer.playVod(section.vod);
             },
         }
     }
