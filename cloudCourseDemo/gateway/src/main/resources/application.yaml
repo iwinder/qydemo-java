@@ -4,6 +4,10 @@ server:
 spring:
     application:
       name: gateway
+    redis:
+      host: 47.100.55.40
+      port: 6379
+      password: Redis000
     cloud:
       gateway:
         routes[0]:
@@ -25,18 +29,19 @@ spring:
           predicates[0]:
             name: Path
             args[0]: /business/**
-            filters[0]:
-              name: LoginAdmin
-              args[0]: true
+          filters[0]:
+            name: LoginAdmin
+            args[0]: true
         routes[2]:
           id: system
           uri: lb://file
           predicates[0]:
             name: Path
             args[0]: /file/**
-            filters[0]:
-              name: LoginAdmin
-              args[0]: true
+          filters[0]:
+            name: LoginAdmin
+            args[0]: true
+
 
 eureka:
   client:
