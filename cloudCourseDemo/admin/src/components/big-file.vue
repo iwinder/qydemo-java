@@ -136,20 +136,22 @@ export default {
         // 将文件转为base64进行传输
         let fileReader = new FileReader();
         fileReader.readAsDataURL(fileShard);
-
+        Progress.show(parseInt((shardIndex - 1) * 100 / shardTotal));
         fileReader.onload = function (e) {
           let base64 = e.target.result;
           param.shard = base64;
-          Loading.show();
+          // Loading.show();
           _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/big-upload", param).then((res)=> {
-              Loading.hide();
-              let resp = res.data;
+              // Loading.hide();
+              let resp = res.data;  
+              Progress.show(parseInt(shardIndex * 100 / shardTotal));
               console.log("文件上传的结果：", resp);
               if(shardIndex < shardTotal) {
                 // 上传下一个分片
                 param.shardIndex = param.shardIndex + 1;
                 _this.upload(param);
               } else {
+                 Progress.hide();
                 _this.afterUpload(resp);  
                 $("#" + _this.inputId + "-input").val("");
               }
