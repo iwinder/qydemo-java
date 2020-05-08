@@ -1,10 +1,7 @@
 package com.windcoder.cloudCourseDemo.system.controller.admin;
 
 import com.windcoder.cloudCourseDemo.server.domain.User;
-import com.windcoder.cloudCourseDemo.server.dto.LoginUserDto;
-import com.windcoder.cloudCourseDemo.server.dto.UserDto;
-import com.windcoder.cloudCourseDemo.server.dto.PageDto;
-import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
+import com.windcoder.cloudCourseDemo.server.dto.*;
 import com.windcoder.cloudCourseDemo.server.service.UserService;
 import com.windcoder.cloudCourseDemo.server.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +9,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -85,11 +83,19 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto) {
+    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
         userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         ResponseDto responseDto = new ResponseDto();
         LoginUserDto loginUserDto = userService.login(userDto);
+        request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
         responseDto.setContent(loginUserDto);
+        return responseDto;
+    }
+
+    @GetMapping("/logout")
+    public ResponseDto logout( HttpServletRequest request) {
+        ResponseDto responseDto = new ResponseDto();
+        request.getSession().removeAttribute(Constants.LOGIN_USER);
         return responseDto;
     }
 }

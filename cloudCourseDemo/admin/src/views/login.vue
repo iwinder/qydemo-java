@@ -115,9 +115,6 @@ export default {
 				}else {
 					Toast.warning(resp.message)
 				}
-				_this.users = resp.content.list;
-				// 重新渲染分页组件，使其页码样式与查询页数相同
-				_this.$refs.pagination.render(page, resp.content.total);
 			});
           
       },
