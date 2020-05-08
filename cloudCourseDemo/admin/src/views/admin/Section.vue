@@ -132,7 +132,8 @@
                                             ></vod>
                                      <div v-show="section.video"  class="row">
                                         <div class="col-md-9">
-                                            <video v-bind:src="section.video"   id="video"  controls="controls"></video>
+                                            <player ref="player"></player>
+                                            <video v-bind:src="section.video"   id="video"  class="hidden" controls="controls"></video>
                                         </div>
                                     </div>
                                 </div>
@@ -190,12 +191,13 @@
 <script>
 
     import Pagination from '../../components/pagination';
-    // import BigFile from "../../components/big-file";
     import Vod from '../../components/vod';
+    import Player from '../../components/player';
+    
 
     export default {
         name: 'business-section',
-        components: {Pagination, Vod},
+        components: {Pagination, Vod, Player},
         data: function() {
             return {
                 section: {},
@@ -316,6 +318,7 @@
                 // _this.section.video =  video;
                 _this.$set(_this.section, 'video', video);
                 _this.section.vod = vod;
+                    _this.$refs.player.playUrl(video);
                 _this.getTime();
             },
             getTime() {
@@ -325,8 +328,10 @@
                     console.log("ele", ele);
                     console.log("ele", ele.duration); 
                      setTimeout(function () {  
-                    _this.section.time = parseInt(ele.duration, 10);}, 1000);
-                    // _this.$set(_this.section, 'time', parseInt(ele.duration, 10));
+                    // _this.section.time = parseInt(ele.duration, 10);
+                        _this.$set(_this.section, 'time', parseInt(ele.duration, 10));
+                    }, 1000);
+                  
                 }
                
             },
