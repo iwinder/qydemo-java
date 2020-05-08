@@ -367,7 +367,7 @@
 
 			 
 
-					<li class="active open">
+					<li class="">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> 系统管理 </span>
@@ -400,7 +400,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="active open">
+					<li class="">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> 业务管理 </span>
@@ -438,7 +438,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="active open">
+					<li class="">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> 文件管理 </span>
@@ -531,6 +531,9 @@ export default {
 		// 若从login页面点击登录进入到welcome页面，并不会触发激活样式
 		// watch仅在admin下面的子组件相互跳转时有效。
 		_this.activeSidebar("sidebar-" + _this.$route.name.replace("/", "-"));
+
+		// 解决从登录页面跳到控台主页时，侧边栏失效的问题
+		$.getScript('/ace/assets/js/ace.min.js');
 	},
 	watch: {
 		// vue内置的watch,用来监听vue实例上的数据变动。$route也是个变量
@@ -560,6 +563,7 @@ export default {
 			let parentLi = $("#" + id).parents("li");
 			if (parentLi) {
 				parentLi.siblings().removeClass("open active");
+				parentLi.siblings().find("li").removeClass("active");
 				parentLi.addClass("open active");
 			}
 		}
