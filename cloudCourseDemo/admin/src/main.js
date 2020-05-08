@@ -9,6 +9,8 @@ Vue.prototype.$ajax = axios;
 Vue.prototype.$api_url = 'http://127.0.0.1:9000/';
 Vue.prototype.$isDeBug = true;
 
+// 解决每次ajax请求，对应的sessionId不一致的问题
+axios.defaults.withCredentials = true;
 /**
  *  axios拦截器
  */

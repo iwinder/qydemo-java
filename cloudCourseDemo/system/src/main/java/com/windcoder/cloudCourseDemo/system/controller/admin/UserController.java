@@ -6,6 +6,7 @@ import com.windcoder.cloudCourseDemo.server.service.UserService;
 import com.windcoder.cloudCourseDemo.server.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -84,8 +85,26 @@ public class UserController {
      */
     @PostMapping("/login")
     public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
-        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        log.info("用户登录开始");
+
         ResponseDto responseDto = new ResponseDto();
+        String imageCode = (String)request.getSession().getAttribute(userDto.getImageCodeToken());
+        if (StringUtils.isEmpty(imageCode)) {
+            responseDto.setSuccess(false);
+            responseDto.setMessage("验证码已过期");
+            log.info("用户登录失败，验证码已过期");
+            return responseDto;
+        }
+        if (!imageCode.toLowerCase().equals(userDto.getImageCode().toLowerCase())) {
+             responseDto.setSuccess(false);
+             responseDto.setMessage("验证码不对");
+             log.info("用户登录失败，验证码不对");
+             return responseDto;
+        } else {
+            // 验证通过后，移除验证码
+            request.getSession().removeAttribute(userDto.getImageCode().toLowerCase());
+        }
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         LoginUserDto loginUserDto = userService.login(userDto);
         request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
         responseDto.setContent(loginUserDto);
