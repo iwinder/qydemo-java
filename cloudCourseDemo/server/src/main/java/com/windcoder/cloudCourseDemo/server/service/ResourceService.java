@@ -88,7 +88,7 @@ public class ResourceService {
         List<ResourceDto> list = new ArrayList<>();
         if (!CollectionUtils.isEmpty(jsonList)) {
             for (ResourceDto d: jsonList) {
-                d.setPage("");
+                d.setParent("");
                 add(list, d);
             }
         }
