@@ -19,6 +19,7 @@ public class ServerGenerator {
 //    static final String MODULE = "business";
 //    static String MODULE = "file";
     static String MODULE = "system";
+//    static String MODULE = "resource";
     static String toServicePath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\service\\";
     static String toDtoPath = "server\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\server\\dto\\";
     static String toControllerPath = MODULE + "\\src\\main\\java\\com\\windcoder\\cloudCourseDemo\\" + MODULE + "\\controller\\admin\\";
