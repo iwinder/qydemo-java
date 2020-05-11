@@ -29,43 +29,19 @@
                 <td>{{role.name}}</td>
                 <td>{{role.desc}}</td>
             <td>
-                <div class="hidden-sm hidden-xs btn-group">
-                    <!-- 编辑 -->
-                    <button v-on:click="edit(role)" class="btn btn-xs btn-info">
-                        <i class="ace-icon fa fa-pencil bigger-120"></i>
-                    </button>
-                    <!-- 删除 -->
-                    <button v-on:click="del(role.id)" class="btn btn-xs btn-danger">
-                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                    </button>
-                </div>
-
-                <div class="hidden-md hidden-lg">
-                    <div class="inline pos-rel">
-                        <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                            <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-
-                            <li>
-                                <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-                                            <span class="green">
-                                                <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                            </span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-                                            <span class="red">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <button v-on:click="editResource(role)" class="btn btn-xs btn-info">
+                      <i class="ace-icon fa fa-list bigger-120"></i>
+                </button>
+                &nbsp;
+                <!-- 编辑 -->
+                <button v-on:click="edit(role)" class="btn btn-xs btn-info">
+                    <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button>
+                &nbsp;
+                <!-- 删除 -->
+                <button v-on:click="del(role.id)" class="btn btn-xs btn-danger">
+                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button> 
             </td>
             </tr> <!--tr结束 -->
             </tbody>
@@ -74,38 +50,23 @@
 
 
         <!-- Modal -->
-        <div id="form-modal" class="modal fade"   tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div id="resource-modal" class="modal fade"   tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">表单</h4>
+                        <h4 class="modal-title" id="myModalLabel">角色资源关联配置</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal">
-                             
- 
-                            <div class="form-group">
-                                <label   class="col-sm-2 control-label">角色</label>
-                                <div class="col-sm-10">
-
-                                     <input   v-model="role.name" class="form-control" placeholder="角色">
-                                </div>
-                            </div>
- 
-                            <div class="form-group">
-                                <label   class="col-sm-2 control-label">描述</label>
-                                <div class="col-sm-10">
-
-                                     <input   v-model="role.desc" class="form-control" placeholder="描述">
-                                </div>
-                            </div>
-
-                        </form>
+                        <ul id="tree" class="ztree"></ul>   
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" v-on:click="save()" class="btn btn-primary">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times"></i>关闭
+                        </button>
+                        <button type="button" v-on:click="saveResource()" class="btn btn-primary">
+                              <i class="ace-icon fa fa-plus blue"></i>保存
+                        </button>
                     </div>
                 </div>
             </div>
@@ -125,6 +86,8 @@
             return {
                 role: {},
                 roles: [],
+                resources: [],
+                zTree: {},
             }
         },
         mounted: function() {
@@ -217,7 +180,54 @@
                     // 重新渲染分页组件，使其页码样式与查询页数相同
                     _this.$refs.pagination.render(page, resp.content.total);
                 });
-            }
+            },
+            /**
+             * 点击【编辑】
+             */
+            editResource(role) {
+                let _this = this;
+                _this.role = $.extend({}, role);
+                _this.loadResource();
+                $("#resource-modal").modal("show");
+            },
+
+            /**
+             * 加载资源树
+             */
+            loadResource() {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/resource/load-tree').then((res)=>{
+                Loading.hide();
+                let response = res.data;
+                _this.resources = response.content;
+                // 初始化树
+                _this.initTree();
+                })
+            },
+
+            /**
+             * 初始资源树
+             */
+            initTree() {
+                let _this = this;
+                let setting = {
+                check: {
+                    enable: true
+                },
+                data: {
+                    simpleData: {
+                    idKey: "id",
+                    pIdKey: "parent",
+                    rootPId: "",
+                    enable: true
+                    }
+                }
+                };
+
+                _this.zTree = $.fn.zTree.init($("#tree"), setting, _this.resources);
+                _this.zTree.expandAll(true);
+            },
         }
     }
 </script>
