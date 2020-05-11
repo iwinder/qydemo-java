@@ -79,7 +79,7 @@ public class RoleController {
     }
 
 
-    /**
+        /**
     * 加载已关联的资源
     */
     @GetMapping("/list-resource/{roleId}")
@@ -90,4 +90,18 @@ public class RoleController {
         responseDto.setContent(resourceIdList);
         return responseDto;
     }
+
+    /**
+     * 保存用户
+     * @param roleDto
+     */
+    @PostMapping("/save-user")
+    public ResponseDto saveUser(@RequestBody RoleDto roleDto) {
+        log.info("保存角色用户关联开始");
+        ResponseDto<RoleDto> responseDto = new ResponseDto<>();
+        roleService.saveUser(roleDto);
+        responseDto.setContent(roleDto);
+        return responseDto;
+    }
+
 }

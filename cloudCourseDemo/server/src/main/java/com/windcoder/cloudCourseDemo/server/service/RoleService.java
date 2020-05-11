@@ -3,14 +3,12 @@ package com.windcoder.cloudCourseDemo.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import com.windcoder.cloudCourseDemo.server.domain.Role;
-import com.windcoder.cloudCourseDemo.server.domain.RoleExample;
-import com.windcoder.cloudCourseDemo.server.domain.RoleResource;
-import com.windcoder.cloudCourseDemo.server.domain.RoleResourceExample;
+import com.windcoder.cloudCourseDemo.server.domain.*;
 import com.windcoder.cloudCourseDemo.server.dto.RoleDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.mapper.RoleMapper;
 import com.windcoder.cloudCourseDemo.server.mapper.RoleResourceMapper;
+import com.windcoder.cloudCourseDemo.server.mapper.RoleUserMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,8 @@ public class RoleService {
     private RoleMapper roleMapper;
     @Resource
     private RoleResourceMapper roleResourceMapper;
+    @Resource
+    private RoleUserMapper roleUserMapper;
 
     /**
      * 列表查询
@@ -104,6 +104,11 @@ public class RoleService {
     }
 
 
+    /**
+     * 按角色加载资源
+     * @param roleId
+     * @return
+     */
     public List<String> listResource(String roleId) {
         RoleResourceExample example = new RoleResourceExample();
         example.createCriteria().andRoleIdEqualTo(roleId);
@@ -115,4 +120,29 @@ public class RoleService {
         }
         return resourceIdList;
     }
+
+
+    /**
+     * 按角色保存用户
+     */
+    public void saveUser(RoleDto roleDto) {
+        String roleId = roleDto.getId();
+        List<String> userIdList = roleDto.getUserIds();
+        // 清空库中所有的当前角色下的记录
+        RoleUserExample example = new RoleUserExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        roleUserMapper.deleteByExample(example);
+
+        // 保存角色用户
+        for (int i = 0; i < userIdList.size(); i++) {
+            RoleUser roleUser = new RoleUser();
+            roleUser.setId(UuidUtil.getShortUuid());
+            roleUser.setRoleId(roleId);
+            roleUser.setUserId(userIdList.get(i));
+            roleUserMapper.insert(roleUser);
+        }
+    }
+
+
+
 }
