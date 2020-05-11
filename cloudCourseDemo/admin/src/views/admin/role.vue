@@ -359,6 +359,7 @@
                 if (resp.success) {
                     _this.users = resp.content.list;
                     console.log(_this.users)
+                    _this.listRoleUser();
                 } else {
                     Toast.warning(resp.message);
                 }
@@ -399,7 +400,7 @@
                 // 保存时，只需要保存用户id，所以使用id数组进行参数传递
                 let userIds = [];
                 for (let i = 0; i < users.length; i++) {
-                userIds.push(users[i].id);
+                    userIds.push(users[i].id);
                 }
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-user', {
                 id: _this.role.id,
@@ -413,6 +414,26 @@
                     Toast.warning(resp.message);
                 }
                 })
+            },
+             /**
+             * 加载角色用户
+             */
+            listRoleUser() {
+                let _this = this;
+                _this.roleUsers = [];
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/role/list-user/' + _this.role.id).then((res)=>{
+                let response = res.data;
+                let userIds = response.content;
+
+                // 根据加载到用户ID，到【所有用户数组：users】中查找用户对象，用于列表显示
+                for (let i = 0; i < userIds.length; i++) {
+                    for (let j = 0; j < _this.users.length; j++) {
+                        if (userIds[i] === _this.users[j].id) {
+                            _this.roleUsers.push(_this.users[j]);
+                        }
+                    }
+                }
+                });
             },
         }
     }
