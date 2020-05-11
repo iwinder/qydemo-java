@@ -419,7 +419,7 @@
 						<b class="arrow"></b>
 
 						<ul class="submenu">
-							<li class="" id="sidebar-business-category">
+							<li v-show="hasResource('0201')" class="" id="sidebar-business-category">
 								<router-link to="/business/category">
 									<i class="menu-icon fa fa-caret-right"></i>
 									分类管理
@@ -428,7 +428,7 @@
 								<b class="arrow"></b>
 							</li>
 
-							<li class="" id="sidebar-business-course">
+							<li v-show="hasResource('0202')"  class="" id="sidebar-business-course">
 								<router-link to="/business/course">
 									<i class="menu-icon fa fa-caret-right"></i>
 									课程管理
@@ -436,7 +436,7 @@
 
 								<b class="arrow"></b>
 							</li>
-							<li class="" id="sidebar-business-teacher">
+							<li v-show="hasResource('0203')" class="" id="sidebar-business-teacher">
 								<router-link to="/business/teacher">
 									<i class="menu-icon fa fa-caret-right"></i>
 									讲师管理
@@ -446,7 +446,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="">
+					<li v-show="hasResource('03')" class="">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list"></i>
 							<span class="menu-text"> 文件管理 </span>
@@ -457,7 +457,7 @@
 						<b class="arrow"></b>
 
 						<ul class="submenu">
-							<li class="" id="sidebar-file-file">
+							<li v-show="hasResource('0301')" class="" id="sidebar-file-file">
 								<router-link to="/file/file">
 									<i class="menu-icon fa fa-caret-right"></i>
 									文件管理
