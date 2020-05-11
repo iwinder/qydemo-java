@@ -198,11 +198,12 @@
                 let _this = this;
                 Loading.show();
                 _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/resource/load-tree').then((res)=>{
-                Loading.hide();
-                let response = res.data;
-                _this.resources = response.content;
-                // 初始化树
-                _this.initTree();
+                    Loading.hide();
+                    let response = res.data;
+                    _this.resources = response.content;
+                    // 初始化树
+                    _this.initTree();
+                    _this.listRoleResource();
                 })
             },
 
@@ -239,19 +240,37 @@
                 // 保存时，只需要保存资源id，所以使用id数组进行参数传递
                 let resourceIds = [];
                 for (let i = 0; i < resources.length; i++) {
-                resourceIds.push(resources[i].id);
+                    resourceIds.push(resources[i].id);
                 }
 
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-resource', {
-                id: _this.role.id,
-                resourceIds: resourceIds
+                    id: _this.role.id,
+                    resourceIds: resourceIds
                 }).then((response)=>{
-                let resp = response.data;
-                if (resp.success) {
-                    Toast.success("保存成功!");
-                } else {
-                    Toast.warning(resp.message);
-                }
+                    let resp = response.data;
+                    if (resp.success) {
+                        Toast.success("保存成功!");
+                    } else {
+                        Toast.warning(resp.message);
+                    }
+                });
+            },
+
+            /**
+            * 加载角色资源关联记录
+            */
+            listRoleResource() {
+                let _this = this;
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/role/list-resource/' + _this.role.id).then((response)=>{
+                    let resp = response.data;
+                    let resources = resp.content;
+                
+                    // 勾选查询到的资源：先把树的所有节点清空勾选，再勾选查询到的节点
+                    _this.zTree.checkAllNodes(false);
+                    for (let i = 0; i < resources.length; i++) {
+                        let node = _this.zTree.getNodeByParam("id", resources[i]);
+                        _this.zTree.checkNode(node, true);
+                    }
                 });
             },
         }
