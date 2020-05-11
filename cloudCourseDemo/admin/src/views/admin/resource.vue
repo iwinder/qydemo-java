@@ -1,16 +1,24 @@
 <template>
     <div>
         <p>
-            <button v-on:click="add()" class="btn btn-white btn-default btn-round">
-                <i class="ace-icon fa fa-edit"></i>
-                新增
-            </button>
-            &nbsp;
             <button v-on:click="list()" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-refresh"></i>
                 刷新
             </button>
         </p>
+         <div class="row">
+             <div class="col-md-6">
+                 <textarea id="resource-textarea" class="form-control" v-model="resourceStr" name="resource" rows="10"></textarea>
+                  <br>
+                  <button id="save-btn" type="button" class="btn btn-primary" v-on:click="save()">
+                      保存
+                  </button>
+             </div>
+              <div class="col-md-6">
+             </div>
+         </div>
+         <hr>
+         
         <!-- ref设置pagination组件别名为 pagination -->
         <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="6"></pagination>
         <table id="simple-table" class="table  table-bordered table-hover">
@@ -74,62 +82,7 @@
             </tr> <!--tr结束 -->
             </tbody>
         </table>
-
-
-
-        <!-- Modal -->
-        <div id="form-modal" class="modal fade"   tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">表单</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                             
  
-                            <div class="form-group">
-                                <label   class="col-sm-2 control-label">名称</label>
-                                <div class="col-sm-10">
-
-                                     <input   v-model="resource.name" class="form-control" placeholder="名称">
-                                </div>
-                            </div>
- 
-                            <div class="form-group">
-                                <label   class="col-sm-2 control-label">页面</label>
-                                <div class="col-sm-10">
-
-                                     <input   v-model="resource.page" class="form-control" placeholder="页面">
-                                </div>
-                            </div>
- 
-                            <div class="form-group">
-                                <label   class="col-sm-2 control-label">请求</label>
-                                <div class="col-sm-10">
-
-                                     <input   v-model="resource.request" class="form-control" placeholder="请求">
-                                </div>
-                            </div>
- 
-                            <div class="form-group">
-                                <label   class="col-sm-2 control-label">父id</label>
-                                <div class="col-sm-10">
-
-                                     <input   v-model="resource.parent" class="form-control" placeholder="父id">
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" v-on:click="save()" class="btn btn-primary">保存</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 </template>
@@ -145,6 +98,7 @@
             return {
                 resource: {},
                 resources: [],
+                resourceStr: "",
             }
         },
         mounted: function() {
@@ -152,15 +106,7 @@
             let _this = this;
             _this.list(1);
         },
-        methods: {
-            /**
-             * 点击【新增】
-             */
-            add() {
-                let _this = this;
-                _this.resource = {};
-                $("#form-modal").modal("show");
-            },
+        methods: { 
             /**
              * 点击【编辑】
              */
@@ -177,16 +123,22 @@
             save() {
                 let _this = this;
                 // 保存校验
-                if (1 != 1
-                    || !Validator.require(_this.resource.name, "名称")
-                    || !Validator.length(_this.resource.name, "名称", 1, 100)
-                    || !Validator.length(_this.resource.page, "页面", 1, 50)
-                    || !Validator.length(_this.resource.request, "请求", 1, 200)
-                ) {
+                // if (1 != 1
+                //     || !Validator.require(_this.resource.name, "名称")
+                //     || !Validator.length(_this.resource.name, "名称", 1, 100)
+                //     || !Validator.length(_this.resource.page, "页面", 1, 50)
+                //     || !Validator.length(_this.resource.request, "请求", 1, 200)
+                // ) {
+                //     return;
+                // }
+
+                if (Tool.isEmpty(_this.resourceStr)) {
+                    Toast.warning("资源不能为空！");
                     return;
-                }
+                }  
+                let json = JSON.parse(_this.resourceStr);
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + "/system/admin/resource/save",  _this.resource).then((response)=>{
+                _this.$ajax.post(process.env.VUE_APP_SERVER + "/system/admin/resource/save",  json).then((response)=>{
                     Loading.hide(_this.$isDebug);
                     console.log("保存资源的结果：", response);
                     let resp = response.data;
