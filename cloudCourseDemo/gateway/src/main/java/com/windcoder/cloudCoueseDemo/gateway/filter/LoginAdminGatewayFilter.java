@@ -1,5 +1,8 @@
 package com.windcoder.cloudCoueseDemo.gateway.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -54,6 +57,25 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             return exchange.getResponse().setComplete();
         } else {
             log.info("已登录：{}", object);
+            // 增加权限校验，gateway里没有LoginUserDto，所以全部用JSON操作
+            log.info("接口权限校验，请求地址：{}", path);
+            boolean exist = false;
+            JSONObject loginUser = JSON.parseObject(String.valueOf(object));
+            JSONArray requests = loginUser.getJSONArray("requests");
+            // 遍历所有【权限请求】，判断当前请求的地址是否在【权限请求】里
+            for (int i = 0, l = requests.size(); i < l; i++) {
+                String request = (String) requests.get(i);
+                if (path.contains(request)) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) {
+                log.warn("权限校验未通过");
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            }
+            log.warn("权限校验通过");
             return chain.filter(exchange);
         }
     }
