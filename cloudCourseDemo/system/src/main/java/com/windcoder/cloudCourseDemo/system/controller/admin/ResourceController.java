@@ -34,9 +34,21 @@ public class ResourceController {
         return responseDto;
     }
 
+
+      /**
+        * 资源树查询
+        */
+    @GetMapping("/load-tree")
+    public ResponseDto loadTree() {
+        ResponseDto responseDto = new ResponseDto();
+        List<ResourceDto> resourceDtoList = resourceService.loadTree();
+        responseDto.setContent(resourceDtoList);
+        return responseDto;
+    }
+
     /**
      * 保存，id有值时更新，无值时新增
-     * @param resourceDto
+     * @param jsonStr
      * @return
      */
     @PostMapping("/save")
