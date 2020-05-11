@@ -15,7 +15,7 @@
         <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="6"></pagination>
        
         <div class="row">
-            <div v-for="teacher in teachers" :key="teacher.id" class="col-md-3 center">
+            <div v-for="teacher in teachers" :key="teacher.id" class="col-md-3 ">
                 <div>
                 <span class="profile-picture">
                     <img v-show="!teacher.image" class="editable img-responsive editable-click editable-empty" src="/static/images/teachers/avatar1.png" v-bind:title="teacher.intro"/>
@@ -37,10 +37,13 @@
 
                 <div class="space-6"></div>
 
-                <a href="javascript:;" class="text-info bigger-110" v-bind:title="teacher.motto">
-                <i class="ace-icon fa fa-user"></i>
-                {{teacher.name}}【{{teacher.nickname}}】
-                </a>
+                <div class="text-center">
+                    <a href="javascript:;" class="text-info bigger-110" v-bind:title="teacher.motto">
+                        <i class="ace-icon fa fa-user"></i>
+                        {{teacher.name}}【{{teacher.nickname}}】
+                    </a>
+                </div>
+            
 
                 <div class="space-6"></div>
 
