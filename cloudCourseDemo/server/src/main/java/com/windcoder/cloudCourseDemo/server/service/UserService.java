@@ -1,15 +1,18 @@
 package com.windcoder.cloudCourseDemo.server.service;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.cloudCourseDemo.server.domain.User;
 import com.windcoder.cloudCourseDemo.server.domain.UserExample;
 import com.windcoder.cloudCourseDemo.server.dto.LoginUserDto;
+import com.windcoder.cloudCourseDemo.server.dto.ResourceDto;
 import com.windcoder.cloudCourseDemo.server.dto.UserDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.enums.BusinessExceptionCode;
 import com.windcoder.cloudCourseDemo.server.exception.BusinessException;
+import com.windcoder.cloudCourseDemo.server.mapper.MyUserMapper;
 import com.windcoder.cloudCourseDemo.server.mapper.UserMapper;
 import com.windcoder.cloudCourseDemo.server.utils.CopyUtil;
 import com.windcoder.cloudCourseDemo.server.utils.UuidUtil;
@@ -19,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -26,6 +30,8 @@ import java.util.List;
 public class UserService {
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private MyUserMapper myUserMapper;
 
     /**
      * 列表查询
@@ -116,12 +122,38 @@ public class UserService {
         } else {
             if (user.getPassword().equals(userDto.getPassword())) {
                 // 登录成功
-                return CopyUtil.copy(user, LoginUserDto.class);
+                LoginUserDto loginUserDto  = CopyUtil.copy(user, LoginUserDto.class);
+                // 为登录用户读取权限
+                setAuth(loginUserDto);
+                return loginUserDto;
             } else {
                 log.info("密码不对, 输入密码：{}, 数据库密码：{}", userDto.getPassword(), user.getPassword());
                 throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR);
             }
         }
+    }
+
+    /**
+     * 为登录用户读取权限
+     */
+    private void setAuth(LoginUserDto loginUserDto) {
+        List<ResourceDto> resourceDtoList = myUserMapper.findResources(loginUserDto.getId());
+        loginUserDto.setResources(resourceDtoList);
+
+        // 整理所有有权限的请求，用于接口拦截
+        HashSet<String> requestSet = new HashSet<>();
+        if (!CollectionUtils.isEmpty(resourceDtoList)) {
+            for (int i = 0, l = resourceDtoList.size(); i < l; i++) {
+                ResourceDto resourceDto = resourceDtoList.get(i);
+                String arrayString = resourceDto.getRequest();
+                List<String> requestList = JSON.parseArray(arrayString, String.class);
+                if (!CollectionUtils.isEmpty(requestList)) {
+                    requestSet.addAll(requestList);
+                }
+            }
+        }
+        log.info("有权限的请求：{}", requestSet);
+        loginUserDto.setRequests(requestSet);
     }
 
 }
