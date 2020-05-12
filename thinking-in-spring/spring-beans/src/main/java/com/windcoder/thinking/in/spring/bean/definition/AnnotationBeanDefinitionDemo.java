@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
- * 注解 BeanDefinition 示例
+ * 注册 BeanDefinition 示例
  */
 // 3. 通过 @Import 来进行导入
 @Import(AnnotationBeanDefinitionDemo.Config.class)

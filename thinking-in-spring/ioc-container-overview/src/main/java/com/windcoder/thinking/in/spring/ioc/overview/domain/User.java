@@ -31,4 +31,15 @@ public class User {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    /**
+     * 用于静态工厂创建Bean
+     * @return
+     */
+    public static User createUser() {
+        User user = new User();
+        user.setId(3L);
+        user.setName("windcoder");
+        return user;
+    }
 }
