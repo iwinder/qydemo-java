@@ -5,7 +5,7 @@ package com.windcoder.thinking.in.spring.ioc.overview.domain;
  */
 public class User {
     private Long id;
-    private String namel;
+    private String name;
 
     public Long getId() {
         return id;
@@ -15,12 +15,12 @@ public class User {
         this.id = id;
     }
 
-    public String getNamel() {
-        return namel;
+    public String getName() {
+        return name;
     }
 
-    public void setNamel(String namel) {
-        this.namel = namel;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -28,7 +28,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", namel='" + namel + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

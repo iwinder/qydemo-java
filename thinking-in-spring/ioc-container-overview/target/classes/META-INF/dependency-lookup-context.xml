@@ -7,7 +7,12 @@
         <bean id="user"  class="com.windcoder.thinking.in.spring.ioc.overview.domain.User">
                 <property name="id" value="1" />
 
-                <property name="namel" value="windcoder.com"/>
+                <property name="name" value="windcoder.com"/>
+        </bean>
+        <!-- 添加primary属性，设置为最主要的，从而避免因有两个user报错，只有主要和其他，不存在次要-->
+        <bean id="superUser"  class="com.windcoder.thinking.in.spring.ioc.overview.domain.SuperUser" parent="user" primary="true">
+                <property name="address" value="https://windcoder.com" />
+
         </bean>
 
         <bean id="objectFactory" class="org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean">
