@@ -5,9 +5,10 @@ import com.windcoder.thinking.in.spring.bean.definition.factory.abstractFactory.
 import com.windcoder.thinking.in.spring.common.utils.PrintZUtill;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 
 /**
- * 默认 {@link com.windcoder.thinking.in.spring.bean.definition.factory.UserFacotry} 实现
+ * Bean 初始化Demo
  */
 public class BeanInitializationDemo {
 
@@ -21,6 +22,8 @@ public class BeanInitializationDemo {
         // 启动Spring 应用上下文
         applicationContext.refresh();
 
+        // 非延迟初始化在 String 应用上下文启动完成后，被初始化
+        PrintZUtill.println("Spring 应用上下文已经启动...");
         // 依赖查找
         IUserFactory userFactory = applicationContext.getBean(IUserFactory.class);
         PrintZUtill.println(userFactory.createUser());
@@ -29,6 +32,7 @@ public class BeanInitializationDemo {
     }
 
     @Bean(initMethod = "initUserFactory")
+    @Lazy
     public IUserFactory userFactory() {
         return new DefaultUserFactory();
     }

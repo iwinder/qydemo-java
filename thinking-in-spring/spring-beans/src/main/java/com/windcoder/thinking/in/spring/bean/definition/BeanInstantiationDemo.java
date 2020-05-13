@@ -5,6 +5,9 @@ import com.windcoder.thinking.in.spring.ioc.overview.domain.User;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ *
+ */
 public class BeanInstantiationDemo {
 
     public static void main(String[] args) {
