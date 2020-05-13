@@ -42,4 +42,10 @@ public class User {
         user.setName("windcoder");
         return user;
     }
+    public static User createUser(long id) {
+        User user = new User();
+        user.setId(id);
+        user.setName("windcoder");
+        return user;
+    }
 }

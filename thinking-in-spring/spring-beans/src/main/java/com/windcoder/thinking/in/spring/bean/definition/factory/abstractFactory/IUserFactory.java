@@ -7,7 +7,7 @@ import com.windcoder.thinking.in.spring.ioc.overview.domain.User;
  * 抽象工厂相对比普通工厂，一般都有一个接口
  *
  */
-public interface IUserFacotry {
+public interface IUserFactory {
     default User createUser() {
         return User.createUser();
     }
