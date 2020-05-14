@@ -13,10 +13,11 @@
 
 
     <dependencies>
+        <!--     复用 <artifactId>ioc-container-overview</artifactId>   -->
         <dependency>
-            <groupId>com.windcoder</groupId>
-            <artifactId>common</artifactId>
-            <scope>compile</scope>
+            <groupId>${groupId}</groupId>
+            <artifactId>ioc-container-overview</artifactId>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 </project>
