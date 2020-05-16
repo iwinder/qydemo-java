@@ -1,22 +1,24 @@
-package com.windcoder.thinking.in.spring.dependency.injection.setter;
+package com.windcoder.thinking.in.spring.dependency.injection.constructor;
 
 import com.windcoder.thinking.in.spring.common.utils.PrintZUtill;
 import com.windcoder.thinking.in.spring.dependency.injection.UserHolder;
-import com.windcoder.thinking.in.spring.ioc.overview.domain.User;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 
 /**
- *  基于 Java  注解的依赖 Setter 方法注入示例
+ *  基于 API 的依赖 构造器 方法注入示例
  */
-public class AnnotationDependencySetterInjectionDemo {
+public class ApiDependencyContructorInjectionDemo {
 
     public static void main(String[] args) {
         // 创建BeanFactory容器
         AnnotationConfigApplicationContext applicationContext  = new AnnotationConfigApplicationContext();
-        // 注册Configuration Class（配置类,Java API方式中的配置类方式），该类代替了XML文件
-        applicationContext.register(AnnotationDependencySetterInjectionDemo.class);
+        // 生成 UserHolder 的 BeanDefinition
+        BeanDefinition userHolderBeanDefinition = createUserHolderBeanDefinition();
+        // 注册 UserHolder 的 BeanDefinition
+        applicationContext.registerBeanDefinition("userHolder", userHolderBeanDefinition);
 
         // XmlBeanDefinitionReader 的注册中心，并不一定只在XML场景中使用，注解场景也可以用到XML的一些特性
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
@@ -37,10 +39,17 @@ public class AnnotationDependencySetterInjectionDemo {
         applicationContext.close();
     }
 
-    @Bean
-    public UserHolder userHolder(User user) {
-        UserHolder userHolder = new UserHolder();
-        userHolder.setUser(user);
-        return userHolder;
+    /**
+     *
+     *  为 {@link UserHolder} 生成 {@link BeanDefinition}
+     *
+     *  通过 Spring 标准 API
+     * @return
+     */
+    private static BeanDefinition createUserHolderBeanDefinition() {
+        BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(UserHolder.class);
+        definitionBuilder.addConstructorArgReference("superUser");
+        return definitionBuilder.getBeanDefinition();
     }
+
 }

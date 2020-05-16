@@ -1,4 +1,4 @@
-package com.windcoder.thinking.in.spring.dependency.injection.setter;
+package com.windcoder.thinking.in.spring.dependency.injection.constructor;
 
 import com.windcoder.thinking.in.spring.common.utils.PrintZUtill;
 import com.windcoder.thinking.in.spring.dependency.injection.UserHolder;
@@ -8,15 +8,15 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 
 /**
- *  基于 Java  注解的依赖 Setter 方法注入示例
+ *  基于 Java  注解的依赖 构造器 方法注入示例
  */
-public class AnnotationDependencySetterInjectionDemo {
+public class AnnotationDependencyConstructInjectionDemo {
 
     public static void main(String[] args) {
         // 创建BeanFactory容器
         AnnotationConfigApplicationContext applicationContext  = new AnnotationConfigApplicationContext();
         // 注册Configuration Class（配置类,Java API方式中的配置类方式），该类代替了XML文件
-        applicationContext.register(AnnotationDependencySetterInjectionDemo.class);
+        applicationContext.register(AnnotationDependencyConstructInjectionDemo.class);
 
         // XmlBeanDefinitionReader 的注册中心，并不一定只在XML场景中使用，注解场景也可以用到XML的一些特性
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
@@ -39,8 +39,6 @@ public class AnnotationDependencySetterInjectionDemo {
 
     @Bean
     public UserHolder userHolder(User user) {
-        UserHolder userHolder = new UserHolder();
-        userHolder.setUser(user);
-        return userHolder;
+        return new UserHolder(user);
     }
 }
