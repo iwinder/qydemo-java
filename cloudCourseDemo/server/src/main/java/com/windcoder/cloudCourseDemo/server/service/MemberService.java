@@ -65,6 +65,7 @@ public class MemberService {
     private void inster(Member member){
         Date now = new Date();
         member.setId(UuidUtil.getShortUuid());
+        member.setRegisterTime(now);
         memberMapper.insert(member);
     }
 
