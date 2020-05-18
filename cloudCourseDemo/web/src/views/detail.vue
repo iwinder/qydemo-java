@@ -136,6 +136,7 @@ import ModalPlayer from "../components/modal-player";
                 c.sections.push(s);
               }
             }
+            Tool.sortAsc(c.sections, "sort");
           }
         })
       },
