@@ -13,29 +13,53 @@
 
       <div class="album py-5 bg-light">
         <div class="container">
-
-          <div class="row">
-            <div v v-for="o in news" :key="o.id"  class="col-md-4">
-              <div class="card mb-4 shadow-sm">
-                <img class="img-fluid" v-bind:src="o.image"  @error="defaultImageFuc">
-                <div class="card-body">
-                    <h4 class="">{{o.name}}</h4>
-                    <p class="card-text">{{o.summary}}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+            <div class="title1">最新上线</div>
+            <div class="row">
+                <div v v-for="o in news" :key="o.id"  class="col-md-4">
+                    <div class="card mb-4 shadow-sm course">
+                        <img class="img-fluid" v-bind:src="o.image"  @error="defaultImageFuc">
+                        <div class="card-body">
+                            <h4 class="">{{o.name}}</h4>
+                            <p class="card-text">{{o.summary}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                 <button type="button" class="btn btn-sm btn-outline-secondary">课程详情</button>
+                                </div>
+                                <small class="text-muted">
+                                    <span class="badge badge-info"><i class="fa fa-yen" aria-hidden="true"></i>&nbsp;{{o.price}}</span>&nbsp;
+                                    <span class="badge badge-info"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;123</span>&nbsp;
+                                </small>
+                            </div>
                         </div>
-                        <small class="text-muted">
-                            <span class="badge badge-info"><i class="fa fa-yen" aria-hidden="true"></i>&nbsp;{{o.price}}</span>&nbsp;
-                             <span class="badge badge-info"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;123</span>&nbsp;
-                        </small>
                     </div>
                 </div>
-              </div>
+    
             </div>
-   
-          </div>
+            <hr>
+
+            <div class="title1">好课推荐</div>
+            <div class="row">
+                <div v v-for="o in news" :key="o.id"  class="col-md-4">
+                    <div class="card mb-4 shadow-sm course">
+                        <img class="img-fluid" v-bind:src="o.image"  @error="defaultImageFuc">
+                        <div class="card-body">
+                            <h4 class="">{{o.name}}</h4>
+                            <p class="card-text">{{o.summary}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                 <button type="button" class="btn btn-sm btn-outline-secondary">课程详情</button>
+                                </div>
+                                <small class="text-muted">
+                                    <span class="badge badge-info"><i class="fa fa-yen" aria-hidden="true"></i>&nbsp;{{o.price}}</span>&nbsp;
+                                    <span class="badge badge-info"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;123</span>&nbsp;
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+
         </div>
       </div>
 
@@ -77,3 +101,29 @@
         }  
     }
 </script>
+
+<style>
+  .title1{
+    margin-bottom: 2rem;
+    color: #fafafa;
+    letter-spacing: 0;
+    text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+    font-size: 2rem;
+  }
+  .title2{
+    margin-bottom: 2rem;
+    color: transparent;
+    -webkit-text-stroke: 1px black;
+    letter-spacing: 0.04em;
+    font-size: 2rem;
+  }
+
+  .course h4 {
+    font-size: 1.25rem;
+    margin: 15px 0;
+  }
+
+  .course .text-muted .badge{
+    font-size: 1rem;
+  }
+</style>
