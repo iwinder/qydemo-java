@@ -93,4 +93,16 @@ public class SectionService {
         sectionMapper.updateByPrimaryKey(section);
     }
 
+    /**
+     * 查询某一课程下的所有节
+     * @param courseId
+     * @return
+     */
+    public List<SectionDto> listByCourse(String courseId) {
+        SectionExample example = new SectionExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Section> sectionList = sectionMapper.selectByExample(example);
+        List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList, SectionDto.class);
+        return sectionDtoList;
+    }
 }

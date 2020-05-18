@@ -6,6 +6,7 @@ import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
 import com.windcoder.cloudCourseDemo.server.enums.CourseStatusEnum;
 import com.windcoder.cloudCourseDemo.server.service.CourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController("webCourseController")
 @RequestMapping("/web/course")
+@Slf4j
 public class CourseController {
 
     public static final String BUSINESS_NAME = "课程";
@@ -40,6 +42,15 @@ public class CourseController {
         pageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
         courseService.list(pageDto);
         responseDto.setContent(pageDto);
+        return responseDto;
+    }
+    @GetMapping("/find/{id}")
+    public ResponseDto findCourse(@PathVariable String id) {
+        log.info("查找课程开始：{}", id);
+        ResponseDto responseDto = new ResponseDto();
+        CourseDto courseDto = courseService.findCourse(id);
+        responseDto.setContent(courseDto);
+        log.info("查找课程结束：{}", responseDto);
         return responseDto;
     }
 }
