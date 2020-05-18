@@ -14,10 +14,10 @@ import java.util.*;
  *  用于后端代码的生成，包含controller、service、dto
  */
 public class VueGenerator {
-//    static final String MODULE = "business";
+    static final String MODULE = "business";
 
 //    static String MODULE = "file";
-    static String MODULE = "system";
+//    static String MODULE = "system";
     static String toVuePath =  "admin\\src\\views\\admin\\";
     static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
 
