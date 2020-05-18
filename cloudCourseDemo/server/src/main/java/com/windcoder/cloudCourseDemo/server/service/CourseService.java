@@ -39,18 +39,12 @@ public class CourseService {
      * 列表查询
      * @param pageDto
      */
-    public void list(CoursePageDto pageDto) {
+    public void     list(CoursePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-        CourseExample courseExample = new CourseExample();
-        CourseExample.Criteria criteria = courseExample.createCriteria();
-        if (!StringUtils.isEmpty(pageDto.getStatus())) {
-            criteria.andStatusEqualTo(pageDto.getStatus());
-        }
-         courseExample.setOrderByClause("sort asc");
-        List<Course> courses = courseMapper.selectByExample(courseExample);
-        PageInfo<Course> pageInfo = new PageInfo<>(courses);
+        List<CourseDto> courseDtoList = myCourseMapper.list(pageDto);
+
+        PageInfo<CourseDto> pageInfo = new PageInfo<>(courseDtoList);
         pageDto.setTotal(pageInfo.getTotal());
-        List<CourseDto> courseDtoList = CopyUtil.copyList(courses, CourseDto.class);
         pageDto.setList(courseDtoList);
     }
 
