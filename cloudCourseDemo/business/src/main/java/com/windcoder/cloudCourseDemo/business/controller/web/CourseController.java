@@ -1,12 +1,12 @@
 package com.windcoder.cloudCourseDemo.business.controller.web;
 
 import com.windcoder.cloudCourseDemo.server.dto.CourseDto;
+import com.windcoder.cloudCourseDemo.server.dto.CoursePageDto;
 import com.windcoder.cloudCourseDemo.server.dto.PageDto;
 import com.windcoder.cloudCourseDemo.server.dto.ResponseDto;
+import com.windcoder.cloudCourseDemo.server.enums.CourseStatusEnum;
 import com.windcoder.cloudCourseDemo.server.service.CourseService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,4 +33,13 @@ public class CourseController {
        responseDto.setContent(courseDtoList);
        return responseDto;
    }
+
+    @PostMapping("/list")
+    public ResponseDto list(@RequestBody CoursePageDto pageDto) {
+        ResponseDto responseDto = new ResponseDto();
+        pageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
+        courseService.list(pageDto);
+        responseDto.setContent(pageDto);
+        return responseDto;
+    }
 }

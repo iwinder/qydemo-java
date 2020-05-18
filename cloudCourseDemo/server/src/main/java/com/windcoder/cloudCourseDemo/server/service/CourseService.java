@@ -6,10 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.windcoder.cloudCourseDemo.server.domain.Course;
 import com.windcoder.cloudCourseDemo.server.domain.CourseContent;
 import com.windcoder.cloudCourseDemo.server.domain.CourseExample;
-import com.windcoder.cloudCourseDemo.server.dto.CourseContentDto;
-import com.windcoder.cloudCourseDemo.server.dto.CourseDto;
-import com.windcoder.cloudCourseDemo.server.dto.PageDto;
-import com.windcoder.cloudCourseDemo.server.dto.SortDto;
+import com.windcoder.cloudCourseDemo.server.dto.*;
 import com.windcoder.cloudCourseDemo.server.enums.CourseStatusEnum;
 import com.windcoder.cloudCourseDemo.server.mapper.CourseContentMapper;
 import com.windcoder.cloudCourseDemo.server.mapper.CourseMapper;
@@ -42,9 +39,13 @@ public class CourseService {
      * 列表查询
      * @param pageDto
      */
-    public void list(PageDto pageDto) {
+    public void list(CoursePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         CourseExample courseExample = new CourseExample();
+        CourseExample.Criteria criteria = courseExample.createCriteria();
+        if (!StringUtils.isEmpty(pageDto.getStatus())) {
+            criteria.andStatusEqualTo(pageDto.getStatus());
+        }
          courseExample.setOrderByClause("sort asc");
         List<Course> courses = courseMapper.selectByExample(courseExample);
         PageInfo<Course> pageInfo = new PageInfo<>(courses);
