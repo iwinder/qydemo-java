@@ -55,6 +55,9 @@ export default {
         let formData = new window.FormData();
         let file = _this.$refs.file.files[0];
         console.log(file);
+        if(!file) {
+          return;
+        }
 
 
         // 生成文件标识，标识多次上传的是不是同一个文件
