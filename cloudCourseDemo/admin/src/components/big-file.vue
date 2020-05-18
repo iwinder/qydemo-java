@@ -126,6 +126,8 @@ export default {
               console.log("文件上传失败");
               $("#" + _this.inputId + "-input").val("");
             }
+        }).catch((err) => {
+          console.log("error：", err);
         });
       },
       /**
