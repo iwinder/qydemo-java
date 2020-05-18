@@ -28,7 +28,7 @@
               <div class="form-group">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" class=" rememberMe" v-model="rememberMe"> 记住密码
+                    <input type="checkbox" class="remember" v-model="remember"> 记住密码
                   </label>
                   <div class="pull-right">
                     <a href="javascript:;" v-on:click="toForgetDiv()">忘记密码</a>&nbsp;
@@ -128,7 +128,7 @@
       return {
         memberRegister: {},
 
-        rememberMe: true, // 记住密码
+        remember: true, // 记住密码
         key: "PWD", // 密码传输加密盐值
         imageCodeToken: "",
 
@@ -152,6 +152,8 @@
        */
       openLoginModal() {
         let _this = this;
+        // 显示登录框时就刷新一次验证码图片
+        _this.loadImageCode();
         $("#login-modal").modal("show");
       },
 
@@ -185,6 +187,17 @@
         })
       },
 
+      //---------------登录框-----------------
+      /**
+       * 加载图形验证码
+       */
+      loadImageCode: function () {
+        let _this = this;
+        _this.imageCodeToken = Tool.uuid(8);
+        $('#image-code').attr('src', process.env.VUE_APP_SERVER + '/business/web/kaptcha/image-code/' + _this.imageCodeToken);
+      },
+
+
     }
   }
 </script>
@@ -205,7 +218,7 @@
     max-width: 400px;
   }
 
-  #login-modal input:not(.rememberMe) {
+  #login-modal input:not(.remember) {
     height: 45px;
     font-size: 16px;
   }
