@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import TheLogin from "./login";
+import TheLogin from "./the-login";
 export default {
     name: 'theHeader',
      components: {TheLogin},
