@@ -4,6 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+        <!--   RootBeanDefinition 不需要合并，不存在 Parent     -->
+        <!--   普通 BeanDefinition GenericBeanDefinition  ，虽然 可以定义RootBeanDefinition ，但实际依旧是 GenericBeanDefinition   -->
+        <!--   经过合并后  GenericBeanDefinition 变成 RootBeanDefinition      -->
         <bean id="user"  class="com.windcoder.thinking.in.spring.ioc.overview.domain.User">
                 <property name="id" value="1" />
 
@@ -13,7 +16,11 @@
                 <property name="lifeCities" value="SHANGHAI,HANGZHOU"/>
                 <property name="configFileLocation" value="classpath:/META-INF/user-config.properties"/>
         </bean>
+
         <!-- 添加primary属性，设置为最主要的，从而避免因有两个user报错，只有主要和其他，不存在次要-->
+        <!--   普通 BeanDefinition GenericBeanDefinition     -->
+        <!--   合并后  GenericBeanDefinition 变成 RootBeanDefinition ，并且覆盖 parent 相关配置      -->
+        <!--   primar = true, 增加了一个 address 属性     -->
         <bean id="superUser"  class="com.windcoder.thinking.in.spring.ioc.overview.domain.SuperUser" parent="user" primary="true">
                 <property name="address" value="https://windcoder.com" />
 
