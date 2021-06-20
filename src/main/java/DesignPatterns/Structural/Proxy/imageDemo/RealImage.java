@@ -1,4 +1,4 @@
-package DesignPatterns.Structural.Proxy;
+package DesignPatterns.Structural.Proxy.imageDemo;
 
 import Utills.PrintUtill;
 

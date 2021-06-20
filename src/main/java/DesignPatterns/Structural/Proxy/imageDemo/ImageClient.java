@@ -1,8 +1,8 @@
-package DesignPatterns.Structural.Proxy;
+package DesignPatterns.Structural.Proxy.imageDemo;
 
 import Utills.PrintUtill;
 
-public class ProxyPatternDemo {
+public class ImageClient {
 
     public static void main(String[] args) {
         Image image = new ProxyImage("hahaha.jpg");
