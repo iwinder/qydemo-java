@@ -1,4 +1,4 @@
-package DesignPatterns.Structural.Decorator;
+package DesignPatterns.Structural.Decorator.shapedemo;
 
 /**
  * Description: 创建扩展了 ShapeDecorator 类的实体装饰类。

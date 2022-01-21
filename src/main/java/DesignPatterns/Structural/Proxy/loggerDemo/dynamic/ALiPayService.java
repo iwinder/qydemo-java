@@ -7,4 +7,9 @@ public class ALiPayService implements PayService{
     public void pay() {
         PrintUtill.println("微信支付>>>>>>WXPayService>>>>>>>>>pay>>>>>>>>>>>");
     }
+
+    @Override
+    public void pay(int a) {
+        PrintUtill.println("微信支付>>>>>>WXPayService>>>>>>>>>pay>>>>>>>>>>>"+a);
+    }
 }

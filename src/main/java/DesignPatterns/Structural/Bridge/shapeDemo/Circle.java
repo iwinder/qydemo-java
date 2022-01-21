@@ -1,4 +1,4 @@
-package DesignPatterns.Structural.Bridge;
+package DesignPatterns.Structural.Bridge.shapeDemo;
 
 /**
  * Description:

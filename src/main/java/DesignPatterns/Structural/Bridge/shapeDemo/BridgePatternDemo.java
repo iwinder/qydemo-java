@@ -1,4 +1,4 @@
-package DesignPatterns.Structural.Bridge;
+package DesignPatterns.Structural.Bridge.shapeDemo;
 
 /**
  * Description:Java设计模式学习笔记—桥接模式

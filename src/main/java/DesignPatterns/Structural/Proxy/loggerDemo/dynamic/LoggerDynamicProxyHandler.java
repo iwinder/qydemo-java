@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.text.SimpleDateFormat;
 
-public class LoggerDynamicProxy implements InvocationHandler {
+public class LoggerDynamicProxyHandler implements InvocationHandler {
     private SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
     private Object target;
 

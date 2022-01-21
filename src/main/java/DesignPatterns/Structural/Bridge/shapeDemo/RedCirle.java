@@ -1,4 +1,4 @@
-package DesignPatterns.Structural.Bridge;
+package DesignPatterns.Structural.Bridge.shapeDemo;
 
 /**
  * Description:创建实现了 DrawAPI 接口的实体桥接实现类。

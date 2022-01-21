@@ -1,4 +1,4 @@
-package DesignPatterns.Structural.Decorator;
+package DesignPatterns.Structural.Decorator.shapedemo;
 
 /**
  * Description:

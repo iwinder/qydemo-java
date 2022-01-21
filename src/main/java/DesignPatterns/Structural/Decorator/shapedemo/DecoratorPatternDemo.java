@@ -1,4 +1,4 @@
-package DesignPatterns.Structural.Decorator;
+package DesignPatterns.Structural.Decorator.shapedemo;
 
 /**
  * Description: Java设计模式学习笔记—装饰器模式
