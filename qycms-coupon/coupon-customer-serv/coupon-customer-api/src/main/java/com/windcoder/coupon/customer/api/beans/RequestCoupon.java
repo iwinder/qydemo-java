@@ -1,5 +1,6 @@
 package com.windcoder.coupon.customer.api.beans;
 
+import com.windcoder.coupon.template.api.beans.CouponTemplateInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,12 @@ public class RequestCoupon {
     // 券模板ID
     @NotNull
     private Long couponTemplateId;
+
+
+    /** 优惠券模板信息 */
+    private CouponTemplateInfo templateSDK;
+
+    // Loadbalancer - 用作测试流量打标
+    private String trafficVersion;
 
 }
