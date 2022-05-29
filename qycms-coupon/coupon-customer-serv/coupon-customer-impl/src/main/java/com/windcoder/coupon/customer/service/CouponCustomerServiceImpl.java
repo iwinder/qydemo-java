@@ -85,6 +85,7 @@ public class CouponCustomerServiceImpl implements CouponCustomerService {
                 .userId(request.getUserId())
                 .shopId(templateInfo.getShopId())
                 .status(CouponStatus.AVAILABLE)
+                .templateInfo(templateInfo)
                 .build();
         couponDao.save(coupon);
         return coupon;
