@@ -36,8 +36,10 @@ public class CouponTemplateController {
 
     // 读取优惠券
     @GetMapping("/getTemplate")
-    public CouponTemplateInfo getTemplate(@RequestParam("id") Long id){
+    public CouponTemplateInfo getTemplate(@RequestParam("id") Long id) {
         log.info("Load template, id={}", id);
+//        Thread.sleep(3000L);
+//        throw new RuntimeException("测试异常");
         return couponTemplateService.loadTemplateInfo(id);
     }
 
