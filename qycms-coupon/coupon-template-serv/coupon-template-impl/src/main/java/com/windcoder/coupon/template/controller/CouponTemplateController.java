@@ -49,7 +49,12 @@ public class CouponTemplateController {
 
     // 批量获取
     @GetMapping("/getBatch")
-    @SentinelResource(value = "getTemplateInBatch", blockHandler = "getTemplateInBatch_block")
+    // 如果降级方法的方法签名是 BlockException，那么 fallback 是无法正常工作的。
+    // 这点和 blockHandler 属性的用法是不一样的。
+    // 注解中同时使用了 fallback 和 blockHandler 属性，
+    // 如果服务抛出 BlockException，则执行 blockHandler 属性指定的方法，
+    // 其他异常就由 fallback 属性所对应的降级方法接管。
+    @SentinelResource(value = "getTemplateInBatch",  fallback = "getTemplateInBatch_fallback",blockHandler = "getTemplateInBatch_block")
     public Map<Long, CouponTemplateInfo> getTemplateInBatch(@RequestParam("ids") Collection<Long> ids) {
         log.info("getTemplateInBatch: {}", JSON.toJSONString(ids));
         return couponTemplateService.getTemplateInfoMap(ids);
@@ -69,6 +74,12 @@ public class CouponTemplateController {
         couponTemplateService.deleteTemplate(id);
     }
 
+
+    // 接口被降级时的方法
+    public Map<Long, CouponTemplateInfo> getTemplateInBatch_fallback(Collection<Long> ids) {
+        log.info("接口被降级");
+        return Maps.newHashMap();
+    }
     // 流控降级的方法
     //  blockHandler 属性为当前资源指定了限流后的降级方法
     public Map<Long, CouponTemplateInfo> getTemplateInBatch_block(
