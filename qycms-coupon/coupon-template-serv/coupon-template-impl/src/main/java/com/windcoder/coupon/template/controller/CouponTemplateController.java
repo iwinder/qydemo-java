@@ -1,6 +1,9 @@
 package com.windcoder.coupon.template.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.windcoder.coupon.template.api.beans.CouponTemplateInfo;
 import com.windcoder.coupon.template.api.beans.PagedCouponTemplateInfo;
 import com.windcoder.coupon.template.api.beans.TemplateSearchParams;
@@ -36,6 +39,7 @@ public class CouponTemplateController {
 
     // 读取优惠券
     @GetMapping("/getTemplate")
+    @SentinelResource(value = "getTemplate")
     public CouponTemplateInfo getTemplate(@RequestParam("id") Long id) {
         log.info("Load template, id={}", id);
 //        Thread.sleep(3000L);
@@ -45,6 +49,7 @@ public class CouponTemplateController {
 
     // 批量获取
     @GetMapping("/getBatch")
+    @SentinelResource(value = "getTemplateInBatch", blockHandler = "getTemplateInBatch_block")
     public Map<Long, CouponTemplateInfo> getTemplateInBatch(@RequestParam("ids") Collection<Long> ids) {
         log.info("getTemplateInBatch: {}", JSON.toJSONString(ids));
         return couponTemplateService.getTemplateInfoMap(ids);
@@ -62,5 +67,13 @@ public class CouponTemplateController {
     public void deleteTemplate(@RequestParam("id") Long id){
         log.info("Load template, id={}", id);
         couponTemplateService.deleteTemplate(id);
+    }
+
+    // 流控降级的方法
+    //  blockHandler 属性为当前资源指定了限流后的降级方法
+    public Map<Long, CouponTemplateInfo> getTemplateInBatch_block(
+            Collection<Long> ids, BlockException exception) {
+        log.info("接口被限流");
+        return Maps.newHashMap();
     }
 }
