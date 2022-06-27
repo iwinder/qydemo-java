@@ -7,6 +7,7 @@ import com.windcoder.coupon.calculation.api.beans.SimulationResponse;
 import com.windcoder.coupon.customer.api.beans.RequestCoupon;
 import com.windcoder.coupon.customer.api.beans.SearchCoupon;
 import com.windcoder.coupon.customer.dao.entity.Coupon;
+import com.windcoder.coupon.customer.event.CouponProducer;
 import com.windcoder.coupon.customer.service.intf.CouponCustomerService;
 import com.windcoder.coupon.template.api.beans.CouponInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class CouponCustomerController {
 
     @Autowired
     private CouponCustomerService customerService;
+
+    @Autowired
+    private CouponProducer couponProducer;
 
     @PostMapping("requestCoupon")
     @SentinelResource(value = "requestCoupon")
@@ -65,5 +69,25 @@ public class CouponCustomerController {
     @SentinelResource(value = "customer-findCoupon")
     public List<CouponInfo> findCoupon(@Valid @RequestBody SearchCoupon request) {
         return customerService.findCoupon(request);
+    }
+
+
+    // 用户获取优惠券
+    @PostMapping("requestCouponEvent")
+    public void requestCouponEvent(@Valid @RequestBody RequestCoupon request) {
+        couponProducer.sendCoupon(request);
+    }
+
+    // 用户删除优惠券
+    @DeleteMapping("deleteCouponEvent")
+    public void deleteCouponEvent(@RequestParam("userId") Long userId,
+                                  @RequestParam("couponId") Long couponId) {
+        couponProducer.deleteCoupon(userId, couponId);
+    }
+
+
+    @PostMapping("requestCouponDelayEvent")
+    public void requestCouponDelayedEvent(@Valid @RequestBody RequestCoupon request) {
+        couponProducer.sendCouponInDelay(request);
     }
 }
