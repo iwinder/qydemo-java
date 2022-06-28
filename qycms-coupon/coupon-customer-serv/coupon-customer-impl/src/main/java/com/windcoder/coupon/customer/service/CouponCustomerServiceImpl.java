@@ -23,6 +23,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -271,5 +272,14 @@ public class CouponCustomerServiceImpl implements CouponCustomerService {
         return coupons.stream()
                 .map(CouponConverter::convertToCoupon)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void deleteCouponTemplate(Long templateId) {
+        templateService.deleteTemplate(templateId);
+        couponDao.deleteCouponInBatch(templateId, CouponStatus.INACTIVE);
+
+        throw new RuntimeException("AT分布式事务挂球了");
     }
 }

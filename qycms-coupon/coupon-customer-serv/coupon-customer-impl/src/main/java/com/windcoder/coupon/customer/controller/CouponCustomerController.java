@@ -10,6 +10,7 @@ import com.windcoder.coupon.customer.dao.entity.Coupon;
 import com.windcoder.coupon.customer.event.CouponProducer;
 import com.windcoder.coupon.customer.service.intf.CouponCustomerService;
 import com.windcoder.coupon.template.api.beans.CouponInfo;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,5 +90,12 @@ public class CouponCustomerController {
     @PostMapping("requestCouponDelayEvent")
     public void requestCouponDelayedEvent(@Valid @RequestBody RequestCoupon request) {
         couponProducer.sendCouponInDelay(request);
+    }
+
+    // 用户删除优惠券
+    @DeleteMapping("template")
+    @GlobalTransactional(name = "coupon-customer-serv", rollbackFor = Exception.class)
+    public void deleteTemplate(@RequestParam("templateId") Long templateId) {
+        customerService.deleteCouponTemplate(templateId);
     }
 }

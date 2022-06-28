@@ -69,6 +69,11 @@ spring:
         watch:
           enabled: true
         watch-delay: 30000
+    alibaba:
+      seata:
+        # seata默认txn分组名称，默认是application+一段seata特定字符串
+        # 我随便指定了一段分组
+        tx-service-group: seata-server-group
   sentinel:
     transport:
       # sentinel api端口，默认8719
@@ -85,3 +90,16 @@ spring:
 logging:
   level:
     com.broadview.coupon: debug
+seata:
+  application-id: coupon-template-serv
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: localhost:8848
+      namespace: dev
+      group: myGroup
+      cluster: default
+  service:
+    vgroup-mapping:
+      seata-server-group: default

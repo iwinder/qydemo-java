@@ -21,6 +21,7 @@ public interface CouponCustomerService {    // 领券接口
     SimulationResponse simulateOrderPrice(SimulationOrder order);
 
     void deleteCoupon(Long userId, Long couponId);
+    void deleteCouponTemplate(Long templateId);
 
     // 查询用户优惠券
     List<CouponInfo> findCoupon(SearchCoupon request);
