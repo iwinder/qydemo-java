@@ -8,6 +8,8 @@ import com.windcoder.coupon.template.converter.CouponTemplateConverter;
 import com.windcoder.coupon.template.dao.CouponTemplateDao;
 import com.windcoder.coupon.template.dao.entity.CouponTemplate;
 import com.windcoder.coupon.template.service.intf.CouponTemplateService;
+import com.windcoder.coupon.template.service.intf.CouponTemplateServiceTCC;
+import io.seata.rm.tcc.api.BusinessActionContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class CouponTemplateServiceImpl implements CouponTemplateService {
+public class CouponTemplateServiceImpl implements CouponTemplateServiceTCC {
 
     @Autowired
     private CouponTemplateDao templateDao;
@@ -138,6 +140,11 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         }
     }
 
+    /**
+     * 批量读取模板
+     * @param ids
+     * @return
+     */
     @Override
     public Map<Long, CouponTemplateInfo> getTemplateInfoMap(Collection<Long> ids) {
         List<CouponTemplate> templates = templateDao.findAllById(ids);
@@ -145,5 +152,51 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         return templates.stream()
                 .map(CouponTemplateConverter::convertToTemplateInfo)
                 .collect(Collectors.toMap(CouponTemplateInfo::getId, Function.identity()));
+    }
+
+    // 将券无效化
+    @Override
+    @Transactional
+    public void deleteTemplateTCC(Long id) {
+        CouponTemplate filter = CouponTemplate.builder()
+                .available(true)
+                .locked(false)
+                .id(id)
+                .build();
+
+        CouponTemplate template = templateDao.findAll(Example.of(filter))
+                .stream().findFirst()
+                .orElseThrow(() -> new RuntimeException("Template Not Found"));
+
+        template.setLocked(true);
+        templateDao.save(template);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTemplateCommit(BusinessActionContext context) {
+        Long id = Long.parseLong(context.getActionContext("id").toString());
+
+        CouponTemplate template = templateDao.findById(id).get();
+
+        template.setLocked(false);
+        template.setAvailable(false);
+        templateDao.save(template);
+
+        log.info("TCC committed");
+    }
+
+    @Override
+    @Transactional
+    public void deleteTemplateCancel(BusinessActionContext context) {
+        Long id = Long.parseLong(context.getActionContext("id").toString());
+        Optional<CouponTemplate> templateOption = templateDao.findById(id);
+
+        if (templateOption.isPresent()) {
+            CouponTemplate template = templateOption.get();
+            template.setLocked(false);
+            templateDao.save(template);
+        }
+        log.info("TCC cancel");
     }
 }

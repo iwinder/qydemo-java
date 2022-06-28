@@ -31,6 +31,9 @@ public class CouponTemplate {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "locked", nullable = false)
+    private Boolean locked;
+
     // 状态是否可用
     @Column(name = "available", nullable = false)
     private Boolean available;
