@@ -1,11 +1,15 @@
 # qydemo-java
 
 #### 介绍
-Java练习demo
+Java练习demo集合
+
 
 #### 软件架构
 软件架构说明
 
+- qycms-2022: 另外的库合并到这里面的历史项目
+- qycms-base: 包含基础相关的demo
+- qycms-coupon: 关于 seata 实现分布式事务的实例
 
 #### 安装教程
 
