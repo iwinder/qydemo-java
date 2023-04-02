@@ -1,0 +1,9 @@
+<beans>
+    <bean id="rateLimiter" class="com.xzg.RateLimiter">
+        <constructor-arg ref="DesignPatterns.Creational.Factory.geekbang.DIContainer.entity.RateLimiter"/>
+    </bean>
+    <bean id="redisCounter" class="DesignPatterns.Creational.Factory.geekbang.DIContainer.entity.RedisCounter" scope="singleton" lazy-init="true">
+        <constructor-arg type="String" value="127.0.0.1" />
+        <constructor-arg type="int" value=1234 />
+    </bean>
+</beans>
