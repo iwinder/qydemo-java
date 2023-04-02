@@ -1,0 +1,89 @@
+
+plugins {
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+//    id "io.freefair.lombok" version "4.1.1"
+}
+
+group 'windcoder.com'
+version '1.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+sourceSets {
+    main {
+        java{
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/java'
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+repositories {
+    maven{url 'https://mvnrepository.com/'}
+    maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+//    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+//    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+
+
+//buildscript {
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.8.RELEASE")
+//    }
+//}
+//
+//apply plugin: 'java'
+//apply plugin: 'eclipse'
+//apply plugin: 'idea'
+//apply plugin: 'org.springframework.boot'
+//apply plugin: 'io.spring.dependency-management'
+//
+//bootJar {
+//    baseName = 'spring-boot-kafka'
+//    version =  '0.1.0'
+//}
+//
+//group 'windcoder.com'
+//version '1.0-SNAPSHOT'
+//
+//repositories {
+//    maven{url 'https://mvnrepository.com/'}
+//    maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+//    mavenCentral()
+//}
+//
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
+//
+//dependencies {
+//    compile("org.springframework.boot:spring-boot-starter-web")
+//    testCompile('org.springframework.boot:spring-boot-starter-test')
+//}
+

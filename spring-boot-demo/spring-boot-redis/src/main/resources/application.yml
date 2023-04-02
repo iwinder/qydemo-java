@@ -1,0 +1,58 @@
+# thymeleaf
+server:
+  port: 8080
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML
+    cache: false
+    servlet:
+      content-type: text/html
+# MySQL
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    username: root
+    password: ENC(2qBUi28qOyqjPt3qew863Q==)
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      connection:
+        CharSet: utf8mb4
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#redis
+  redis:
+    host: ENC(VrVGk8dP85JWxicP8UYVsiRQuZIB6h1j)
+    password: ENC(r3PQ/cWSpANfTq6l1UobIav/+OLwy1uV)
+    port: 6380
+    database: 8
+    timeout: 60000
+#配置数据源加密的密钥
+jasypt:
+  encryptor:
+    password: windcoderAdmin
+#logging:
+#    level:
+#      root: DEBUG
+
+#windcoder:
+#  ftp:
+#    hostname: 192.168.11.69
+#    port: 21
+#    username: ftptest
+#    password: 123456
+#    # windows的FTP服务器GBK并中文转码，Linux的FTP服务器UTF-8可直接用中文
+##    home: \u6ce8\u534f
+#    home: 注协
+##    cachePath: /data/content/ftp_temp
+#    cachePath: G:\\data\\content\\ftp_temp
+#    # encoding 包含 GBK GB2312 和 UTF-8,默认为UTF-8，用于转换目标目录的路径及文件名
+#    encoding: GBK
+#    # encoding: UTF-8
