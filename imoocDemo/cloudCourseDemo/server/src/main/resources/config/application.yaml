@@ -1,0 +1,27 @@
+
+spring:
+    # 增加数据库连接
+    datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/icloudcourse?characterEncoding=UTF8&autoReconnect=true&useSSL=false
+      username: courseimooc
+      password: "000000"
+#      username: root
+#      password: root
+    redis:
+      host: 47.100.55.40
+      port: 6379
+      password: Redis000
+mybatis:
+  mapper-locations: classpath*:/mappers/**/*.xml
+
+logging:
+  level:
+    # 优化mybatis输出
+    com:
+     windcoder:
+      cloudCourseDemo:
+        server:
+          mapper: trace
+
+
