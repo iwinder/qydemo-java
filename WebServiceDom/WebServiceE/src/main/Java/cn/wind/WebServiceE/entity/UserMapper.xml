@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wind.WebServiceE.entity.User">
+
+    <!-- 会员模型 -->
+    <resultMap type="cn.wind.WebServiceE.entity.User" id="user">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <!--<result column="createtime" property="createTime"/>-->
+    </resultMap>
+
+
+
+
+    <!--<insert id="addUser">-->
+        <!--INSERT INTO luck_user (uid,nickname,headimg,createtime) VALUES ( #{uid}, #{nickName},#{headImg},now());-->
+    <!--</insert>-->
+
+    <!--<update id="updateUser">-->
+        <!--UPDATE `luck_user` SET nickname =#{nickname},headimg = #{headImg} WHERE uid = #{uid};-->
+    <!--</update>-->
+
+    <!-- 查询 -->
+    <!--<select id="findAll" resultMap="user">-->
+        <!--SELECT id,uid,nickname,headimg,createtime FROM luck_user;-->
+    <!--</select>-->
+
+    <!--<select id="findByUsername" resultMap="user">-->
+        <!--SELECT id,uid,nickname,headimg,createtime FROM luck_user WHERE username = #{username};-->
+    <!--</select>-->
+    <!--<select id="findByUserId" resultMap="user">-->
+        <!--SELECT * FROM luck_user WHERE uid = #{uid};-->
+    <!--</select>-->
+    <!--<select id="findUidByUsername" resultMap="user">-->
+        <!--SELECT id  FROM luck_user WHERE username = #{username};-->
+    <!--</select>-->
+
+    <!--<select id="findUserByUidAndIsNotNow" resultType="int">-->
+        <!--SELECT COUNT(1) FROM luck_user  WHERE uid = #{uid} AND DATEDIFF(now(),createtime)>0;-->
+    <!--</select>-->
+
+
+
+
+    <!--<select id="findAllRoleIdByUsername" resultType="long">-->
+        <!--SELECT roleId FROM `luck_user` WHERE userId IN-->
+       <!--( SELECT id  FROM `user` WHERE username = #{username});-->
+    <!--</select>-->
+</mapper>
